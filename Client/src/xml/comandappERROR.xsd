@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="comandappERROR.xsd"
+    xmlns:cl="comandappERROR.xsd">
+    
+    <xs:element name="error" type="xs:string"/>
+</xs:schema>

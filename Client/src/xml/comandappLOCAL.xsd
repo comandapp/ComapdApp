@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="comandappLOCAL.xsd"
+    xmlns:cl="comandappLOCAL.xsd">
+    
+    <xs:element name="local" type="cl:Tlocal"/>
+
+    <xs:complexType name="Tlocal">
+        <xs:sequence>
+            <xs:element name="nombre" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="direccion" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="telefono" type="xs:long" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="correo" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="latitud" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="longitud" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="provincia" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="municipio" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="vBar" type="xs:int" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="vOfertas" type="xs:int" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="carta" type="cl:Tcarta" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="Tcarta">
+        <xs:sequence>
+            <xs:element name="entrada" type="cl:Tentrada" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Tentrada">
+        <xs:sequence>
+            <xs:element name="idProducto" type="xs:int" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="nomProducto" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="desProducto" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="catProducto" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="precio" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="foto" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

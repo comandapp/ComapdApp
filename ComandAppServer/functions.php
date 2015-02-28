@@ -39,17 +39,18 @@ function sendLocal($id) {
 	$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 	if($stmt->rowCount() > 0) {
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
-		$xml .= "<local>";
-                $xml .= "<nombre>".$row['Nombre']."</nombre>";
-                $xml .= "<direccion>".$row['Direccion']."</direccion>";
-                $xml .= "<telefono>".$row['Telefono']."</telefono>";
-                $xml .= "<correo>".$row['Correo']."</correo>";
-                $xml .= "<latitud>".$row['Latitud']."</latitud>";
-                $xml .= "<longitud>".$row['Longitud']."</longitud>";
-                $xml .= "<provincia>".$row['Provincia']."</provincia>";
-                $xml .= "<municipio>".$row['Municipio']."</municipio>";
-                $xml .= "<vBar>".$row['VersionInfoBar']."</vBar>";
-                $xml .= "<vOfertas>".$row['VersionOfertas']."</vOfertas>";
+		$xml .= "<local xmlns=\"comandappLOCAL.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ".
+                        "xsi:schemaLocation=\"src/xml/comandappLOCAL.xsd\">";
+                $xml .= "<nombre xmlns=\"\">".$row['Nombre']."</nombre>";
+                $xml .= "<direccion xmlns=\"\">".$row['Direccion']."</direccion>";
+                $xml .= "<telefono xmlns=\"\">".$row['Telefono']."</telefono>";
+                $xml .= "<correo xmlns=\"\">".$row['Correo']."</correo>";
+                $xml .= "<latitud xmlns=\"\">".$row['Latitud']."</latitud>";
+                $xml .= "<longitud xmlns=\"\">".$row['Longitud']."</longitud>";
+                $xml .= "<provincia xmlns=\"\">".$row['Provincia']."</provincia>";
+                $xml .= "<municipio xmlns=\"\">".$row['Municipio']."</municipio>";
+                $xml .= "<vBar xmlns=\"\">".$row['VersionInfoBar']."</vBar>";
+                $xml .= "<vOfertas xmlns=\"\">".$row['VersionOfertas']."</vOfertas>";
                 
                 
                //Seleccionar también los productos y su descripción.
@@ -62,15 +63,15 @@ function sendLocal($id) {
                $stmt2->execute();
                
                if($stmt2->rowCount() > 0) {
-                    $xml .= "<carta>";
+                    $xml .= "<carta xmlns=\"\">";
                     while($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-						$xml .= "<entrada>";
-						$xml .= "<idProducto>".$row['idProducto']."</idProducto>";
-						$xml .= "<nomProducto>".$row['nomProducto']."</nomProducto>";
-						$xml .= "<desProducto>".$row['desProducto']."</desProducto>";
-						$xml .= "<catProducto>".$row['catProducto']."</catProducto>";
-						$xml .= "<precio>".$row['precio']."</precio>";
-						$xml .= "<foto>".$row['foto']."</foto>";
+						$xml .= "<entrada xmlns=\"\">";
+						$xml .= "<idProducto xmlns=\"\">".$row['idProducto']."</idProducto>";
+						$xml .= "<nomProducto xmlns=\"\">".$row['nomProducto']."</nomProducto>";
+						$xml .= "<desProducto xmlns=\"\">".$row['desProducto']."</desProducto>";
+						$xml .= "<catProducto xmlns=\"\">".$row['catProducto']."</catProducto>";
+						$xml .= "<precio xmlns=\"\">".$row['precio']."</precio>";
+						$xml .= "<foto xmlns=\"\">".$row['foto']."</foto>";
 						$xml .= "</entrada>";
                     }
                     $xml .= "</carta>";
@@ -79,7 +80,8 @@ function sendLocal($id) {
                $xml .= "</local>";
                $stmt2 = null;
 	} else {
-		$xml .= "<error>404</error>";
+		$xml .= "<error xmlns=\"comandappERROR.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ".
+                        "xsi:schemaLocation=\"src/xml/comandappERROR.xsd\">404 ¡No existe ningún bar con ese id!</error>";
 	}
 	
 	$stmt = null;
