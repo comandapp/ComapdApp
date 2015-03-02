@@ -25,6 +25,10 @@ public class Carta {
     public Entrada getEntrada(int i) {
         return lista.get(i);
     }
+
+    public int numEntradas() {
+        return lista.size();
+    }
     
     public boolean esVacia() {
         return lista.isEmpty();

@@ -1,5 +1,7 @@
 package objetos;
 
+import java.util.ArrayList;
+
 public class Bar {
     private int id;
     private String nombre;
@@ -14,6 +16,7 @@ public class Bar {
     private int versionOfertas;
     
     private Carta carta;
+    private ArrayList<Oferta> ofertas;
     
     public Bar (int id, String nombre, String direccion ,int telefono, String correo,double latitud, double longitud, String provincia, String municipio, int vBar, int vOfertas){
         this.id=id;
@@ -28,98 +31,81 @@ public class Bar {
         this.versionBar = vBar;
         this.versionOfertas = vOfertas;
         this.carta = new Carta();
+        this.ofertas = new ArrayList<Oferta>();
     }
     
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNombre() {
         return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
     public int getTelefono() {
         return telefono;
-    }
-
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
     }
 
     public String getCorreo() {
         return correo;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
     public double getLatitud() {
         return latitud;
-    }
-
-    public void setLatitud(double latitud) {
-        this.latitud = latitud;
     }
 
     public double getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(double longitud) {
-        this.longitud = longitud;
-    }
-
     public String getProvincia() {
         return Provincia;
     }
 
-    public void setProvincia(String Provincia) {
-        this.Provincia = Provincia;
-    }
-
     public String getMunicipio() {
         return Municipio;
-    }
-
-    public void setMunicipio(String Municipio) {
-        this.Municipio = Municipio;
     }
     
     public int getVersionBar() {
         return this.versionBar;
     }
     
-    public void setVersionBar(int i) {
-        this.versionBar = i;
-    }
-    
     public int getVersionOfertas() {
         return this.versionOfertas;
     }
     
-    public void setVersionOfertas(int i) {
-        this.versionOfertas = i;
-    }
-    
     public Carta getCarta() {
         return this.carta;
+    }
+    
+    public ArrayList<Oferta> getOfertas() {
+        return this.ofertas;
+    }
+    
+    public void importarInfoBar(Bar b) {
+        this.id=b.id;
+        this.nombre=b.getNombre();
+        this.direccion=b.getDireccion();
+        this.telefono=b.getTelefono();
+        this.correo=b.getCorreo();
+        this.latitud=b.getLatitud();
+        this.longitud=b.getLongitud();
+        this.Provincia = b.getProvincia();
+        this.Municipio = b.getMunicipio();
+        this.versionBar = b.getVersionBar();
+        this.versionOfertas = b.getVersionOfertas();
+    }
+    
+    public void importarCarta(Bar b) {
+        this.carta = b.getCarta();
+    }
+    
+    public void importarOfertas(Bar b) {
+        this.ofertas = b.getOfertas();
     }
     
 }
