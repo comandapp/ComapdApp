@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-02-2015 a las 19:03:58
+-- Tiempo de generación: 02-03-2015 a las 23:49:08
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `comandapp`
 --
-CREATE DATABASE IF NOT EXISTS `comandapp` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `comandapp`;
 
 -- --------------------------------------------------------
 
@@ -40,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `bar` (
   `Correo` text NOT NULL,
   `Contraseña` text NOT NULL,
   `VersionInfoBar` int(11) NOT NULL,
+  `VersionCarta` int(11) NOT NULL,
   `VersionOfertas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -47,9 +46,9 @@ CREATE TABLE IF NOT EXISTS `bar` (
 -- Volcado de datos para la tabla `bar`
 --
 
-INSERT INTO `bar` (`Id_Bar`, `Nombre`, `Direccion`, `Telefono`, `Longitud`, `Latitud`, `Provincia`, `Municipio`, `Correo`, `Contraseña`, `VersionInfoBar`, `VersionOfertas`) VALUES
-(1, 'Bar Paco', 'Calle Elefante', 12345678, 5.5, 5.5, 'Málaga', 'Estpona', 'uno@dos.com', 'algo', 1, 1),
-(2, 'Restaurante Chino', 'Calle Caniche', 654321, 8.8, 8.8, 'Shangay', 'Tai', 'dos@uno.xcom', 'asdf', 1, 5);
+INSERT INTO `bar` (`Id_Bar`, `Nombre`, `Direccion`, `Telefono`, `Longitud`, `Latitud`, `Provincia`, `Municipio`, `Correo`, `Contraseña`, `VersionInfoBar`, `VersionCarta`, `VersionOfertas`) VALUES
+(1, 'Bar Paco', 'Calle Elefante', 12345678, 5.5, 5.5, 'Málaga', 'Estpona', 'uno@dos.com', 'algo', 1, 0, 1),
+(2, 'Restaurante Chino', 'Calle Caniche', 654321, 8.8, 8.8, 'Shangay', 'Tai', 'dos@uno.xcom', 'asdf', 1, 0, 5);
 
 -- --------------------------------------------------------
 
@@ -142,7 +141,8 @@ CREATE TABLE IF NOT EXISTS `oferta` (
   `Id_Oferta` int(10) NOT NULL,
   `Id_Bar` int(11) NOT NULL,
   `Precio` double NOT NULL,
-  `Descripcion` varchar(500) NOT NULL
+  `Descripcion` varchar(500) NOT NULL,
+  `Foto` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
