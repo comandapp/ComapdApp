@@ -3,12 +3,6 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
-        android:layout_gravity="right" />
-
     <TabHost android:id="@android:id/tabhost"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -42,9 +36,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="151dp"
                             android:id="@+id/imageView"
-                            android:src="@drawable/bar" />
+                            android:src="@drawable/logo_comandapp" />
 
                         <TextView android:id="@+id/textView1"
+                            android:text="@string/Nombre"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
@@ -56,6 +51,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="2dp"/>
                         <TextView android:id="@+id/textView2"
+                            android:text="@string/Telefono"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -67,6 +63,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="2dp"/>
                         <TextView android:id="@+id/textView3"
+                            android:text="@string/Direccion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -78,6 +75,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="2dp"/>
                         <TextView android:id="@+id/textView4"
+                            android:text="@string/Provincia"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -89,6 +87,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="2dp"/>
                         <TextView android:id="@+id/textView5"
+                            android:text="@string/Municipio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -100,6 +99,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="2dp"/>
                         <TextView android:id="@+id/textView6"
+                            android:text="@string/Correo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
