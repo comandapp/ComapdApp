@@ -10,6 +10,7 @@ import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,6 +26,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import persistencia.Persistencia;
 
 public class ServiceClient {
 
@@ -106,15 +108,58 @@ public class ServiceClient {
 //        }
 //    }
 //
-//    public static Oferta[] getOfertas(int idBar) {
-//
-//        Document doc = getXMLDocument("GOFE", idBar);
-//        if (doc == null) {
-//            return null;
-//        }
-//
-//        return null;
-//    }
+    public static HashMap<Integer,Oferta> getOfertas(int[] idArray) {
+        Document doc = getXMLDocument("GOFE", idArray);
+        System.out.println(doc.toString());
+        if (doc == null) return null;
+        
+        HashMap<Integer,Oferta> ret = new HashMap<Integer,Oferta>();
+        
+        NodeList ofertaList = doc.getElementsByTagName("oferta");
+        NodeList errorList = doc.getElementsByTagName("error");
+        
+        if (ofertaList.getLength() > 0) {
+            Element ofertaElement;
+            NodeList content;
+            Oferta oferta;
+            int idBar;
+            String[] idProdArray;
+            Producto prod;
+            for (int i = 0; i < ofertaList.getLength(); i++) {
+                ofertaElement = (Element) ofertaList.item(i);
+                content = ofertaElement.getChildNodes();
+                
+                idBar = Integer.parseInt(ofertaElement.getAttribute("id"));
+                
+                oferta = new Oferta(
+                        Double.parseDouble(content.item(1).getFirstChild().getNodeValue()),
+                        ImgCodec.decodeImage(content.item(2).getFirstChild().getNodeValue()));
+
+                idProdArray = content.item(0).getFirstChild().getNodeValue().split((","));
+
+                //El XSD no comprueba los identificadores de producto ya que se transmite en texto plano.
+                //Al menos debe tener un producto.
+                if(idProdArray.length > 0) {
+                    for(String id : idProdArray) {
+                        prod = Persistencia.getInstancia().getProductById(Integer.parseInt(id));
+                        if(prod != null) oferta.getProductos().add(prod);
+                    }
+                } else {
+                    //Oferta sin productos
+                }
+                
+                ret.put(idBar, oferta);
+            }
+        } else {
+            //No hay elementos oferta
+        }
+        
+        if(errorList.getLength() > 0) {
+            //Hay elementos error
+        }
+        
+        return ret;
+    }
 
     //Precondición: com debe ser "MAIN", "GLOC" o "GOFE".
     //Postcondición: Devuelve un documento DOM validado con la respuesta del servidor.

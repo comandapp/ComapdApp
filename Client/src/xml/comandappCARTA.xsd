@@ -1,43 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     targetNamespace="comandappCARTA.xsd"
-    xmlns:cc="comandappCARTA.xsd">
-
-    <xs:element name="root" type="cc:Troot" nillable="false"/>
+    xmlns:co="comandappCARTA.xsd"
+    xmlns:com="comandappCOMUNES.xsd">
     
-    <xs:complexType name="Troot">
-        <xs:sequence>
-            <xs:choice>
-                <xs:element name="carta" type="cc:Tcarta" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="error" type="cc:Terror" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:choice>
-        </xs:sequence>
-    </xs:complexType>
+    <xs:import schemaLocation="comandappCOMUNES.xsd" namespace="comandappCOMUNES.xsd"/>
     
-    <xs:complexType name="Tcarta">
-        <xs:sequence>
-            <xs:element name="entrada" type="cc:Tentrada" minOccurs="1" maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attribute name="id" type="xs:int"/>
-    </xs:complexType>
+    <xs:element name="entrada" substitutionGroup="com:elemento" abstract="false">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="idProducto" type="xs:int" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="nomProducto" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="desProducto" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="catProducto" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="precio" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="foto" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
     
-    <xs:complexType name="Tentrada">
-        <xs:sequence>
-            <xs:element name="idProducto" type="xs:int" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="nomProducto" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="desProducto" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="catProducto" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="precio" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="foto" type="xs:string" minOccurs="1" maxOccurs="1"/>
-        </xs:sequence>
-    </xs:complexType>
-    
-    <xs:complexType name="Terror">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute name="id" type="xs:int"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-
 </xs:schema>

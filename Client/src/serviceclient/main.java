@@ -6,7 +6,10 @@
 
 package serviceclient;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import objetos.Bar;
+import objetos.Oferta;
 
 /**
  *
@@ -14,10 +17,13 @@ import objetos.Bar;
  */
 public class main {
     public static void main(String args[]) {
-        Bar b = ServiceClient.getBar(1);
-        System.out.println(b.getCarta().getEntrada(0).getProducto().getNombre());
-        System.out.println(b.getCarta().getEntrada(0).getProducto().getId());
-        System.out.println(b.getCarta().getEntrada(0).getProducto().getCategoria());
+        int[] a = new int[]{1,2};
+        ArrayList<Bar> bares = ServiceClient.getInfoBar(a);
+                System.out.println(bares.toString());
+        HashMap<Integer,Oferta> ofertas = ServiceClient.getOfertas(a);
+        
+
+        System.out.println(ofertas.toString());
 //        String s = ServiceClient.encodeImage("coins.png");
 //        System.out.println(s);
     }

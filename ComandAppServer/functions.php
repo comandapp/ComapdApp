@@ -14,8 +14,9 @@ function sendMain($idArray) {
     $stmt = $db->prepare("SELECT VersionInfoBar AS VIB, VersionCarta AS VC, VersionOfertas AS VO FROM bar WHERE Id_Bar=?");
 
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
-    $xml .= "<root xmlns=\"comandappMAIN.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " .
-                    "xsi:schemaLocation=\"src/xml/comandappMAIN.xsd\">";
+    $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
+            . " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+            . " xsi:schemaLocation=\"comandappCOMUNES.xsd comandappMAIN.xsd\">";
 
     foreach ($idArray as $id) {
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
@@ -23,13 +24,13 @@ function sendMain($idArray) {
 
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $xml .= "<main xmlns=\"\" id=\"" . $id . "\">";
+            $xml .= "<main xmlns=\"comandappMAIN.xsd\" id=\"" . $id . "\">";
             $xml .= "<local xmlns=\"\">" . $row['VIB'] . "</local>";
             $xml .= "<carta xmlns=\"\">" . $row['VC'] . "</carta>";
             $xml .= "<ofertas xmlns=\"\">" . $row['VO'] . "</ofertas>";
             $xml .= "</main>";
         } else {
-            $xml .= "<error  xmlns=\"\" id=\"".$id."\">404</error>";
+            $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"".$id."\">404</error>";
         }
     }
 
@@ -46,8 +47,9 @@ function sendInfoLocal($idArray) {
     $stmt = $db->prepare("SELECT Nombre,Direccion,Telefono,Longitud,Latitud,Provincia,Municipio,Correo FROM bar WHERE Id_Bar=?");
 
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
-    $xml .= "<root xmlns=\"comandappLOCAL.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " .
-                    "xsi:schemaLocation=\"src/xml/comandappLOCAL.xsd\">";
+    $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
+            . " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+            . " xsi:schemaLocation=\"comandappCOMUNES.xsd comandappLOCAL.xsd\">";
 
     foreach ($idArray as $id) {
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
@@ -55,7 +57,7 @@ function sendInfoLocal($idArray) {
 
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $xml .= "<local xmlns=\"\" id=\"".$id."\">";
+            $xml .= "<local xmlns=\"comandappLOCAL.xsd\" id=\"".$id."\">";
             $xml .= "<nombre xmlns=\"\">" . $row['Nombre'] . "</nombre>";
             $xml .= "<direccion xmlns=\"\">" . $row['Direccion'] . "</direccion>";
             $xml .= "<telefono xmlns=\"\">" . $row['Telefono'] . "</telefono>";
@@ -66,7 +68,7 @@ function sendInfoLocal($idArray) {
             $xml .= "<municipio xmlns=\"\">" . $row['Municipio'] . "</municipio>";
             $xml .= "</local>";
         } else {
-            $xml .= "<error  xmlns=\"\" id=\"".$id."\">404</error>";
+            $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"".$id."\">404</error>";
         }
     }
     
@@ -90,15 +92,16 @@ function sendCarta($idArray) {
             "carta.Precio AS precio, carta.Foto AS foto FROM carta INNER JOIN producto ON carta.Id_Producto = producto.Id_Producto WHERE carta.Id_Bar=?");
     
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
-    $xml .= "<root xmlns=\"comandappCARTA.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " .
-                    "xsi:schemaLocation=\"src/xml/comandappCARTA.xsd\">";
+    $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
+            . " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+            . " xsi:schemaLocation=\"comandappCOMUNES.xsd comandappCARTA.xsd\">";
     
     foreach($idArray as $id) {
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            $xml .= "<carta xmlns=\"\" id=\"".$id."\">";
+            $xml .= "<carta xmlns=\"comandappCARTA.xsd\" id=\"".$id."\">";
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $xml .= "<entrada xmlns=\"\">";
                 $xml .= "<idProducto xmlns=\"\">" . $row['idProducto'] . "</idProducto>";
@@ -111,7 +114,7 @@ function sendCarta($idArray) {
             }
             $xml .= "</carta>";
         } else {
-            $xml .= "<error  xmlns=\"\" id=\"".$id."\">404</error>";
+            $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"".$id."\">404</error>";
         }
     }
     
@@ -122,13 +125,14 @@ function sendCarta($idArray) {
     return $xml;
 }
 
-function sendOfertas($id) {
+function sendOfertas($idArray) {
     $db = getConnection();
-    $stmt = $db->prepare("SELECT * FROM ofertas WHERE Id_Bar=?");
+    $stmt = $db->prepare("SELECT Precio,Descripcion,Foto FROM oferta WHERE Id_Bar=?");
     
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
-    $xml .= "<root xmlns=\"comandappOFERTAS.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " .
-                    "xsi:schemaLocation=\"src/xml/comandappOFERTAS.xsd\">";
+    $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
+            . " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+            . " xsi:schemaLocation=\"comandappCOMUNES.xsd comandappOFERTAS.xsd\">";
     
     foreach($idArray as $id) {
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
@@ -136,14 +140,14 @@ function sendOfertas($id) {
 
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $xml .= "<oferta  xmlns=\"\" id=\"".$id."\">";
-                $xml .= "<descripcion xmlns=\"\">" . $row['Descripcion'] . "</idOferta>";
+                $xml .= "<oferta  xmlns=\"comandappOFERTAS.xsd\" id=\"".$id."\">";
+                $xml .= "<descripcion xmlns=\"\">" . $row['Descripcion'] . "</descripcion>";
                 $xml .= "<precio xmlns=\"\">" . $row['Precio'] . "</precio>";
-                $xml .= "<foto xmlns=\"\">" . $row['Foto'] . "</descripcion>";
+                $xml .= "<foto xmlns=\"\">" . $row['Foto'] . "</foto>";
                 $xml .= "</oferta>";
             }
         } else {
-            $xml .= "<error xmlns=\"\" id=\"".$id."\">404</error>";
+            $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"".$id."\">404</error>";
         }
 
     }

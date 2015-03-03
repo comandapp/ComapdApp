@@ -1,39 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     targetNamespace="comandappLOCAL.xsd"
-    xmlns:cl="comandappLOCAL.xsd">
+    xmlns:co="comandappLOCAL.xsd"
+    xmlns:com="comandappCOMUNES.xsd">
     
-    <xs:element name="root" type="cl:Troot" nillable="false"/>
-    
-    <xs:complexType name="Troot">
-        <xs:sequence>
-            <xs:choice>
-                <xs:element name="local" type="cl:Tlocal" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="error" type="cl:Terror" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:choice>
-        </xs:sequence>
-    </xs:complexType>
+    <xs:import schemaLocation="comandappCOMUNES.xsd" namespace="comandappCOMUNES.xsd"/>
 
-    <xs:complexType name="Tlocal">
-        <xs:sequence>
-            <xs:element name="nombre" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="direccion" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="telefono" type="xs:long" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="correo" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="latitud" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="longitud" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="provincia" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="municipio" type="xs:string" minOccurs="1" maxOccurs="1"/>
-        </xs:sequence>
-        <xs:attribute name="id" type="xs:int"/>
-    </xs:complexType>
+    <xs:element name="local" substitutionGroup="com:elemento" abstract="false">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="nombre" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="direccion" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="telefono" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="correo" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="latitud" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="longitud" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="provincia" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="municipio" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:int"/>
+        </xs:complexType>
+    </xs:element>
     
-    <xs:complexType name="Terror">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute name="id" type="xs:int"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-        
 </xs:schema>
