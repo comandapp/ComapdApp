@@ -47,8 +47,17 @@ public class BusquedaBar extends ActionBarActivity {
 
                 Bar opcionSeleccionada = (Bar)a.getItemAtPosition(position);
 
-               Intent intent=new Intent(BusquedaBar.this,InicioBar.class);
-               startActivity(intent);
+                Intent intent = new Intent(BusquedaBar.this, InicioBar.class);
+
+                //Creamos la información a pasar entre actividades
+                //Bundle b = new Bundle();
+                //b.put("BAR", opcionSeleccionada);
+
+                //Añadimos la información al intent
+                //intent.putExtra("BAR", opcionSeleccionada);
+
+                //Iniciamos la nueva actividad
+                startActivity(intent);
             }
         });
 
