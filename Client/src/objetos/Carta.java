@@ -26,6 +26,21 @@ public class Carta {
         return lista.get(i);
     }
     
+    public void clear() {
+        this.lista.clear();
+    }
+
+    public Producto getProductById(int id) {
+        for(Entrada e : lista) {
+            if(e.getProducto().getId() == id) return e.getProducto();
+        }
+        return null;
+    }
+    
+    public int numEntradas() {
+        return lista.size();
+    }
+    
     public boolean esVacia() {
         return lista.isEmpty();
     }

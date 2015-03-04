@@ -35,24 +35,11 @@ public class Entrada {
         return precio;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
     public BufferedImage getFoto() {
         return foto;
-    }
-
-    public void setFoto(BufferedImage foto) {
-        this.foto = foto;
     }
     
     public String getDescripcion() {
         return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-    
+    }    
 }
