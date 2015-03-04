@@ -13,7 +13,6 @@
             </xs:sequence>
             <xs:attribute name="id" type="xs:int"/>
             <xs:attribute name="version" type="xs:int"/>
-            <xs:attribute name="numOfertas" type="xs:int"/>
         </xs:complexType>
     </xs:element>
 

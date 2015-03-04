@@ -85,7 +85,7 @@ function sanitazeIdString($idString) {
 
 function sendCarta($idArray) {
     $db = getConnection();
-    $stmt = $db->prepare("SELECT producto.Id_Producto AS idProducto," .
+    $sql = "SELECT producto.Id_Producto AS idProducto," .
             "producto.Nombre AS nomProducto," .
             "carta.Descripcion AS desProducto," .
             "producto.Categoria AS catProducto," .
@@ -94,7 +94,7 @@ function sendCarta($idArray) {
             "bar.VersionCarta AS vCarta " .
             "FROM carta INNER JOIN producto ON carta.Id_Producto = producto.Id_Producto " .
             "INNER JOIN bar ON carta.Id_Bar = bar.Id_Bar " .
-            "WHERE bar.Id_Bar=?");
+            "WHERE bar.Id_Bar=?";
     
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
     $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
@@ -102,12 +102,16 @@ function sendCarta($idArray) {
             . " xsi:schemaLocation=\"comandappCOMUNES.xsd comandappCARTA.xsd\">";
     
     foreach($idArray as $id) {
+        $stmt = $db->prepare($sql);
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            $xml .= "<carta xmlns=\"comandappCARTA.xsd\" id=\"".$id."\" version=\"".$row['vCarta']."\">";
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $i = 0;
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if($i == 0) {
+                    $xml .= "<carta xmlns=\"comandappCARTA.xsd\" id=\"".$id."\" version=\"".$row['vCarta']."\">";
+                }
                 $xml .= "<entrada xmlns=\"comandappCARTA.xsd\">";
                 $xml .= "<idProducto xmlns=\"\">" . $row['idProducto'] . "</idProducto>";
                 $xml .= "<nomProducto xmlns=\"\">" . $row['nomProducto'] . "</nomProducto>";
@@ -116,8 +120,12 @@ function sendCarta($idArray) {
                 $xml .= "<precio xmlns=\"\">" . $row['precio'] . "</precio>";
                 $xml .= "<foto xmlns=\"\">" . $row['foto'] . "</foto>";
                 $xml .= "</entrada>";
+                
+                if($i == (($stmt->rowCount())-1)) {
+                    $xml .= "</carta>";
+                }
+                $i++;
             }
-            $xml .= "</carta>";
         } else {
             $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"".$id."\">404</error>";
         }
@@ -132,8 +140,7 @@ function sendCarta($idArray) {
 
 function sendOfertas($idArray) {
     $db = getConnection();
-    $stmt = $db->prepare("SELECT COUNT(*) AS numOfertas,"
-            . "oferta.Id_Oferta AS idOferta,"
+    $stmt = $db->prepare("SELECT oferta.Id_Oferta AS idOferta,"
             . "oferta.Precio AS Precio,"
             . "oferta.Descripcion AS Descripcion,"
             . "oferta.Foto AS Foto,"
@@ -151,22 +158,22 @@ function sendOfertas($idArray) {
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            $contador = 0;
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                if(contador == 0) {
+            $i = 0;
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if($i == 0) {
                     $xml .= "<listaofertas xmlns=\"comandappOFERTAS.xsd\" "
                             . "id=\"".$id."\" "
-                            . "version=\"".$row['vOfertas']."\" "
-                            . "numOfertas=\"".$row['numOfertas']."\">";
+                            . "version=\"".$row['vOfertas']."\">";
                 }
                 $xml .= "<oferta xmlns=\"comandappOFERTAS.xsd\" id=\"".$row['idOferta']."\">";
                 $xml .= "<descripcion xmlns=\"\">" . $row['Descripcion'] . "</descripcion>";
                 $xml .= "<precio xmlns=\"\">" . $row['Precio'] . "</precio>";
                 $xml .= "<foto xmlns=\"\">" . $row['Foto'] . "</foto>";
                 $xml .= "</oferta>";
-                if(contador == intval($row['numOfertas'])-1) {
+                if($i == (($stmt->rowCount())-1)) {
                     $xml .= "</listaofertas>";
                 }
+                $i++;
             }
         } else {
             $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"".$id."\">404</error>";

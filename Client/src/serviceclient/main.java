@@ -20,6 +20,7 @@ public class main {
         int[] a = new int[]{1};
         
         Bar bar1 = new Bar(1,"Nuevo Bar","Direccion nueva",6666666,"correo@nuevo.com",6.66,6.66,"Nueva provincia","VillaNueva",1);
+        Bar noBar = new Bar(5,"No Bar","No nueva",00000,"No@No.No",0,0,"No provincia","VillaNo",1);
         
         System.out.println("--Version1--");
         System.out.println(bar1.getId());
@@ -37,6 +38,7 @@ public class main {
         
         ArrayList<Bar> baresActualizar = new ArrayList<Bar>();
         baresActualizar.add(bar1);
+        baresActualizar.add(noBar);
         
         HashMap<Integer,String> errores = ServiceClient.actualizarInfoBar(baresActualizar);
         //No actualiza carta.
@@ -57,6 +59,8 @@ public class main {
         System.out.println("NumEntradasCarta: "+bar1.getCarta().numEntradas());
         System.out.println("NumOfertas: "+bar1.getOfertas().size());
         
-        System.out.println("Errores: "+errores.size());
+        System.out.println("Errores 404 InfoBar: "+errores.size());
+        System.out.println("Errores 404 Carta: "+errores.size());
+        System.out.println("Errores 404 Ofertas: "+errores.size());
     }
 }

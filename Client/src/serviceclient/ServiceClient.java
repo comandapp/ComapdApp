@@ -218,44 +218,41 @@ public class ServiceClient {
             Element listaofertasElement, ofertaElement;
             NodeList ofertas,content;
             Oferta oferta;
-            int numOfertas;
             String[] idProdArray;
             Producto prod;
-            for (int i = 0; i < listaOfertas.getLength(); i++) {//ListaOfertas (id,version,numOfertas)
+            for (int i = 0; i < listaOfertas.getLength(); i++) {//ListaOfertas 
                 listaofertasElement = (Element) listaOfertas.item(i);
                 actualizada[i][0] = Integer.parseInt(listaofertasElement.getAttribute("id"));
                 actualizada[i][1] = Integer.parseInt(listaofertasElement.getAttribute("version"));
                 actualizada[i][2] = new ArrayList<Oferta>();
-                numOfertas = Integer.parseInt(listaofertasElement.getAttribute("numOfertas"));
                 original = getBar(bares, (int)actualizada[i][0]);
+                
                 ofertas = listaofertasElement.getChildNodes();
-                if(ofertas.getLength() == numOfertas) {
-                    for(int j=0;j<ofertas.getLength();j++) {//Ofertas dentro de la lista de cada bar (id oferta)
-                        ofertaElement = (Element)ofertas.item(j);
-                        content = ofertaElement.getChildNodes();
-                        
-                        oferta = new Oferta(Integer.parseInt(ofertaElement.getAttribute("id")),
-                                Double.parseDouble(content.item(1).getFirstChild().getNodeValue()),
-                                ImgCodec.decodeImage(content.item(2).getFirstChild().getNodeValue()));
+                for(int j=0;j<ofertas.getLength();j++) {//Ofertas dentro de la lista de cada bar (id oferta)
+                    ofertaElement = (Element)ofertas.item(j);
+                    content = ofertaElement.getChildNodes();
 
-                        idProdArray = content.item(0).getFirstChild().getNodeValue().split((","));
-                        
-                        //El XSD no valida los productos.
-                        //En el XML vienen sus id en texto plano separados por comas.
-                        //Por lo tanto deben existir en la carta del bar correspondiente.
-                        if(idProdArray.length > 0) {
-                            for(String id : idProdArray) {
-                                prod = original.getCarta().getProductById(Integer.parseInt(id));
-                                if(prod != null) oferta.getProductos().add(prod);
-                                else {}//Producto no existe en el bar
-                            }
-                        } else {
-                            //Oferta sin productos TODO: Lo valida el XSD?
+                    oferta = new Oferta(Integer.parseInt(ofertaElement.getAttribute("id")),
+                            Double.parseDouble(content.item(1).getFirstChild().getNodeValue()),
+                            ImgCodec.decodeImage(content.item(2).getFirstChild().getNodeValue()));
+
+                    idProdArray = content.item(0).getFirstChild().getNodeValue().split((","));
+
+                    //El XSD no valida los productos.
+                    //En el XML vienen sus id en texto plano separados por comas.
+                    //Por lo tanto deben existir en la carta del bar correspondiente.
+                    if(idProdArray.length > 0) {
+                        for(String id : idProdArray) {
+                            prod = original.getCarta().getProductById(Integer.parseInt(id));
+                            if(prod != null) oferta.getProductos().add(prod);
+                            else {}//Producto no existe en el bar
                         }
-
-                        ((ArrayList<Oferta>)actualizada[i][2]).add(oferta);                        
+                    } else {
+                        //Oferta sin productos TODO: Lo valida el XSD?
                     }
-                } else {}//El XML resultante no contiene el numero correcto de ofertas.
+
+                    ((ArrayList<Oferta>)actualizada[i][2]).add(oferta);                        
+                }
                 
                 original.importarOfertas((ArrayList<Oferta>)actualizada[i][2], (int)actualizada[i][1]);
             }
@@ -313,10 +310,15 @@ public class ServiceClient {
                 }
             }
             
+            //FIX: En el documento xml de carta aparece un 0 después de </root> lo que causaba error al validar.
+            if((xml.charAt(xml.length()-1)) == '0') {
+                xml = xml.substring(0, xml.length()-1);
+            }
+                        
             System.out.println(xml);
 
             s.close();
-
+            
             if (validateResponse(xml, com)) {
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 dbf.setNamespaceAware(true);
