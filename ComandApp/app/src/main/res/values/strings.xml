@@ -15,4 +15,7 @@
     <string name="title_activity_saludo">SaludoActivity</string>
     <string name="title_activity_busqueda_bar">BusquedaBar</string>
     <string name="title_activity_inicio_bar">InicioBar</string>
+
+    <string name="search_title">Buscar</string>
+    <string name="search_hint">Nombre bar</string>
 </resources>

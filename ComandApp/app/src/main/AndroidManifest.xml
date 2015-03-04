@@ -22,6 +22,9 @@
         <activity
             android:name=".BusquedaBar"
             android:label="@string/title_activity_busqueda_bar" >
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".InicioBar"
