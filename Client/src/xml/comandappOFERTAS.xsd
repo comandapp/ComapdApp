@@ -6,15 +6,25 @@
     
     <xs:import schemaLocation="comandappCOMUNES.xsd" namespace="comandappCOMUNES.xsd"/>
     
-    <xs:element name="oferta" substitutionGroup="com:elemento" abstract="false">
+    <xs:element name="listaofertas" substitutionGroup="com:elemento" abstract="false">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="co:oferta"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:int"/>
+            <xs:attribute name="version" type="xs:int"/>
+            <xs:attribute name="numOfertas" type="xs:int"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="oferta">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="descripcion" type="xs:string"/>
                 <xs:element name="precio" type="xs:decimal"/>
                 <xs:element name="foto" type="xs:string"/>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:int"/>
+            <xs:attribute name="id" type="xs:int"/>            
         </xs:complexType>
     </xs:element>
-
 </xs:schema>

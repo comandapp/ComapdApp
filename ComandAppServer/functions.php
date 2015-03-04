@@ -44,7 +44,7 @@ function sendMain($idArray) {
 function sendInfoLocal($idArray) {
     
     $db = getConnection();
-    $stmt = $db->prepare("SELECT Nombre,Direccion,Telefono,Longitud,Latitud,Provincia,Municipio,Correo FROM bar WHERE Id_Bar=?");
+    $stmt = $db->prepare("SELECT Nombre,Direccion,Telefono,Longitud,Latitud,Provincia,Municipio,Correo,VersionInfoBar FROM bar WHERE Id_Bar=?");
 
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
     $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
@@ -57,7 +57,7 @@ function sendInfoLocal($idArray) {
 
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $xml .= "<local xmlns=\"comandappLOCAL.xsd\" id=\"".$id."\">";
+            $xml .= "<local xmlns=\"comandappLOCAL.xsd\" id=\"".$id."\" version=\"".$row['VersionInfoBar']."\">";
             $xml .= "<nombre xmlns=\"\">" . $row['Nombre'] . "</nombre>";
             $xml .= "<direccion xmlns=\"\">" . $row['Direccion'] . "</direccion>";
             $xml .= "<telefono xmlns=\"\">" . $row['Telefono'] . "</telefono>";
@@ -89,7 +89,12 @@ function sendCarta($idArray) {
             "producto.Nombre AS nomProducto," .
             "carta.Descripcion AS desProducto," .
             "producto.Categoria AS catProducto," .
-            "carta.Precio AS precio, carta.Foto AS foto FROM carta INNER JOIN producto ON carta.Id_Producto = producto.Id_Producto WHERE carta.Id_Bar=?");
+            "carta.Precio AS precio," .
+            "carta.Foto AS foto," .
+            "bar.VersionCarta AS vCarta " .
+            "FROM carta INNER JOIN producto ON carta.Id_Producto = producto.Id_Producto " .
+            "INNER JOIN bar ON carta.Id_Bar = bar.Id_Bar " .
+            "WHERE bar.Id_Bar=?");
     
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
     $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
@@ -101,9 +106,9 @@ function sendCarta($idArray) {
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            $xml .= "<carta xmlns=\"comandappCARTA.xsd\" id=\"".$id."\">";
+            $xml .= "<carta xmlns=\"comandappCARTA.xsd\" id=\"".$id."\" version=\"".$row['vCarta']."\">";
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $xml .= "<entrada xmlns=\"\">";
+                $xml .= "<entrada xmlns=\"comandappCARTA.xsd\">";
                 $xml .= "<idProducto xmlns=\"\">" . $row['idProducto'] . "</idProducto>";
                 $xml .= "<nomProducto xmlns=\"\">" . $row['nomProducto'] . "</nomProducto>";
                 $xml .= "<desProducto xmlns=\"\">" . $row['desProducto'] . "</desProducto>";
@@ -127,7 +132,14 @@ function sendCarta($idArray) {
 
 function sendOfertas($idArray) {
     $db = getConnection();
-    $stmt = $db->prepare("SELECT Precio,Descripcion,Foto FROM oferta WHERE Id_Bar=?");
+    $stmt = $db->prepare("SELECT COUNT(*) AS numOfertas,"
+            . "oferta.Id_Oferta AS idOferta,"
+            . "oferta.Precio AS Precio,"
+            . "oferta.Descripcion AS Descripcion,"
+            . "oferta.Foto AS Foto,"
+            . "bar.VersionOfertas AS vOfertas "
+            . "FROM oferta INNER JOIN bar ON oferta.Id_Bar=bar.Id_Bar "
+            . "WHERE bar.Id_Bar=?");
     
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
     $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
@@ -139,12 +151,22 @@ function sendOfertas($idArray) {
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
+            $contador = 0;
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $xml .= "<oferta  xmlns=\"comandappOFERTAS.xsd\" id=\"".$id."\">";
+                if(contador == 0) {
+                    $xml .= "<listaofertas xmlns=\"comandappOFERTAS.xsd\" "
+                            . "id=\"".$id."\" "
+                            . "version=\"".$row['vOfertas']."\" "
+                            . "numOfertas=\"".$row['numOfertas']."\">";
+                }
+                $xml .= "<oferta xmlns=\"comandappOFERTAS.xsd\" id=\"".$row['idOferta']."\">";
                 $xml .= "<descripcion xmlns=\"\">" . $row['Descripcion'] . "</descripcion>";
                 $xml .= "<precio xmlns=\"\">" . $row['Precio'] . "</precio>";
                 $xml .= "<foto xmlns=\"\">" . $row['Foto'] . "</foto>";
                 $xml .= "</oferta>";
+                if(contador == intval($row['numOfertas'])-1) {
+                    $xml .= "</listaofertas>";
+                }
             }
         } else {
             $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"".$id."\">404</error>";

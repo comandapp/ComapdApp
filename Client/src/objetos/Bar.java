@@ -12,13 +12,12 @@ public class Bar {
     private double longitud;
     private String Provincia;
     private String Municipio;
-    private int versionBar;
-    private int versionOfertas;
     
+    private Version version;
     private Carta carta;
     private ArrayList<Oferta> ofertas;
     
-    public Bar (int id, String nombre, String direccion ,int telefono, String correo,double latitud, double longitud, String provincia, String municipio, int vBar, int vOfertas){
+    public Bar (int id, String nombre, String direccion ,int telefono, String correo,double latitud, double longitud, String provincia, String municipio, int vInfoLocal){
         this.id=id;
         this.nombre=nombre;
         this.direccion=direccion;
@@ -28,8 +27,8 @@ public class Bar {
         this.longitud=longitud;
         this.Provincia=provincia;
         this.Municipio=municipio;
-        this.versionBar = vBar;
-        this.versionOfertas = vOfertas;
+        this.version = new Version();
+        this.version.setVersionInfoLocal(vInfoLocal);
         this.carta = new Carta();
         this.ofertas = new ArrayList<Oferta>();
     }
@@ -70,12 +69,8 @@ public class Bar {
         return Municipio;
     }
     
-    public int getVersionBar() {
-        return this.versionBar;
-    }
-    
-    public int getVersionOfertas() {
-        return this.versionOfertas;
+    public Version getVersion() {
+        return this.version;
     }
     
     public Carta getCarta() {
@@ -87,7 +82,7 @@ public class Bar {
     }
     
     public void importarInfoBar(Bar b) {
-        this.id=b.id;
+        //this.id=b.id;
         this.nombre=b.getNombre();
         this.direccion=b.getDireccion();
         this.telefono=b.getTelefono();
@@ -96,16 +91,26 @@ public class Bar {
         this.longitud=b.getLongitud();
         this.Provincia = b.getProvincia();
         this.Municipio = b.getMunicipio();
-        this.versionBar = b.getVersionBar();
-        this.versionOfertas = b.getVersionOfertas();
+        this.version.setVersionInfoLocal(b.version.getVersionInfoLocal());
     }
     
-    public void importarCarta(Bar b) {
-        this.carta = b.getCarta();
+    public void importarCarta(Carta c, int version) {
+        this.carta.clear();
+        for(int i=0;i<c.numEntradas();i++) {
+            this.carta.aniadeEntrada(c.getEntrada(i));
+        }
+        this.version.setVersionCarta(version);
     }
     
-    public void importarOfertas(Bar b) {
-        this.ofertas = b.getOfertas();
+    public void importarOfertas(ArrayList<Oferta> o, int version) {
+        this.ofertas.clear();
+        for(Oferta of : o) this.ofertas.add(of);
+        this.version.setVersionOfertas(version);
     }
     
+    public int compareTo(Bar b) {
+        if(id < b.getId()) return -1;
+        else if(id == b.getId()) return 0;
+        else return 1;
+    }
 }

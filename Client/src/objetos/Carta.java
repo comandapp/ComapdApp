@@ -25,8 +25,12 @@ public class Carta {
     public Entrada getEntrada(int i) {
         return lista.get(i);
     }
+    
+    public void clear() {
+        this.lista.clear();
+    }
 
-    public Producto getProductoById(int id) {
+    public Producto getProductById(int id) {
         for(Entrada e : lista) {
             if(e.getProducto().getId() == id) return e.getProducto();
         }
