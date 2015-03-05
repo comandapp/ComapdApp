@@ -1,15 +1,14 @@
 package com.example.alumno.comandapp1;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.SearchManager;
-import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,13 +16,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 
 public class BusquedaBar extends ActionBarActivity {
 
     ListView lstBares;
+    AdaptadorTitulares adaptador;
+    EditText editFilter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,18 +36,18 @@ public class BusquedaBar extends ActionBarActivity {
 
         Bar[] datos = new Bar[]{
                         new Bar("Entrepuentes 1"),
-                        new Bar("Entrepuentes 2"),
+                        new Bar("Antrepuentes 2"),
                         new Bar("Entrepuentes 3"),
-                        new Bar("Entrepuentes 4"),
-                        new Bar("Entrepuentes 5"),
+                        new Bar("Antrepuentes 4"),
+                        new Bar("Antrepuentes 5"),
                         new Bar("Entrepuentes 6"),
                         new Bar("Entrepuentes 7"),
-                        new Bar("Entrepuentes 8"),
-                        new Bar("Entrepuentes 9"),
+                        new Bar("Dntrepuentes 8"),
+                        new Bar("Dntrepuentes 9"),
                         new Bar("Entrepuentes 10"),
                         new Bar("Entrepuentes 11")};
 
-        AdaptadorTitulares adaptador = new AdaptadorTitulares(this, datos);
+        adaptador = new AdaptadorTitulares(this, datos);
 
         lstBares = (ListView)findViewById(R.id.ListaBares);
 
@@ -66,6 +71,32 @@ public class BusquedaBar extends ActionBarActivity {
         });
 
         lstBares.setAdapter(adaptador);
+
+        editFilter = (EditText)findViewById(R.id.EditFilter);
+
+        editFilter.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0)
+            {
+                // TODO Auto-generated method stub
+                String text = editFilter.getText().toString().toLowerCase(Locale.getDefault());
+                adaptador.getFilter().filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+        });
     }
 
 
@@ -131,6 +162,8 @@ public class BusquedaBar extends ActionBarActivity {
 
             return(item);
         }
+
+
     }
 
     static class ViewHolder {
