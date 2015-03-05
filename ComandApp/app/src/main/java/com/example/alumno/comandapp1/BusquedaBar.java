@@ -20,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 
@@ -34,20 +36,18 @@ public class BusquedaBar extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busqueda_bar);
 
-        Bar[] datos = new Bar[]{
-                        new Bar("Entrepuentes 1"),
-                        new Bar("Antrepuentes 2"),
-                        new Bar("Entrepuentes 3"),
-                        new Bar("Antrepuentes 4"),
-                        new Bar("Antrepuentes 5"),
-                        new Bar("Entrepuentes 6"),
-                        new Bar("Entrepuentes 7"),
-                        new Bar("Dntrepuentes 8"),
-                        new Bar("Dntrepuentes 9"),
-                        new Bar("Entrepuentes 10"),
-                        new Bar("Entrepuentes 11")};
+        ArrayList<Bar> listadoBares = new ArrayList<Bar>();
+        listadoBares.add(new Bar("Entrepuentes 1"));
+        listadoBares.add(new Bar("Antrepuentes 1"));
+        listadoBares.add(new Bar("Entrepuentes 1"));
+        listadoBares.add(new Bar("Antrepuentes 1"));
+        listadoBares.add(new Bar("Antrepuentes 1"));
+        listadoBares.add(new Bar("Entrepuentes 1"));
+        listadoBares.add(new Bar("Dntrepuentes 1"));
+        listadoBares.add(new Bar("Dntrepuentes 1"));
+        listadoBares.add(new Bar("Entrepuentes 1"));
 
-        adaptador = new AdaptadorTitulares(this, datos);
+        adaptador = new AdaptadorTitulares(this, listadoBares);
 
         lstBares = (ListView)findViewById(R.id.ListaBares);
 
@@ -131,12 +131,14 @@ public class BusquedaBar extends ActionBarActivity {
     class AdaptadorTitulares extends ArrayAdapter<Bar> {
 
         Activity context;
-        Bar[] datos;
+        ArrayList<Bar> listadoBares;
+        ArrayList<Bar> listadoBaresAux;
 
-        public AdaptadorTitulares(Activity context, Bar[] datos) {
+        public AdaptadorTitulares(Activity context, ArrayList<Bar> datos) {
             super(context, R.layout.listitem_bar, datos);
             this.context = context;
-            this.datos = datos;
+            this.listadoBares = datos;
+            this.listadoBaresAux = new ArrayList<Bar>();
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -158,12 +160,29 @@ public class BusquedaBar extends ActionBarActivity {
                 holder = (ViewHolder)item.getTag();
             }
 
-            holder.nombre.setText(datos[position].getNombre());
+            holder.nombre.setText(listadoBares.get(position).getNombre());
 
             return(item);
         }
 
-
+        public void filter(String charText) {
+            charText = charText.toLowerCase(Locale.getDefault());
+            listadoBaresAux.clear();
+            if (charText.length() == 0) {
+                listadoBaresAux.addAll(listadoBares);
+            }
+            else
+            {
+                for (Bar bar : listadoBares)
+                {
+                    if (bar.getNombre().toLowerCase(Locale.getDefault()).contains(charText))
+                    {
+                        listadoBaresAux.add(bar);
+                    }
+                }
+            }
+            notifyDataSetChanged();
+        }
     }
 
     static class ViewHolder {
