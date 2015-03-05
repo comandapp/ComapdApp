@@ -36,7 +36,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="151dp"
                             android:id="@+id/imageView"
-                            android:src="@drawable/logo_comandapp" />
+                            android:src="@drawable/logo_comandapp"
+                            android:layout_marginTop="10dp" />
 
                         <TextView android:id="@+id/textView1"
                             android:text="@string/Nombre"

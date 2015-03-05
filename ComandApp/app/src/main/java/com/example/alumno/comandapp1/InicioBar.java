@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 
 public class InicioBar extends ActionBarActivity {
@@ -17,7 +18,7 @@ public class InicioBar extends ActionBarActivity {
 
         anadirMenu();
 
-        /*String nom="Nombre: "+getResources().getString(R.string.Nombre);
+        String nom="Nombre: "+getResources().getString(R.string.Nombre);
         String direc="Direccion: "+getResources().getString(R.string.Direccion);
         String localidad="Localidad: "+"Guadalupe";
         String municipio="Municipio: "+"AUAUAUA";
@@ -29,7 +30,7 @@ public class InicioBar extends ActionBarActivity {
         ((TextView)findViewById(R.id.textView3)).setText(direc);
         ((TextView)findViewById(R.id.textView4)).setText(localidad);
         ((TextView)findViewById(R.id.textView5)).setText(municipio);
-        ((TextView)findViewById(R.id.textView6)).setText(correo);*/
+        ((TextView)findViewById(R.id.textView6)).setText(correo);
     }
 
     private void anadirMenu()
