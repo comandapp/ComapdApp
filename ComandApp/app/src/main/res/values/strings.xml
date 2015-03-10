@@ -18,4 +18,5 @@
 
     <string name="search_title">Buscar</string>
     <string name="search_hint">Nombre bar</string>
+    <string name="title_activity_genera_comanda">GeneraComanda</string>
 </resources>

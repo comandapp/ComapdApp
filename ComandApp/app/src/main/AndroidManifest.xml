@@ -30,6 +30,10 @@
             android:name=".InicioBar"
             android:label="@string/title_activity_inicio_bar" >
         </activity>
+        <activity
+            android:name=".GeneraComanda"
+            android:label="@string/title_activity_genera_comanda" >
+        </activity>
     </application>
 
 </manifest>
