@@ -36,10 +36,10 @@ public class BusquedaBar extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busqueda_bar);
 
-        ArrayList<Bar> listadoBares = new ArrayList<Bar>();
-        listadoBares.add(new Bar("Entrepuentes 1"));
-        listadoBares.add(new Bar("Antrepuentes 1"));
-        listadoBares.add(new Bar("Entrepuentes 1"));
+        final ArrayList<Bar> listadoBares = new ArrayList<Bar>();
+        listadoBares.add(new Bar(1,"nombre","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0));
+        listadoBares.add(new Bar(1,"nombre2","dire",12345,"aaa",22.123123,22.123123,"aaaa","bbb",0,0));
+        listadoBares.add(new Bar(1,"nombre3","dire",12345,"aaa",32.123123,32.123123,"aaaa","bbb",0,0));
         listadoBares.add(new Bar("Antrepuentes 1"));
         listadoBares.add(new Bar("Antrepuentes 1"));
         listadoBares.add(new Bar("Entrepuentes 1"));
@@ -57,7 +57,7 @@ public class BusquedaBar extends ActionBarActivity {
                 Bar opcionSeleccionada = (Bar)a.getItemAtPosition(position);
 
                 Intent intent = new Intent(BusquedaBar.this, InicioBar.class);
-
+                intent.putExtra("bar",opcionSeleccionada);
                 //Creamos la información a pasar entre actividades
                 //Bundle b = new Bundle();
                 //b.put("BAR", opcionSeleccionada);
