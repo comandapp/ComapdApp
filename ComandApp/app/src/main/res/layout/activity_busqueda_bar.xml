@@ -4,51 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ListView android:id="@+id/ListaBares"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_weight="1">
-
-        <ListView android:id="@+id/ListaBares"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="#FFBD2E"
-            android:dividerHeight="2dp"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@android:color/darker_gray"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"/>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingLeft="18dp"
-        android:layout_weight="7"
-        android:gravity="bottom"
-        android:layout_marginBottom="8dp">
-
-        <TextView android:text="Buscar:"
-            android:layout_marginLeft="10dp"
-            style="@style/nombreBaresLista"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText android:id="@+id/EditFilter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Entrepuentes"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"/>
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:divider="#FFBD2E"
+        android:dividerHeight="2dp"/>
 
 </LinearLayout>
