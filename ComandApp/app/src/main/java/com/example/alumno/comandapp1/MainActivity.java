@@ -50,6 +50,13 @@ public class MainActivity extends Activity {
 // check if enabled and if not send user to the GSP settings
 // Better solution would be to display a dialog and suggesting to
 // go to the settings
+                Bar[] lb=new Bar[5];
+                lb[0]=new Bar(1,"nombre","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0);
+                lb[1]=new Bar(1,"nombre2","dire",12345,"aaa",22.123123,22.123123,"aaaa","bbb",0,0);
+                lb[2]=new Bar(1,"nombre3","dire",12345,"aaa",32.123123,32.123123,"aaaa","bbb",0,0);
+                lb[3]=new Bar(1,"nombre4","dire",12345,"aaa",42.123123,52.123123,"aaaa","bbb",0,0);
+                lb[4]=new Bar(1,"nombre5","dire",12345,"aaa",52.123123,62.123123,"aaaa","bbb",0,0);
+                intent.putExtra("listabar",lb);
                 if (!enabled) {
                     AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(MainActivity.this);
                     dlgAlert.setMessage("Es necesario tener los servicios de localización activados, se le redireccionara a dicho lugar.");

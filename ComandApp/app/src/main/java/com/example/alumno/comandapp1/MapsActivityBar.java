@@ -1,18 +1,13 @@
 package com.example.alumno.comandapp1;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Parcelable;
-import android.provider.Settings;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -20,16 +15,18 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity {
+
+public class MapsActivityBar extends ActionBarActivity {
     GoogleMap googleMap;
 
     LatLng myPosition;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        Bundle b=this.getIntent().getExtras();
         SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         // Getting GoogleMap object from the fragment
@@ -45,45 +42,17 @@ public class MapsActivity extends FragmentActivity {
         // Getting the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
 
-        // Getting Current Location
-        Location location = locationManager.getLastKnownLocation(provider);
 
-        if (location != null) {
-            // Getting latitude of the current location
-            double latitude = location.getLatitude();
-
-            // Getting longitude of the current location
-            double longitude = location.getLongitude();
-
-            // Creating a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);
-
-            myPosition = new LatLng(latitude, longitude);
+            myPosition = new LatLng(b.getDouble("latitud"), b.getDouble("longitud"));
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(myPosition)      // Sets the center of the map to LatLng (refer to previous snippet)
-                    .zoom(15)                   // Sets the zoom
+                    .zoom(12)                   // Sets the zoom
                     .tilt(30)                   // Sets the tilt of the camera to 30 degrees
                     .build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            googleMap.addMarker(new MarkerOptions().position(myPosition).title("Posicion"));
-            Bundle b=this.getIntent().getExtras();
-            Parcelable[] parce=b.getParcelableArray("listabar");
-            Bar[] lb=new Bar[parce.length];
-            for(int i=0;i<parce.length;i++){
-                lb[i]=(Bar)parce[i];
-            }
-            cargaBares(googleMap, lb);
-        }
-    }
+            googleMap.addMarker(new MarkerOptions().position(myPosition).title(b.getString("nombre")));
 
-
-public void cargaBares(GoogleMap googleMap, Bar[] listaBares){
-    LatLng p=null;
-    for (Bar b:listaBares){
-        p=new LatLng(b.getLatitud(),b.getLongitud());
-        googleMap.addMarker(new MarkerOptions().position(p).title(b.getNombre()));
     }
-}
 
     @Override
     protected void onResume() {
