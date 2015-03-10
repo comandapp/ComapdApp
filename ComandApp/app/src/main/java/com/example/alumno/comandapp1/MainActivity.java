@@ -2,7 +2,10 @@ package com.example.alumno.comandapp1;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 public class MainActivity extends Activity {
 
     private Button btnBuscarLocal;
+    private Button btnLocalizame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,41 @@ public class MainActivity extends Activity {
 
                 //Iniciamos la nueva actividad
                 startActivity(intent);
+            }
+        });
+
+            btnLocalizame=(Button)findViewById(R.id.btnLocalizame);
+        btnLocalizame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Creamos el Intent
+                final Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+                boolean enabled = service
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+// check if enabled and if not send user to the GSP settings
+// Better solution would be to display a dialog and suggesting to
+// go to the settings
+                if (!enabled) {
+                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(MainActivity.this);
+                    dlgAlert.setMessage("Es necesario tener los servicios de localización activados, se le redireccionara a dicho lugar.");
+                    dlgAlert.setTitle("Aviso");
+                    dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent2 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                            startActivity(intent2);
+                        }
+                        ;
+                    });
+                    dlgAlert.setCancelable(false);
+                    dlgAlert.create().show();
+                }else{
+                    startActivity(intent);
+                }
+                //Iniciamos la nueva actividad
+
             }
         });
 
