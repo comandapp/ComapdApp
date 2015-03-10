@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +19,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 
 
@@ -35,6 +32,9 @@ public class BusquedaBar extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busqueda_bar);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        //getSupportActionBar().setIcon(R.drawable.logo_comandapp);
 
         ArrayList<Bar> listadoBares = new ArrayList<Bar>();
         listadoBares.add(new Bar("Entrepuentes 1"));
@@ -71,44 +71,45 @@ public class BusquedaBar extends ActionBarActivity {
         });
 
         lstBares.setAdapter(adaptador);
-
-        editFilter = (EditText)findViewById(R.id.EditFilter);
-
-        editFilter.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable arg0)
-            {
-                // TODO Auto-generated method stub
-                String text = editFilter.getText().toString().toLowerCase(Locale.getDefault());
-                adaptador.getFilter().filter(text);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1,
-                                          int arg2, int arg3) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-                                      int arg3) {
-                // TODO Auto-generated method stub
-            }
-
-        });
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        //Colocamos el menú definido para esta vista:
         getMenuInflater().inflate(R.menu.menu_busqueda_bar, menu);
 
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        //Obtenemos la referencia al cajetín de búsqueda de la ActionBar:
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+
+        //Le añadimos al cajetín de búsqueda la configuración de searchable.xml:
+            /*
+            Sin olvidar que para que encuentre el searchable tendremos que añadir lo siguiente al
+            manifest, para esta clase:
+                <intent-filter>
+                    <action android:name="android.intent.action.SEARCH" />
+                </intent-filter>
+             */
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        //Declaramos el evento de cambio en el SearchView creado:
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            public boolean onQueryTextChange(String newText) {
+                if (adaptador != null) {
+                    adaptador.filter(newText);//Filtramos la lista de bares desde la ActionBar
+                }
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query) {
+                //Desde aquí se puede obtener el texto "query" introducido en la caja de búsqueda de la ActionBar
+                return true;
+            }
+        };
+
+        //Le asignamos el evento:
+        searchView.setOnQueryTextListener(queryTextListener);
 
         return true;
     }
@@ -137,8 +138,9 @@ public class BusquedaBar extends ActionBarActivity {
         public AdaptadorTitulares(Activity context, ArrayList<Bar> datos) {
             super(context, R.layout.listitem_bar, datos);
             this.context = context;
-            this.listadoBares = datos;
-            this.listadoBaresAux = new ArrayList<Bar>();
+            listadoBares = datos;
+            listadoBaresAux = new ArrayList<Bar>();
+            listadoBaresAux.addAll(listadoBares);
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -166,18 +168,19 @@ public class BusquedaBar extends ActionBarActivity {
         }
 
         public void filter(String charText) {
+            //Log.w("-", charText.toString());
             charText = charText.toLowerCase(Locale.getDefault());
-            listadoBaresAux.clear();
+            listadoBares.clear();
             if (charText.length() == 0) {
-                listadoBaresAux.addAll(listadoBares);
+                listadoBares.addAll(listadoBaresAux);
             }
             else
             {
-                for (Bar bar : listadoBares)
+                for (Bar bar : listadoBaresAux)
                 {
                     if (bar.getNombre().toLowerCase(Locale.getDefault()).contains(charText))
                     {
-                        listadoBaresAux.add(bar);
+                        listadoBares.add(bar);
                     }
                 }
             }
