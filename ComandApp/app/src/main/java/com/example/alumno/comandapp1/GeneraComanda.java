@@ -1,6 +1,7 @@
 package com.example.alumno.comandapp1;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 
 public class GeneraComanda extends ActionBarActivity {
@@ -20,14 +24,29 @@ public class GeneraComanda extends ActionBarActivity {
 
         imgQR = (ImageView)findViewById(R.id.imgQR);
 
+        generarQRCode(imgQR, "Hola hola! no vengas sola!");
         //http://androideity.com/2011/11/23/trabajar-con-codigos-qr-en-tus-aplicaciones-android/
-        Bitmap bm = encodeAsBitmap("Hola hola! no vengas sola!", BarcodeFormat.QR_CODE, 200, 200);
-
-        if(bm != null) {
-            imgQR.setImageBitmap(bm);
-        }
     }
 
+    private void generarQRCode(ImageView imgQR, String texto)
+    {
+        QRCodeWriter writer = new QRCodeWriter();
+        try {
+            BitMatrix bitMatrix = writer.encode(texto, BarcodeFormat.QR_CODE, 200, 200);
+            int width = bitMatrix.getWidth();
+            int height = bitMatrix.getHeight();
+            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bmp.setPixel(x, y, bitMatrix.get(x, y) ? Color.RED : Color.WHITE);
+                }
+            }
+            imgQR.setImageBitmap(bmp);
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

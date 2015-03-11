@@ -35,7 +35,6 @@
         android:layout_height="wrap_content"
         android:text="Localízame"
         android:id="@+id/btnLocalizame"
-        android:onClick="clickBoton"
         android:layout_below="@+id/txtQuetomamos"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
