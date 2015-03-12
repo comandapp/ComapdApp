@@ -17,11 +17,10 @@
     <string name="title_activity_inicio_bar">InicioBar</string>
     <string name="search_title">Buscar</string>
     <string name="search_hint">Nombre bar</string>
-<<<<<<< HEAD
+
     <string name="title_activity_genera_comanda">GeneraComanda</string>
-=======
+
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps_bar">maps_bar</string>
 
->>>>>>> master
 </resources>

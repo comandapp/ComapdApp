@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.alumno.comandapp1" >
 
-<<<<<<< HEAD
-
 =======
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,7 +13,6 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
->>>>>>> master
 
     <application
         android:allowBackup="true"
@@ -51,11 +48,11 @@
             android:name=".InicioBar"
             android:label="@string/title_activity_inicio_bar" >
         </activity>
-<<<<<<< HEAD
+
         <activity
             android:name=".GeneraComanda"
             android:label="@string/title_activity_genera_comanda" >
-=======
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -71,7 +68,7 @@
         <activity
             android:name=".MapsActivityBar"
             android:label="@string/title_activity_maps_bar" >
->>>>>>> master
+
         </activity>
     </application>
 
