@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.alumno.comandapp1" >
-
 =======
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,12 +15,11 @@
 
     <application
         android:allowBackup="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:icon="@drawable/icono_comandapp"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,8 +32,7 @@
         </activity>
         <activity
             android:name=".BusquedaBar"
-            android:label="@string/title_activity_busqueda_bar">
-
+            android:label="@string/title_activity_busqueda_bar" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -48,7 +45,6 @@
             android:name=".InicioBar"
             android:label="@string/title_activity_inicio_bar" >
         </activity>
-
         <activity
             android:name=".GeneraComanda"
             android:label="@string/title_activity_genera_comanda" >
@@ -68,7 +64,6 @@
         <activity
             android:name=".MapsActivityBar"
             android:label="@string/title_activity_maps_bar" >
-
         </activity>
     </application>
 
