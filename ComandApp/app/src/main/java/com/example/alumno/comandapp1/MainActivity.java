@@ -103,13 +103,13 @@ public class MainActivity extends Activity {
         });*/
     }
 
-    public void clickBoton(View v)
+    /*public void clickBoton(View v)
     {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Hola")
                 .setMessage("Hola Jesusito")
                 .setCancelable(true).create().show();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
