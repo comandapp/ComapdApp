@@ -1,6 +1,9 @@
 package com.example.alumno.comandapp1;
 
-public class Bar {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Bar implements Parcelable{
     private int id;
     private String nombre;
     private String direccion;
@@ -126,5 +129,53 @@ public class Bar {
     public Carta getCarta() {
         return this.carta;
     }
-    
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(nombre);
+        dest.writeString(direccion);
+        dest.writeString(getProvincia());
+        dest.writeString(getMunicipio());
+        dest.writeString(correo);
+        dest.writeInt(id);
+        dest.writeInt(telefono);
+        dest.writeInt(versionBar);
+        dest.writeInt(versionOfertas);
+        dest.writeDouble(latitud);
+        dest.writeDouble(longitud);
+    }
+
+    private Bar(Parcel in){
+
+        this.nombre=in.readString();
+        this.direccion=in.readString();
+        this.correo=in.readString();
+        this.Provincia=in.readString();
+        this.Municipio=in.readString();
+        this.id=in.readInt();
+        this.telefono=in.readInt();
+        this.versionBar = in.readInt();
+        this.versionOfertas = in.readInt();
+        this.latitud=in.readDouble();
+        this.longitud=in.readDouble();
+        this.carta = new Carta();
+    }
+
+    public static final Parcelable.Creator<Bar> CREATOR
+            = new Parcelable.Creator<Bar>() {
+        @Override
+        public Bar createFromParcel(Parcel in) {
+            return new Bar(in);
+        }
+
+        @Override
+        public Bar[] newArray(int size) {
+            return new Bar[size];
+        }
+    };
 }

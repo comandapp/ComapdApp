@@ -2,7 +2,10 @@ package com.example.alumno.comandapp1;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 public class MainActivity extends Activity {
 
     private Button btnBuscarLocal;
+    private Button btnLocalizame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,48 @@ public class MainActivity extends Activity {
 
                 //Iniciamos la nueva actividad
                 startActivity(intent);
+            }
+        });
+
+            btnLocalizame=(Button)findViewById(R.id.btnLocalizame);
+        btnLocalizame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Creamos el Intent
+                final Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+                boolean enabled = service
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+// check if enabled and if not send user to the GSP settings
+// Better solution would be to display a dialog and suggesting to
+// go to the settings
+                Bar[] lb=new Bar[5];
+                lb[0]=new Bar(1,"nombre","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0);
+                lb[1]=new Bar(1,"nombre2","dire",12345,"aaa",22.123123,22.123123,"aaaa","bbb",0,0);
+                lb[2]=new Bar(1,"nombre3","dire",12345,"aaa",32.123123,32.123123,"aaaa","bbb",0,0);
+                lb[3]=new Bar(1,"nombre4","dire",12345,"aaa",42.123123,52.123123,"aaaa","bbb",0,0);
+                lb[4]=new Bar(1,"nombre5","dire",12345,"aaa",52.123123,62.123123,"aaaa","bbb",0,0);
+                intent.putExtra("listabar",lb);
+                if (!enabled) {
+                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(MainActivity.this);
+                    dlgAlert.setMessage("Es necesario tener los servicios de localización activados, se le redireccionara a dicho lugar.");
+                    dlgAlert.setTitle("Aviso");
+                    dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent2 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                            startActivity(intent2);
+                        }
+                        ;
+                    });
+                    dlgAlert.setCancelable(false);
+                    dlgAlert.create().show();
+                }else{
+                    startActivity(intent);
+                }
+                //Iniciamos la nueva actividad
+
             }
         });
 
