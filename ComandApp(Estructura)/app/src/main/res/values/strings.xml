@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ComandAppUser</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <color name="negro">#000000</color>
+    <color name="gris">#0E0E0E</color>
+</resources>

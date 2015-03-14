@@ -7,10 +7,8 @@
   1. Cada comunicación deberá tener al menos un parámetro "COM".
   Éste toma el valor de alguna de las siguientes opciones:
 
-    MAIN - Información sólo de las versiones del bar.
-    Parámetros:
-    ID - Identificador/Identificadores(seguidos de una coma) del local.
-    Salida : Documento XML con información sobre la versión de las cartas en el servidor.
+    MAIN - Devuelve el estado actual de la base de datos del servidor.
+    No tiene parámetros.
 
     GLOC - Datos sobre el local. No de su carta ni de sus ofertas.
     Parámetros:
@@ -37,9 +35,7 @@ if (isset($_GET["COM"]) && isset($_GET["ID"])) {
     $idArray = sanitazeIdString($idString);
 
     try {
-        if (strcmp($com, "MAIN") == 0) {
-            echo sendMain($idArray);
-        } elseif (strcmp($com, "GLOC") == 0) {
+        if (strcmp($com, "GLOC") == 0) {
             echo sendInfoLocal($idArray);
         } elseif (strcmp($com, "GCAR") == 0) {
             echo sendCarta($idArray);
@@ -51,4 +47,10 @@ if (isset($_GET["COM"]) && isset($_GET["ID"])) {
     } catch (PDOException $ex) {
         echo "error: " . $ex->getMessage();
     }
-}
+} else if(isset($_GET["COM"]) && !isset($_GET["ID"])) {
+    require("functions.php");
+    header('Content-type: application/xml');
+
+    $com = substr($_GET["COM"], 0, 4);
+    if (strcmp($com, "MAIN") == 0) echo sendMain();
+} else exit;

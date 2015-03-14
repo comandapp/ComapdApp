@@ -1,38 +1,41 @@
 <?php
-
-//$affected_rows = $db->exec("UPDATE table SET field='value'");
 function getConnection() {
-    $dbStr1 = 'mysql:host=localhost;dbname=comandapp;charset=utf8';
-    $dbStr2 = 'comandapp';
-    $dbStr3 = 'comandapp';
+	$mysql_host = "mysql4.000webhost.com";
+	$mysql_database = "a2210078_comand";
+	$mysql_user = "a2210078_comand";
+	$mysql_password = "ComandApp7";
+    $dbStr1 = 'mysql:host='.$mysql_host.';dbname='.$mysql_database.';charset=utf8';
     $dbParams = array(PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
-    return new PDO($dbStr1, $dbStr2, $dbStr3, $dbParams);
+    return new PDO($dbStr1, $mysql_user, $mysql_password, $dbParams);
 }
 
-function sendMain($idArray) {
+function sendMain() {
     $db = getConnection();
-    $stmt = $db->prepare("SELECT VersionInfoBar AS VIB, VersionCarta AS VC, VersionOfertas AS VO FROM bar WHERE Id_Bar=?");
+    $stmt = $db->prepare("SELECT Id_Bar AS ID,"
+            . " VersionInfoBar AS VIB,"
+            . " VersionCarta AS VC,"
+            . " VersionOfertas AS VO "
+            . "FROM bar");
 
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
     $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
             . " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
             . " xsi:schemaLocation=\"comandappCOMUNES.xsd comandappMAIN.xsd\">";
 
-    foreach ($idArray as $id) {
-        $stmt->bindValue(1, $id, PDO::PARAM_INT);
-        $stmt->execute();
+    $stmt->execute();
 
-        if ($stmt->rowCount() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $xml .= "<main xmlns=\"comandappMAIN.xsd\" id=\"" . $id . "\">";
+    if ($stmt->rowCount() > 0) {
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $xml .= "<main xmlns=\"comandappMAIN.xsd\" id=\"" . $row['ID'] . "\">";
             $xml .= "<local xmlns=\"\">" . $row['VIB'] . "</local>";
             $xml .= "<carta xmlns=\"\">" . $row['VC'] . "</carta>";
             $xml .= "<ofertas xmlns=\"\">" . $row['VO'] . "</ofertas>";
             $xml .= "</main>";
-        } else {
-            $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"".$id."\">404</error>";
         }
+    } else {
+        $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"0\">404</error>";
     }
+    
 
     $xml .= "</root>";
 
@@ -44,7 +47,7 @@ function sendMain($idArray) {
 function sendInfoLocal($idArray) {
     
     $db = getConnection();
-    $stmt = $db->prepare("SELECT Nombre,Direccion,Telefono,Longitud,Latitud,Provincia,Municipio,Correo,VersionInfoBar FROM bar WHERE Id_Bar=?");
+    $stmt = $db->prepare("SELECT Nombre,Direccion,Telefono,Longitud,Latitud,Provincia,Municipio,Foto,Correo,VersionInfoBar FROM bar WHERE Id_Bar=?");
 
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
     $xml .= "<root xmlns=\"comandappCOMUNES.xsd\""
@@ -66,6 +69,7 @@ function sendInfoLocal($idArray) {
             $xml .= "<longitud xmlns=\"\">" . $row['Longitud'] . "</longitud>";
             $xml .= "<provincia xmlns=\"\">" . $row['Provincia'] . "</provincia>";
             $xml .= "<municipio xmlns=\"\">" . $row['Municipio'] . "</municipio>";
+            $xml .= "<foto xmlns=\"\">" . $row['Foto'] . "</foto>";
             $xml .= "</local>";
         } else {
             $xml .= "<error xmlns=\"comandappCOMUNES.xsd\" id=\"".$id."\">404</error>";
@@ -143,6 +147,7 @@ function sendOfertas($idArray) {
     $stmt = $db->prepare("SELECT oferta.Id_Oferta AS idOferta,"
             . "oferta.Precio AS Precio,"
             . "oferta.Descripcion AS Descripcion,"
+            . "oferta.Productos AS Productos,"
             . "oferta.Foto AS Foto,"
             . "bar.VersionOfertas AS vOfertas "
             . "FROM oferta INNER JOIN bar ON oferta.Id_Bar=bar.Id_Bar "
@@ -167,6 +172,7 @@ function sendOfertas($idArray) {
                 }
                 $xml .= "<oferta xmlns=\"comandappOFERTAS.xsd\" id=\"".$row['idOferta']."\">";
                 $xml .= "<descripcion xmlns=\"\">" . $row['Descripcion'] . "</descripcion>";
+                $xml .= "<productos xmlns=\"\">" . $row['Productos'] . "</productos>";
                 $xml .= "<precio xmlns=\"\">" . $row['Precio'] . "</precio>";
                 $xml .= "<foto xmlns=\"\">" . $row['Foto'] . "</foto>";
                 $xml .= "</oferta>";
