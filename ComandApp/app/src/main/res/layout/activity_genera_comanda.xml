@@ -4,26 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/LinLayPestanas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button android:id="@+id/btnLocalizame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Carta"
-            android:textSize="9dp"
-            style="@style/botonCustom"/>
-
-        <Button android:id="@+id/btnQr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="QR"
-            android:textSize="9dp"/>
-
-    </LinearLayout>
+    
 
     <ImageView android:id="@+id/imgQR"
         android:layout_width="200dp"
