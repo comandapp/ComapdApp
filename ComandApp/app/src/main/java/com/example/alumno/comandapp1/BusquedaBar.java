@@ -2,6 +2,7 @@ package com.example.alumno.comandapp1;
 
 import android.app.Activity;
 import android.app.SearchManager;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -123,6 +124,12 @@ public class BusquedaBar extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        else if(id == R.id.action_settings2)
+        {
+            Intent intent = new Intent(this, GeneraComanda.class);
+            startActivity(intent);
             return true;
         }
 
