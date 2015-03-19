@@ -22,7 +22,11 @@
         app:showAsAction="never"/>
 
     <item android:id="@+id/action_settings2"
-        android:title="@string/action_settings"
+        android:title="Generar comanda"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_favoritos"
+        android:title="Locales favoritos"
         app:showAsAction="never"/>
 
 </menu>

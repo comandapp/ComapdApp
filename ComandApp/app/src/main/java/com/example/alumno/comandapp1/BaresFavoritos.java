@@ -2,12 +2,13 @@ package com.example.alumno.comandapp1;
 
 import android.app.Activity;
 import android.app.SearchManager;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Debug;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 
-public class BusquedaBar extends ActionBarActivity {
+public class BaresFavoritos extends ActionBarActivity {
 
     ListView lstBares;
     AdaptadorTitulares adaptador;
@@ -33,10 +34,7 @@ public class BusquedaBar extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_busqueda_bar);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //getSupportActionBar().setIcon(R.drawable.logo_comandapp);
+        setContentView(R.layout.activity_bares_favoritos);
 
         final ArrayList<Bar> listadoBares = new ArrayList<Bar>();
         listadoBares.add(new Bar(1,"nombre","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0, true));
@@ -58,20 +56,13 @@ public class BusquedaBar extends ActionBarActivity {
 
                 Bar opcionSeleccionada = (Bar)a.getItemAtPosition(position);
 
-                Intent intent = new Intent(BusquedaBar.this, InicioBar.class);
+                Intent intent = new Intent(BaresFavoritos.this, InicioBar.class);
                 intent.putExtra("bar",opcionSeleccionada);
-                //Creamos la información a pasar entre actividades
-                //Bundle b = new Bundle();
-                //b.put("BAR", opcionSeleccionada);
-
-                //Añadimos la información al intent
-                //intent.putExtra("BAR", opcionSeleccionada);
-
-                //Iniciamos la nueva actividad
                 startActivity(intent);
             }
         });
 
+        lstBares.setAdapter(null);
         lstBares.setAdapter(adaptador);
     }
 
@@ -127,18 +118,6 @@ public class BusquedaBar extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        else if(id == R.id.action_settings2)
-        {
-            Intent intent = new Intent(this, GeneraComanda.class);
-            startActivity(intent);
-            return true;
-        }
-        else if(id == R.id.action_favoritos)
-        {
-            Intent intent = new Intent(this, BaresFavoritos.class);
-            startActivity(intent);
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -152,9 +131,25 @@ public class BusquedaBar extends ActionBarActivity {
         public AdaptadorTitulares(Activity context, ArrayList<Bar> datos) {
             super(context, R.layout.listitem_bar, datos);
             this.context = context;
-            listadoBares = datos;
             listadoBaresAux = new ArrayList<Bar>();
+            listadoBares = new ArrayList<Bar>();
+            listadoBaresAux.addAll(datos);
+
+            for(Bar b : listadoBaresAux)
+            {
+                if(b.getFavorito())
+                {
+                    listadoBares.add(b);
+                }
+            }
+
+            listadoBaresAux.clear();
             listadoBaresAux.addAll(listadoBares);
+
+
+
+            Log.w("lb-------------->", listadoBares.size() + "");
+            Log.w("lba-------------->", listadoBaresAux.size() + "");
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -177,9 +172,12 @@ public class BusquedaBar extends ActionBarActivity {
                 holder = (ViewHolder)item.getTag();
             }
 
-            Bar bar = listadoBares.get(position);
-            holder.nombre.setText(bar.getNombre());
-            holder.checkFavorito.setChecked(bar.getFavorito());
+            if(position < listadoBares.size())
+            {
+                Bar bar = listadoBares.get(position);
+                holder.nombre.setText(bar.getNombre());
+                holder.checkFavorito.setChecked(bar.getFavorito());
+            }
 
             return(item);
         }
