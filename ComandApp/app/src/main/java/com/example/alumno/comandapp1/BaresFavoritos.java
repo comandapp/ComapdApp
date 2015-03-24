@@ -1,53 +1,57 @@
 package com.example.alumno.comandapp1;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Debug;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class BaresFavoritos extends ActionBarActivity {
 
     ListView lstBares;
-    AdaptadorTitulares adaptador;
+    AdaptadorListadoBares adaptador;
     EditText editFilter;
+    CheckBox checkFav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bares_favoritos);
 
-        final ArrayList<Bar> listadoBares = new ArrayList<Bar>();
-        listadoBares.add(new Bar(1,"nombre","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0, true));
-        listadoBares.add(new Bar(1,"nombre2","dire",12345,"aaa",22.123123,22.123123,"aaaa","bbb",0,0, false));
-        listadoBares.add(new Bar(1,"nombre3","dire",12345,"aaa",32.123123,32.123123,"aaaa","bbb",0,0, true));
-        listadoBares.add(new Bar("Antrepuentes 1", true));
-        listadoBares.add(new Bar("Antrepuentes 1", true));
-        listadoBares.add(new Bar("Entrepuentes 1", false));
-        listadoBares.add(new Bar("Dntrepuentes 1", true));
-        listadoBares.add(new Bar("Dntrepuentes 1", false));
-        listadoBares.add(new Bar("Entrepuentes 1", false));
+        ArrayList<Bar> listadoBares = new ArrayList<Bar>();
+        ArrayList<Bar> listadoBaresAux = new ArrayList<Bar>();
+        listadoBares.add(new Bar(1,"Favorito 1","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0, true));
+        listadoBares.add(new Bar(1,"nombre1","dire",12345,"aaa",22.123123,22.123123,"aaaa","bbb",0,0, false));
+        listadoBares.add(new Bar(1,"Favorito 2","dire",12345,"aaa",32.123123,32.123123,"aaaa","bbb",0,0, true));
+        listadoBares.add(new Bar("Favorito 3", true));
+        listadoBares.add(new Bar("nombre2", false));
+        listadoBares.add(new Bar("Favorito 4", true));
 
-        adaptador = new AdaptadorTitulares(this, listadoBares);
+        for(int i = 0; i < listadoBares.size(); i++)
+        {
+            Bar bareto = listadoBares.get(i);
+            if(bareto.getFavorito())
+            {
+                listadoBaresAux.add(bareto);
+            }
+        }
+        listadoBares.clear();
+
+        adaptador = new AdaptadorListadoBares(this, listadoBaresAux);
 
         lstBares = (ListView)findViewById(R.id.ListaBares);
 
@@ -62,7 +66,26 @@ public class BaresFavoritos extends ActionBarActivity {
             }
         });
 
-        lstBares.setAdapter(null);
+        //CheckBox checkFav = ( CheckBox ) findViewById( R.id.checkBarFavorito );
+        //if(checkFav == null) Log.w("-->", "pepe");
+
+        /*checkFav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if ( isChecked )
+                {
+                    new AlertDialog.Builder(BaresFavoritos.this)
+                            .setTitle("Hola")
+                            .setMessage("Hola Jesusito")
+                            .setCancelable(true).create().show();
+                }
+
+            }
+        });*/
+
+        //lstBares.setAdapter(null);
         lstBares.setAdapter(adaptador);
     }
 
@@ -120,91 +143,5 @@ public class BaresFavoritos extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    class AdaptadorTitulares extends ArrayAdapter<Bar> {
-
-        Activity context;
-        ArrayList<Bar> listadoBares;
-        ArrayList<Bar> listadoBaresAux;
-
-        public AdaptadorTitulares(Activity context, ArrayList<Bar> datos) {
-            super(context, R.layout.listitem_bar, datos);
-            this.context = context;
-            listadoBaresAux = new ArrayList<Bar>();
-            listadoBares = new ArrayList<Bar>();
-            listadoBaresAux.addAll(datos);
-
-            for(Bar b : listadoBaresAux)
-            {
-                if(b.getFavorito())
-                {
-                    listadoBares.add(b);
-                }
-            }
-
-            listadoBaresAux.clear();
-            listadoBaresAux.addAll(listadoBares);
-
-
-
-            Log.w("lb-------------->", listadoBares.size() + "");
-            Log.w("lba-------------->", listadoBaresAux.size() + "");
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View item = convertView;
-            ViewHolder holder;
-
-            if(item == null)
-            {
-                LayoutInflater inflater = context.getLayoutInflater();
-                item = inflater.inflate(R.layout.listitem_bar, null);
-
-                holder = new ViewHolder();
-                holder.nombre = (TextView)item.findViewById(R.id.lblNombreBar);
-                holder.checkFavorito = (CheckBox)item.findViewById(R.id.checkBarFavorito);
-
-                item.setTag(holder);
-            }
-            else
-            {
-                holder = (ViewHolder)item.getTag();
-            }
-
-            if(position < listadoBares.size())
-            {
-                Bar bar = listadoBares.get(position);
-                holder.nombre.setText(bar.getNombre());
-                holder.checkFavorito.setChecked(bar.getFavorito());
-            }
-
-            return(item);
-        }
-
-        public void filter(String charText) {
-            //Log.w("-", charText.toString());
-            charText = charText.toLowerCase(Locale.getDefault());
-            listadoBares.clear();
-            if (charText.length() == 0) {
-                listadoBares.addAll(listadoBaresAux);
-            }
-            else
-            {
-                for (Bar bar : listadoBaresAux)
-                {
-                    if (bar.getNombre().toLowerCase(Locale.getDefault()).contains(charText))
-                    {
-                        listadoBares.add(bar);
-                    }
-                }
-            }
-            notifyDataSetChanged();
-        }
-    }
-
-    static class ViewHolder {
-        TextView nombre;
-        CheckBox checkFavorito;
     }
 }

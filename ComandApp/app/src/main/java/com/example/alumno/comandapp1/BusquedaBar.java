@@ -2,7 +2,6 @@ package com.example.alumno.comandapp1;
 
 import android.app.Activity;
 import android.app.SearchManager;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -27,7 +26,7 @@ import java.util.Locale;
 public class BusquedaBar extends ActionBarActivity {
 
     ListView lstBares;
-    AdaptadorTitulares adaptador;
+    AdaptadorListadoBares adaptador;
     EditText editFilter;
 
     @Override
@@ -49,7 +48,7 @@ public class BusquedaBar extends ActionBarActivity {
         listadoBares.add(new Bar("Dntrepuentes 1", false));
         listadoBares.add(new Bar("Entrepuentes 1", false));
 
-        adaptador = new AdaptadorTitulares(this, listadoBares);
+        adaptador = new AdaptadorListadoBares(this, listadoBares);
 
         lstBares = (ListView)findViewById(R.id.ListaBares);
 
@@ -141,72 +140,5 @@ public class BusquedaBar extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    class AdaptadorTitulares extends ArrayAdapter<Bar> {
-
-        Activity context;
-        ArrayList<Bar> listadoBares;
-        ArrayList<Bar> listadoBaresAux;
-
-        public AdaptadorTitulares(Activity context, ArrayList<Bar> datos) {
-            super(context, R.layout.listitem_bar, datos);
-            this.context = context;
-            listadoBares = datos;
-            listadoBaresAux = new ArrayList<Bar>();
-            listadoBaresAux.addAll(listadoBares);
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View item = convertView;
-            ViewHolder holder;
-
-            if(item == null)
-            {
-                LayoutInflater inflater = context.getLayoutInflater();
-                item = inflater.inflate(R.layout.listitem_bar, null);
-
-                holder = new ViewHolder();
-                holder.nombre = (TextView)item.findViewById(R.id.lblNombreBar);
-                holder.checkFavorito = (CheckBox)item.findViewById(R.id.checkBarFavorito);
-
-                item.setTag(holder);
-            }
-            else
-            {
-                holder = (ViewHolder)item.getTag();
-            }
-
-            Bar bar = listadoBares.get(position);
-            holder.nombre.setText(bar.getNombre());
-            holder.checkFavorito.setChecked(bar.getFavorito());
-
-            return(item);
-        }
-
-        public void filter(String charText) {
-            //Log.w("-", charText.toString());
-            charText = charText.toLowerCase(Locale.getDefault());
-            listadoBares.clear();
-            if (charText.length() == 0) {
-                listadoBares.addAll(listadoBaresAux);
-            }
-            else
-            {
-                for (Bar bar : listadoBaresAux)
-                {
-                    if (bar.getNombre().toLowerCase(Locale.getDefault()).contains(charText))
-                    {
-                        listadoBares.add(bar);
-                    }
-                }
-            }
-            notifyDataSetChanged();
-        }
-    }
-
-    static class ViewHolder {
-        TextView nombre;
-        CheckBox checkFavorito;
     }
 }
