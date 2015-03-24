@@ -32,7 +32,7 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
         listadoBaresAux.addAll(listadoBares);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View item = convertView;
         ViewHolderListadoBares holder;
         final Bar bar = listadoBares.get(position);
@@ -49,10 +49,16 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
             holder.checkFavorito.setOnClickListener(new View.OnClickListener() {
 
                 @Override
-                public void onClick(View v) {
-
+                public void onClick(View v)
+                {
                     Log.w("-->", ((CheckBox) v).isChecked() + "");
                     bar.setFavorito(((CheckBox) v).isChecked());
+
+                    if(!((CheckBox) v).isChecked())
+                    {
+                        listadoBares.remove(position);
+                        notifyDataSetChanged();
+                    }
 
                 }
             });
