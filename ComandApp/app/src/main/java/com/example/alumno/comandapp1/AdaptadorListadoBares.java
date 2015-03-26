@@ -54,7 +54,7 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
                     Log.w("-->", ((CheckBox) v).isChecked() + "");
                     bar.setFavorito(((CheckBox) v).isChecked());
 
-                    if(!((CheckBox) v).isChecked())
+                    if(!((CheckBox) v).isChecked() && context instanceof BaresFavoritos)
                     {
                         listadoBares.remove(position);
                         notifyDataSetChanged();
