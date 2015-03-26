@@ -1,54 +1,57 @@
 package com.example.alumno.comandapp1;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
-public class BusquedaBar extends ActionBarActivity {
+public class BaresFavoritos extends ActionBarActivity {
 
     ListView lstBares;
     AdaptadorListadoBares adaptador;
     EditText editFilter;
+    CheckBox checkFav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_busqueda_bar);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //getSupportActionBar().setIcon(R.drawable.logo_comandapp);
+        setContentView(R.layout.activity_bares_favoritos);
 
-        final ArrayList<Bar> listadoBares = new ArrayList<Bar>();
-        listadoBares.add(new Bar(1,"nombre","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0, true));
-        listadoBares.add(new Bar(1,"nombre2","dire",12345,"aaa",22.123123,22.123123,"aaaa","bbb",0,0, false));
-        listadoBares.add(new Bar(1,"nombre3","dire",12345,"aaa",32.123123,32.123123,"aaaa","bbb",0,0, true));
-        listadoBares.add(new Bar("Antrepuentes 1", true));
-        listadoBares.add(new Bar("Antrepuentes 1", true));
-        listadoBares.add(new Bar("Entrepuentes 1", false));
-        listadoBares.add(new Bar("Dntrepuentes 1", true));
-        listadoBares.add(new Bar("Dntrepuentes 1", false));
-        listadoBares.add(new Bar("Entrepuentes 1", false));
+        ArrayList<Bar> listadoBares = new ArrayList<Bar>();
+        ArrayList<Bar> listadoBaresAux = new ArrayList<Bar>();
+        listadoBares.add(new Bar(1,"Favorito 1","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0, true));
+        listadoBares.add(new Bar(1,"nombre1","dire",12345,"aaa",22.123123,22.123123,"aaaa","bbb",0,0, false));
+        listadoBares.add(new Bar(1,"Favorito 2","dire",12345,"aaa",32.123123,32.123123,"aaaa","bbb",0,0, true));
+        listadoBares.add(new Bar("Favorito 3", true));
+        listadoBares.add(new Bar("nombre2", false));
+        listadoBares.add(new Bar("Favorito 4", true));
 
-        adaptador = new AdaptadorListadoBares(this, listadoBares);
+        for(int i = 0; i < listadoBares.size(); i++)
+        {
+            Bar bareto = listadoBares.get(i);
+            if(bareto.getFavorito())
+            {
+                listadoBaresAux.add(bareto);
+            }
+        }
+        listadoBares.clear();
+
+        adaptador = new AdaptadorListadoBares(this, listadoBaresAux);
 
         lstBares = (ListView)findViewById(R.id.ListaBares);
 
@@ -57,20 +60,32 @@ public class BusquedaBar extends ActionBarActivity {
 
                 Bar opcionSeleccionada = (Bar)a.getItemAtPosition(position);
 
-                Intent intent = new Intent(BusquedaBar.this, InicioBar.class);
+                Intent intent = new Intent(BaresFavoritos.this, InicioBar.class);
                 intent.putExtra("bar",opcionSeleccionada);
-                //Creamos la información a pasar entre actividades
-                //Bundle b = new Bundle();
-                //b.put("BAR", opcionSeleccionada);
-
-                //Añadimos la información al intent
-                //intent.putExtra("BAR", opcionSeleccionada);
-
-                //Iniciamos la nueva actividad
                 startActivity(intent);
             }
         });
 
+        //CheckBox checkFav = ( CheckBox ) findViewById( R.id.checkBarFavorito );
+        //if(checkFav == null) Log.w("-->", "pepe");
+
+        /*checkFav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if ( isChecked )
+                {
+                    new AlertDialog.Builder(BaresFavoritos.this)
+                            .setTitle("Hola")
+                            .setMessage("Hola Jesusito")
+                            .setCancelable(true).create().show();
+                }
+
+            }
+        });*/
+
+        //lstBares.setAdapter(null);
         lstBares.setAdapter(adaptador);
     }
 
@@ -124,18 +139,6 @@ public class BusquedaBar extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-        }
-        else if(id == R.id.action_settings2)
-        {
-            Intent intent = new Intent(this, GeneraComanda.class);
-            startActivity(intent);
-            return true;
-        }
-        else if(id == R.id.action_favoritos)
-        {
-            Intent intent = new Intent(this, BaresFavoritos.class);
-            startActivity(intent);
             return true;
         }
 

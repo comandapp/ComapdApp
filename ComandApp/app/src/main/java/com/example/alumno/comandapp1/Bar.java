@@ -15,10 +15,11 @@ public class Bar implements Parcelable{
     private String Municipio;
     private int versionBar;
     private int versionOfertas;
+    private Boolean favorito;
     
     private Carta carta;
     
-    public Bar (int id, String nombre, String direccion ,int telefono, String correo,double latitud, double longitud, String provincia, String municipio, int vBar, int vOfertas){
+    public Bar (int id, String nombre, String direccion ,int telefono, String correo,double latitud, double longitud, String provincia, String municipio, int vBar, int vOfertas, Boolean favorito){
         this.id=id;
         this.nombre=nombre;
         this.direccion=direccion;
@@ -31,11 +32,13 @@ public class Bar implements Parcelable{
         this.versionBar = vBar;
         this.versionOfertas = vOfertas;
         this.carta = new Carta();
+        this.favorito = favorito;
     }
 
-    public Bar (String nombre)
+    public Bar (String nombre, Boolean favorito)
     {
         this.nombre = nombre;
+        this.favorito = favorito;
     }
     
     public int getId() {
@@ -126,8 +129,12 @@ public class Bar implements Parcelable{
         this.versionOfertas = i;
     }
     
-    public Carta getCarta() {
-        return this.carta;
+    public Boolean getFavorito() {
+        return this.favorito;
+    }
+
+    public void setFavorito(Boolean favorito) {
+        this.favorito = favorito;
     }
 
     @Override

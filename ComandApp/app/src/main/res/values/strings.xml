@@ -22,5 +22,6 @@
 
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps_bar">maps_bar</string>
+    <string name="title_activity_bares_favoritos">BaresFavoritos</string>
 
 </resources>

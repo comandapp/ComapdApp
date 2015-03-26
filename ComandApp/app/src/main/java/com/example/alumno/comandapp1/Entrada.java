@@ -10,8 +10,9 @@ package com.example.alumno.comandapp1;
  *
  * @author G62
  */
-public class Entrada {
- 
+public class Entrada
+{
+
     private Producto producto;
     private double precio;
     private String descripcion;
