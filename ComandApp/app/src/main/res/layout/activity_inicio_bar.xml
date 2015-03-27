@@ -3,145 +3,146 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <TabHost android:id="@android:id/tabhost"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inicio"
+            android:id="@+id/button2"
+            android:background="@drawable/boton_selec"
+            android:layout_weight=".33"
+            android:textSize="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carta"
+            android:id="@+id/button3"
+            android:background="#ffff9615"
+            android:layout_weight=".33"
+            android:textSize="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ofertas"
+            android:id="@+id/button4"
+            android:background="#ffff9615"
+            android:layout_weight=".33"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-            <TabWidget android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:id="@android:id/tabs"
-                android:background="#ffff8100" />
-
-            <ScrollView
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/scrollView" >
+                android:layout_height="151dp"
+                android:id="@+id/imageView"
+                android:src="@drawable/logo_comandapp"
+                android:layout_marginTop="10dp" />
 
-                <FrameLayout android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@android:id/tabcontent" >
+            <TextView android:id="@+id/textView1"
+                android:text="@string/Nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp"
+                android:layout_marginLeft="24dp" />
 
-                    <LinearLayout android:id="@+id/tab1"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:weightSum="1">
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"/>
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="151dp"
-                            android:id="@+id/imageView"
-                            android:src="@drawable/logo_comandapp"
-                            android:layout_marginTop="10dp" />
+            <TextView android:id="@+id/textView2"
+                android:text="@string/Telefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp"
+                android:layout_marginLeft="24dp" />
 
-                        <TextView android:id="@+id/textView1"
-                            android:text="@string/Nombre"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="5dp"
-                            android:textSize="20sp"
-                            android:layout_marginLeft="24dp" />
-                        <View
-                            android:layout_width="fill_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="2dp"/>
-                        <TextView android:id="@+id/textView2"
-                            android:text="@string/Telefono"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:textSize="20sp"
-                            android:layout_marginLeft="24dp" />
-                        <View
-                            android:layout_width="fill_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="2dp"/>
-                        <TextView android:id="@+id/textView3"
-                            android:text="@string/Direccion"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:textSize="20sp"
-                            android:layout_marginLeft="24dp" />
-                        <View
-                            android:layout_width="fill_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="2dp"/>
-                        <TextView android:id="@+id/textView4"
-                            android:text="@string/Provincia"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:textSize="20sp"
-                            android:layout_marginLeft="24dp" />
-                        <View
-                            android:layout_width="fill_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="2dp"/>
-                        <TextView android:id="@+id/textView5"
-                            android:text="@string/Municipio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:textSize="20sp"
-                            android:layout_marginLeft="24dp" />
-                        <View
-                            android:layout_width="fill_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="2dp"/>
-                        <TextView android:id="@+id/textView6"
-                            android:text="@string/Correo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:textSize="20sp"
-                            android:layout_marginLeft="24dp" />
-                        <Button
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:text="Ver en mapa"
-                            android:id="@+id/button"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="30dp"
-                            style="@style/botonCustom"
-                            android:layout_marginBottom="20dp"
-                            android:onClick="clickBoton" />
-                    </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"/>
 
-                    <LinearLayout android:id="@+id/tab2"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+            <TextView android:id="@+id/textView3"
+                android:text="@string/Direccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:layout_marginLeft="24dp" />
 
-                    </LinearLayout>
-                    <LinearLayout android:id="@+id/tab3"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"/>
 
-                    </LinearLayout>
-                </FrameLayout>
-            </ScrollView>
+            <TextView android:id="@+id/textView4"
+                android:text="@string/Provincia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:layout_marginLeft="24dp" />
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"/>
+
+            <TextView android:id="@+id/textView5"
+                android:text="@string/Municipio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:layout_marginLeft="24dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"/>
+
+            <TextView android:id="@+id/textView6"
+                android:text="@string/Correo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:layout_marginLeft="24dp" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Ver en mapa"
+                android:id="@+id/button"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                style="@style/botonCustom"
+                android:layout_marginBottom="20dp"
+                android:onClick="clickBoton" />
         </LinearLayout>
-    </TabHost>
+    </ScrollView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textView"
-        android:layout_gravity="right" />
 </LinearLayout>

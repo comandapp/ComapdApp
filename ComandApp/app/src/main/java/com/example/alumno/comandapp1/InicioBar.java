@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -22,7 +23,6 @@ public class InicioBar extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_bar);
         bar=(Bar)this.getIntent().getExtras().getParcelable("bar");
-        anadirMenu();
 
         String nom="Nombre: "+bar.getNombre();
         String direc="Direccion: "+bar.getDireccion();
@@ -37,31 +37,32 @@ public class InicioBar extends ActionBarActivity {
         ((TextView)findViewById(R.id.textView4)).setText(localidad);
         ((TextView)findViewById(R.id.textView5)).setText(municipio);
         ((TextView)findViewById(R.id.textView6)).setText(correo);
+        Button btn = (Button)findViewById(R.id.button3);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Creamos el Intent
+                Intent intent = new Intent(InicioBar.this, Carta_bar.class);
+                intent.putExtra("bar",bar);
+                //Iniciamos la nueva actividad
+                startActivity(intent);
+            }
+        });
+        Button btn2 = (Button)findViewById(R.id.button4);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Creamos el Intent
+                Intent intent = new Intent(InicioBar.this, Ofertas_bar.class);
+                intent.putExtra("bar",bar);
+                //Iniciamos la nueva actividad
+                startActivity(intent);
+            }
+        });
     }
 
-    private void anadirMenu()
-    {
-        Resources res = getResources();
 
-        TabHost tabs=(TabHost)findViewById(android.R.id.tabhost);
-        tabs.setup();
-
-        TabHost.TabSpec spec = tabs.newTabSpec("Inicio");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator("Inicio", res.getDrawable(android.R.drawable.ic_dialog_map));
-
-        tabs.addTab(spec);
-
-        spec=tabs.newTabSpec("Carta");
-        spec.setContent(R.id.tab2);
-        spec.setIndicator("Carta", res.getDrawable(android.R.drawable.ic_dialog_map));
-        tabs.addTab(spec);
-        spec=tabs.newTabSpec("Ofertas");
-        spec.setContent(R.id.tab3);
-        spec.setIndicator("Ofertas", res.getDrawable(android.R.drawable.ic_dialog_map));
-        tabs.addTab(spec);
-        tabs.setCurrentTab(0);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

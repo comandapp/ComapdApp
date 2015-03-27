@@ -43,7 +43,8 @@
         </activity>
         <activity
             android:name=".InicioBar"
-            android:label="@string/title_activity_inicio_bar" >
+            android:label="@string/title_activity_inicio_bar"
+            android:noHistory="true" >
         </activity>
         <activity
             android:name=".GeneraComanda"
@@ -72,6 +73,16 @@
         <activity
             android:name=".BaresFavoritos"
             android:label="@string/title_activity_bares_favoritos" >
+        </activity>
+        <activity
+            android:name=".Carta_bar"
+            android:label="@string/title_activity_carta_bar"
+            android:noHistory="true" >
+        </activity>
+        <activity
+            android:name=".Ofertas_bar"
+            android:label="@string/title_activity_ofertas"
+            android:noHistory="true" >
         </activity>
     </application>
 
