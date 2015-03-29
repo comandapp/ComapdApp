@@ -1,19 +1,26 @@
 package com.example.alumno.comandapp1;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class BusquedaBar extends ActionBarActivity {
@@ -121,7 +128,7 @@ public class BusquedaBar extends ActionBarActivity {
         }
         else if(id == R.id.action_settings2)
         {
-            Intent intent = new Intent(this, ComandaDetallada.class);
+            Intent intent = new Intent(this, GeneraComanda.class);
             startActivity(intent);
             return true;
         }

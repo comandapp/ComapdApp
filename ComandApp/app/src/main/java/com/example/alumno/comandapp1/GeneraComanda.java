@@ -1,6 +1,7 @@
 package com.example.alumno.comandapp1;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
@@ -17,13 +18,13 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 
-public class ComandaQR extends ActionBarActivity {
+public class GeneraComanda extends ActionBarActivity {
 
     ImageView imgQR;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comanda_qr);
+        setContentView(R.layout.activity_genera_comanda);
 
         imgQR = (ImageView)findViewById(R.id.imgQR);
 
@@ -34,7 +35,7 @@ public class ComandaQR extends ActionBarActivity {
         btnPrueba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(ComandaQR.this)
+                new AlertDialog.Builder(GeneraComanda.this)
                         .setTitle("Hola")
                         .setMessage("Hola Jesusito")
                         .setCancelable(true).create().show();
