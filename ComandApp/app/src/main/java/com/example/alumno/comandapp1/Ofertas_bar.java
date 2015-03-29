@@ -7,14 +7,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 public class Ofertas_bar extends ActionBarActivity {
     private Bar bar=null;
+    ArrayList<Oferta> lo=null;
+    AdaptadorOfertas adaptador;
+    ListView lstOfertas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ofertas_bar);
+        lo=new ArrayList<Oferta>();
+        lo.add(new Oferta(1,2,12.5,"patatas","muuuuchas patatas"));
+        lo.add(new Oferta(2,3,20.5,"Kebab","asdasfdasdf"));
+        lo.add(new Oferta(3,2,52.5,"rrrrrrrrrrrr","muuuuchas rrrrrrrrrrrrrrrrr"));
+        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
+        adaptador = new AdaptadorOfertas(this, lo);
+
+        lstOfertas = (ListView)findViewById(R.id.lo);
+        lstOfertas.setAdapter(adaptador);
         Button btn = (Button)findViewById(R.id.button3);
         bar=(Bar)this.getIntent().getExtras().getParcelable("bar");
         btn.setOnClickListener(new View.OnClickListener() {

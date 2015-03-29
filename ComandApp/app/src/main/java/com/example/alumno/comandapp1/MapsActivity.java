@@ -66,14 +66,25 @@ public class MapsActivity extends FragmentActivity {
                     .build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             googleMap.addMarker(new MarkerOptions().position(myPosition).title("Posicion"));
-            Bundle b=this.getIntent().getExtras();
-            Parcelable[] parce=b.getParcelableArray("listabar");
-            Bar[] lb=new Bar[parce.length];
-            for(int i=0;i<parce.length;i++){
-                lb[i]=(Bar)parce[i];
-            }
-            cargaBares(googleMap, lb);
+        }else{
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(MapsActivity.this);
+            dlgAlert.setMessage("Error al obtener la localización.");
+            dlgAlert.setTitle("Aviso");
+            dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+                ;
+            });
+            dlgAlert.setCancelable(false);
+            dlgAlert.create().show();
         }
+        Bundle b=this.getIntent().getExtras();
+        Parcelable[] parce=b.getParcelableArray("listabar");
+        Bar[] lb=new Bar[parce.length];
+        for(int i=0;i<parce.length;i++){
+            lb[i]=(Bar)parce[i];
+        }
+        cargaBares(googleMap, lb);
     }
 
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,14 +19,28 @@ import java.util.List;
 
 
 public class Carta_bar extends ActionBarActivity {
-    private Bar bar=null;
-    List<Entrada> le=null;
+    ArrayList<Entrada> le=null;
+    AdaptadorCarta adaptador;
+    ListView lstEntradas;
+    Bar bar=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carta_bar);
 
         bar=(Bar)this.getIntent().getExtras().getParcelable("bar");
+
+        le=new ArrayList<Entrada>();
+        le.add(new Entrada(new Producto(1,"patatas","comida"),12,"descrip",null));
+        le.add(new Entrada(new Producto(2,"pats","comidsa"),12,"descrqqqqip",null));
+        le.add(new Entrada(new Producto(3,"patas","comifda"),12,"descrrtip",null));
+        le.add(new Entrada(new Producto(4,"patats","cogmida"),12,"deschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtrip",null));
+
+        adaptador = new AdaptadorCarta(this, le);
+
+        lstEntradas = (ListView)findViewById(R.id.ll);
+        lstEntradas.setAdapter(adaptador);
+
         Button btn = (Button)findViewById(R.id.button2);
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -50,30 +65,10 @@ public class Carta_bar extends ActionBarActivity {
             }
         });
 
-        le=new ArrayList<Entrada>();
-        le.add(new Entrada(new Producto(1,"patatas","comida"),12,"descrip",null));
-        le.add(new Entrada(new Producto(2,"pats","comidsa"),12,"descrqqqqip",null));
-        le.add(new Entrada(new Producto(3,"patas","comifda"),12,"descrrtip",null));
-        le.add(new Entrada(new Producto(4,"patats","cogmida"),12,"deschrtrip",null));
-        cargaCarta(le);
+
     }
 
-    public void cargaCarta(List<Entrada> le){
-        LinearLayout ll=null;
-        TextView tv=null;
-        View v=null;
-        for(int i=0;i<le.size();i++){
-            ll=(LinearLayout)findViewById(R.id.ll);
-            tv=new TextView(this);
-            tv.setText("Nombre: "+le.get(i).getProducto().getNombre()+", Precio: "+le.get(i).getPrecio());
-            ll.addView(tv);
-            v=new View(this);
-            RelativeLayout.LayoutParams rl=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,1);
-            rl.setMargins(0,2,0,0);
-            v.setLayoutParams(rl);
-            ll.addView(v);
-        }
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
