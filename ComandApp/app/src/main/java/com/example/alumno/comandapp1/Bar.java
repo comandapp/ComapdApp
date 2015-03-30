@@ -18,7 +18,12 @@ public class Bar implements Parcelable{
     private Boolean favorito;
     
     private Carta carta;
-    
+
+    public Bar (int id, String nombre){
+        this.id=id;
+        this.nombre=nombre;
+    }
+
     public Bar (int id, String nombre, String direccion ,int telefono, String correo,double latitud, double longitud, String provincia, String municipio, int vBar, int vOfertas, Boolean favorito){
         this.id=id;
         this.nombre=nombre;

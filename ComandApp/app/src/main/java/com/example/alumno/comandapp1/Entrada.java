@@ -17,7 +17,25 @@ public class Entrada
     private double precio;
     private String descripcion;
     //private BufferedImage foto;
-    
+
+    public Entrada(Producto producto) {
+        this.producto = producto;
+        precio = 0;
+        descripcion = "";
+    }
+
+    public Entrada(Producto producto, double precio) {
+        this.producto = producto;
+        this.precio = precio;
+        descripcion = "";
+    }
+
+    public Entrada(Producto producto, double precio, String descripcion) {
+        this.producto = producto;
+        this.precio = precio;
+        this.descripcion = descripcion;
+    }
+
     public Entrada(Producto producto, double precio, String descripcion, String foto) {
         this.producto = producto;
         this.precio = precio;
