@@ -1,10 +1,14 @@
 package com.example.alumno.comandapp1;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,12 +39,25 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
         {
             LayoutInflater inflater = context.getLayoutInflater();
             item = inflater.inflate(R.layout.listitem_oferta, null);
-
+            final View v=item;
             holder = new ViewHolderListadoOfertas();
+            final ViewHolderListadoOfertas vhlo=holder;
             holder.nombre = (TextView)item.findViewById(R.id.lblNombreOferta);
             holder.precio=(TextView)item.findViewById(R.id.lblPrecioOferta);
             holder.descripcion=(TextView)item.findViewById(R.id.lblDescripcionOferta);
-            item.setTag(holder);
+            ((LinearLayout)item.findViewById(R.id.LLayout)).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v)
+                {
+                    LinearLayout hl=(LinearLayout)v.findViewById(R.id.hLayout);
+                    Button but=new Button(context);
+                    but.setText("chuchi parguela");
+                    hl.addView(but);
+                    notifyDataSetChanged();
+                }
+            });
+            v.setTag(holder);
         }
         else
         {
@@ -77,5 +94,7 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
         TextView nombre;
         TextView precio;
         TextView descripcion;
+        TextView prueba;
+        Button b;
     }
 }

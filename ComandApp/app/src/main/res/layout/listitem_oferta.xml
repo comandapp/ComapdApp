@@ -7,7 +7,8 @@
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
     android:paddingLeft="10dp"
-    android:background="@drawable/estilo_barseleccionado">
+    android:background="@drawable/estilo_barseleccionado"
+    android:id="@+id/LLayout">
 
     <ImageView android:id="@+id/imgOferta"
         android:layout_width="60dp"
@@ -25,7 +26,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/hLayout">
 
             <TextView android:id="@+id/lblNombreOferta"
                 android:layout_weight="6"
