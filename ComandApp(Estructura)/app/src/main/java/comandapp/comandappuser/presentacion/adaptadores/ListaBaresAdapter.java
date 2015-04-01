@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import comandapp.comandappuser.objetos.Bar;
 import comandapp.comandappuser.R;
+import comandapp.comandappuser.objetos.Bar;
 
 /**
  * Created by G62 on 14-Mar-15.

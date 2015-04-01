@@ -4,25 +4,25 @@ import java.util.ArrayList;
 
 public class Carta {
     
-    private ArrayList<Entrada> lista;
+    private ArrayList<Linea_Carta> lista;
     
     public Carta(){
-        this.lista = new ArrayList<Entrada>();
+        this.lista = new ArrayList<Linea_Carta>();
     }
     
-    public Carta(ArrayList<Entrada> a){
+    public Carta(ArrayList<Linea_Carta> a){
         this.lista = a;
     }    
 
-    public boolean aniadeEntrada(Entrada e) {
+    public boolean aniadeEntrada(Linea_Carta e) {
         return lista.add(e);
     }
     
-    public boolean eliminaEntrada(Entrada e) {
+    public boolean eliminaEntrada(Linea_Carta e) {
         return lista.remove(e);
     }
     
-    public Entrada getEntrada(int i) {
+    public Linea_Carta getEntrada(int i) {
         return lista.get(i);
     }
     
@@ -31,7 +31,7 @@ public class Carta {
     }
 
     public Producto getProductById(int id) {
-        for(Entrada e : lista) {
+        for(Linea_Carta e : lista) {
             if(e.getProducto().getId() == id) return e.getProducto();
         }
         return null;

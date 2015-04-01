@@ -8,8 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import comandapp.comandappuser.logicanegocio.LogicaNegocio;
-import comandapp.comandappuser.presentacion.ListaBares;
+import comandapp.comandappuser.presentacion.ListadoBares;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -17,16 +16,15 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        LogicaNegocio.getInstancia().actualizaBaseDatos(this);
+        setContentView(R.layout.activity_main);
 
         Button but = (Button) findViewById(R.id.buttonListaBares);
         but.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
 
-                Intent activityChangeIntent = new Intent(MainActivity.this, ListaBares.class);
+                Intent activityChangeIntent = new Intent(MainActivity.this, ListadoBares.class);
 
                 // currentContext.startActivity(activityChangeIntent);
 

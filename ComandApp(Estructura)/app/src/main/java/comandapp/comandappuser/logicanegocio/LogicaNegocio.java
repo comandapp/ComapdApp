@@ -2,13 +2,18 @@ package comandapp.comandappuser.logicanegocio;
 
 import android.content.Context;
 
+import org.w3c.dom.Document;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import comandapp.comandappuser.objetos.Bar;
-import comandapp.comandappuser.objetos.Version;
 import comandapp.comandappuser.persistencia.Persistencia;
-import comandapp.comandappuser.webclient.WebClient;
+import comandapp.comandappuser.utilidades.DOMParser;
+import comandapp.comandappuser.webclient.XMLServerRequest;
 
 /**
  * Created by G62 on 14-Mar-15.
@@ -16,36 +21,22 @@ import comandapp.comandappuser.webclient.WebClient;
 public class LogicaNegocio {
 
     private static LogicaNegocio instancia = null;
-    private static Persistencia pers = null;
+    private static Persistencia persistencia = Persistencia.getInstancia();
+    private static ExecutorService pool = Executors.newFixedThreadPool(2);
 
     private LogicaNegocio() {
-
     }
 
-    public static LogicaNegocio getInstancia() {
+    public static LogicaNegocio getInstancia(Context c) {
         if(instancia == null) instancia = new LogicaNegocio();
         return instancia;
     }
 
-    public void actualizaBaseDatos(Context c) {
-        HashMap<Integer,Version> mainServidor = WebClient.getMain();
-        HashMap<Integer,Version> mainLocal = Persistencia.getInstancia(c).getMain();
-
-        if(mainLocal.size() == 0) {
-            poblarBaseDatos(mainServidor, c);
-        }
+    public void rellenaLViewBares(Context context, ArrayList<Bar> bares) {
+        Future<Document> response = pool.submit(new XMLServerRequest(context,"GLOC",persistencia.getMain(context)));
+        pool.execute(new DOMParser(context, response, bares));
     }
 
-    //Poco eficiente. Mejorar
-    private void poblarBaseDatos(HashMap<Integer,Version> mainServidor, Context c) {
-        ArrayList<Bar> bares = new ArrayList<Bar>();
-        for(int id : mainServidor.keySet()) {
-            bares.add(new Bar(id));
-        }
-        WebClient.actualizarInfoBar(bares);
-        WebClient.actualizarCarta(bares);
-        WebClient.actualizarOfertas(bares);
 
-        for(Bar b : bares) Persistencia.getInstancia(c).insertarBar(b);
-    }
+
 }

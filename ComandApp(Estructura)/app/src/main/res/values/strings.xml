@@ -6,4 +6,5 @@
 
     <color name="negro">#000000</color>
     <color name="gris">#0E0E0E</color>
+    <string name="title_activity_listado_bares">ListadoBares</string>
 </resources>
