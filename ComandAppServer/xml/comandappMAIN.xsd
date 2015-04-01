@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="comandappMAIN.xsd"
+    xmlns:ma="comandappMAIN.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    
+    <xs:element name="elemento" abstract="true"/>
+    
+    <xs:element name="root">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ma:main" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="main" abstract="false">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="local" type="xs:int" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="carta" type="xs:int" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="ofertas" type="xs:int" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="id_Bar" type="xs:int" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>
