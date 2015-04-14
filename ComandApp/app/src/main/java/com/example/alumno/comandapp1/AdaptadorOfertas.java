@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -50,9 +51,22 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
                 @Override
                 public void onClick(View v)
                 {
+
+                       for(int i=0;i<((ListView)context.findViewById(R.id.lo)).getChildCount();i++) {
+                           View a=(LinearLayout)((ListView)context.findViewById(R.id.lo)).getChildAt(i).findViewById(R.id.LLayout);
+                           if(a instanceof LinearLayout) {
+                               ((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayout)).removeView(((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayout)).getChildAt(2));
+                               ((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayout)).removeView(((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayout)).getChildAt(2));
+                           }
+                       }
+                       // ((ViewGroup)v.getParent().getParent()).getId();
+                       // hl.removeView(aux);
                     LinearLayout hl=(LinearLayout)v.findViewById(R.id.hLayout);
                     Button but=new Button(context);
-                    but.setText("chuchi parguela");
+                    but.setText("<<");
+                    hl.addView(but);
+                    but=new Button(context);
+                    but.setText(">>");
                     hl.addView(but);
                     notifyDataSetChanged();
                 }
