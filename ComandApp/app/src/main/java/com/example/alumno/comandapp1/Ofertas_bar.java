@@ -28,6 +28,13 @@ public class Ofertas_bar extends ActionBarActivity {
         lo.add(new Oferta(2,3,20.5,"Kebab","asdasfdasdf"));
         lo.add(new Oferta(3,2,52.5,"rrrrrrrrrrrr","muuuuchas rrrrrrrrrrrrrrrrr"));
         lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
+        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
+        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
+        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
+        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
+        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
+
+        ArrayList<LineaComanda> lComanda=new ArrayList<LineaComanda>();
         adaptador = new AdaptadorOfertas(this, lo);
 
         lstOfertas = (ListView)findViewById(R.id.lo);

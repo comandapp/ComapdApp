@@ -37,9 +37,16 @@
     </LinearLayout>
 
     <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/ll"         android:divider="#FFBD2E"
-        android:dividerHeight="2dp"/>
+        android:dividerHeight="2dp"
+        android:layout_weight=".7" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:text="Ver Comanda"
+        android:id="@+id/button5" />
 
 </LinearLayout>

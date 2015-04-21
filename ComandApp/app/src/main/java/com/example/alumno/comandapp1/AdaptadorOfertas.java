@@ -25,6 +25,7 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
     Activity context;
     ArrayList<Oferta> listadoOferta;
     ArrayList<Oferta> listadoOfertaAux;
+    ArrayList<LineaComanda> lComanda;
 
     public AdaptadorOfertas(Activity context, ArrayList<Oferta> datos) {
         super(context, R.layout.listitem_oferta, datos);
@@ -32,6 +33,10 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
         listadoOferta = datos;
         listadoOfertaAux = new ArrayList<Oferta>();
         listadoOfertaAux.addAll(listadoOferta);
+        lComanda=new ArrayList<LineaComanda>();
+        for(Oferta o:listadoOferta){
+            lComanda.add(new LineaComanda(new Entrada(new Producto(o.getId_producto(),o.getNombre())),0));
+        }
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -51,12 +56,8 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
             holder.descripcion=(TextView)item.findViewById(R.id.lblDescripcionOferta);
 
             LinearLayout hl=(LinearLayout)v.findViewById(R.id.hLayout);
-            TextView tv=new TextView(context);
+            final TextView tv=new TextView(context);
             tv.setText("0");
-            RelativeLayout.LayoutParams adminTextViewLayoutParams = new RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            tv.setLayoutParams(adminTextViewLayoutParams);
-            tv.setGravity(Gravity.CENTER_VERTICAL|Gravity.RIGHT);
             hl.addView(tv);
 
 
@@ -70,6 +71,11 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
                            View a=(LinearLayout)((ListView)context.findViewById(R.id.lo)).getChildAt(i).findViewById(R.id.LLayout);
                            if(a instanceof LinearLayout) {
                                if(((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayout)).getChildCount()!=3) {
+                                   LinearLayout ll= (LinearLayout) ((LinearLayout) a).findViewById(R.id.hLayout);
+                                   TextView textView2=(TextView)ll.findViewById(R.id.lblPrecioOferta);
+                                   LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                   llp.setMargins(10, 0, 100, 0); // llp.setMargins(left, top, right, bottom);
+                                   textView2.setLayoutParams(llp);
                                    ((LinearLayout) ((LinearLayout) a).findViewById(R.id.hLayout)).removeView(((LinearLayout) ((LinearLayout) a).findViewById(R.id.hLayout)).getChildAt(2));
                                    ((LinearLayout) ((LinearLayout) a).findViewById(R.id.hLayout)).removeView(((LinearLayout) ((LinearLayout) a).findViewById(R.id.hLayout)).getChildAt(3));
                                }
@@ -79,14 +85,62 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
                        // hl.removeView(aux);
 
                     LinearLayout hl=(LinearLayout)v.findViewById(R.id.hLayout);
+                    final TextView aux=(TextView)hl.findViewById(R.id.lblCantidadProd);
+                    final TextView textView=(TextView)hl.findViewById(R.id.lblPrecioOferta);
+                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    llp.setMargins(10, 0, 20, 0); // llp.setMargins(left, top, right, bottom);
+                    textView.setLayoutParams(llp);
 
                     Button but=new Button(context);
                     but.setText("▲");
                     but.setTextSize(40);
-                    hl.addView(but,2);
+                    but.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            int auxInt = Integer.parseInt(tv.getText().toString()) + 1;
+                            for(int i=0;i<((ListView)context.findViewById(R.id.lo)).getChildCount();i++) {
+                                View a=(LinearLayout)((ListView)context.findViewById(R.id.lo)).getChildAt(i).findViewById(R.id.LLayout);
+                                if(a instanceof LinearLayout) {
+                                    if(((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayout)).getChildCount()!=3) {
+                                        LineaComanda lc=lComanda.get(i);
+                                        lc.setCantidad(auxInt);
+                                        lComanda.remove(i);
+                                        lComanda.add(i,lc);
+                                    }
+                                }
+                            }
+
+                            tv.setText(auxInt + "");
+                        }
+                    });
+                    hl.addView(but, 2);
                     but=new Button(context);
                     but.setText("▼");
                     but.setTextSize(40);
+                    but.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v)
+                        {
+                            int auxInt=Integer.parseInt(tv.getText().toString());
+                            if(auxInt>0) {
+                                auxInt--;
+                                for(int i=0;i<((ListView)context.findViewById(R.id.lo)).getChildCount();i++) {
+                                    View a=(LinearLayout)((ListView)context.findViewById(R.id.lo)).getChildAt(i).findViewById(R.id.LLayout);
+                                    if(a instanceof LinearLayout) {
+                                        if(((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayout)).getChildCount()!=3) {
+                                            LineaComanda lc=lComanda.get(i);
+                                            lc.setCantidad(auxInt);
+                                            lComanda.remove(i);
+                                            lComanda.add(i,lc);
+                                        }
+                                    }
+                                }
+                                tv.setText(auxInt + "");
+                            }
+                        }
+                    });
                     hl.addView(but,4);
                     notifyDataSetChanged();
                 }

@@ -10,7 +10,7 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Inicio"
             android:id="@+id/button2"
             android:background="#ffff9615"
@@ -19,7 +19,7 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Carta"
             android:id="@+id/button3"
             android:background="#ffff9615"
@@ -28,7 +28,7 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Ofertas"
             android:id="@+id/button4"
             android:background="@drawable/boton_selec"
@@ -40,6 +40,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/lo"         android:divider="#FFBD2E"
-        android:dividerHeight="2dp"/>
+        android:dividerHeight="2dp"
+        android:layout_weight="0.7" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:text="Ver Comanda"
+        android:id="@+id/bComanda" />
 
 </LinearLayout>
