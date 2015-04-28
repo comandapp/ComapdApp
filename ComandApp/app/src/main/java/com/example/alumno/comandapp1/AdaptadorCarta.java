@@ -1,6 +1,8 @@
 package com.example.alumno.comandapp1;
 
 import android.app.Activity;
+
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ public class AdaptadorCarta extends ArrayAdapter<Entrada> {
     public AdaptadorCarta(Activity context, ArrayList<Entrada> datos) {
         super(context, R.layout.listitem_carta, datos);
         this.context = context;
+        final Activity con=context;
         listadoEntrada = datos;
         listadoEntradaAux = new ArrayList<Entrada>();
         listadoEntradaAux.addAll(listadoEntrada);
@@ -34,6 +37,7 @@ public class AdaptadorCarta extends ArrayAdapter<Entrada> {
         for(Entrada o:listadoEntrada){
             lComanda.add(new LineaComanda(new Entrada(o.getProducto()),0));
         }
+
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -56,6 +60,7 @@ public class AdaptadorCarta extends ArrayAdapter<Entrada> {
             LinearLayout hl=(LinearLayout)v.findViewById(R.id.hLayoutCarta);
             final TextView tv=new TextView(context);
             tv.setText("0");
+            tv.setId(R.id.but);
             hl.addView(tv);
 
             ((LinearLayout)item.findViewById(R.id.LLayoutCarta)).setOnClickListener(new View.OnClickListener() {
@@ -64,8 +69,8 @@ public class AdaptadorCarta extends ArrayAdapter<Entrada> {
                 public void onClick(View v)
                 {
 
-                    for(int i=0;i<((ListView)context.findViewById(R.id.lo)).getChildCount();i++) {
-                        View a=(LinearLayout)((ListView)context.findViewById(R.id.lo)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                    for(int i=0;i<((ListView)context.findViewById(R.id.ll)).getChildCount();i++) {
+                        View a=(LinearLayout)((ListView)context.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
                         if(a instanceof LinearLayout) {
                             if(((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayoutCarta)).getChildCount()!=3) {
                                 LinearLayout ll= (LinearLayout) ((LinearLayout) a).findViewById(R.id.hLayoutCarta);
@@ -96,8 +101,8 @@ public class AdaptadorCarta extends ArrayAdapter<Entrada> {
                         @Override
                         public void onClick(View v) {
                             int auxInt = Integer.parseInt(tv.getText().toString()) + 1;
-                            for(int i=0;i<((ListView)context.findViewById(R.id.lo)).getChildCount();i++) {
-                                View a=(LinearLayout)((ListView)context.findViewById(R.id.lo)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                            for(int i=0;i<((ListView)context.findViewById(R.id.ll)).getChildCount();i++) {
+                                View a=(LinearLayout)((ListView)context.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
                                 if(a instanceof LinearLayout) {
                                     if(((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayoutCarta)).getChildCount()!=3) {
                                         LineaComanda lc=lComanda.get(i);
@@ -123,10 +128,10 @@ public class AdaptadorCarta extends ArrayAdapter<Entrada> {
                             int auxInt=Integer.parseInt(tv.getText().toString());
                             if(auxInt>0) {
                                 auxInt--;
-                                for(int i=0;i<((ListView)context.findViewById(R.id.lo)).getChildCount();i++) {
-                                    View a=(LinearLayout)((ListView)context.findViewById(R.id.lo)).getChildAt(i).findViewById(R.id.LLayout);
+                                for(int i=0;i<((ListView)context.findViewById(R.id.ll)).getChildCount();i++) {
+                                    View a=(LinearLayout)((ListView)context.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
                                     if(a instanceof LinearLayout) {
-                                        if(((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayout)).getChildCount()!=3) {
+                                        if(((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayoutCarta)).getChildCount()!=3) {
                                             LineaComanda lc=lComanda.get(i);
                                             lc.setCantidad(auxInt);
                                             lComanda.remove(i);

@@ -23,6 +23,7 @@ public class Carta_bar extends ActionBarActivity {
     AdaptadorCarta adaptador;
     ListView lstEntradas;
     Bar bar=null;
+    ArrayList<LineaComanda> lComanda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +66,37 @@ public class Carta_bar extends ActionBarActivity {
             }
         });
 
+        lComanda=new ArrayList<LineaComanda>();
+        for(Entrada o:le){
+            lComanda.add(new LineaComanda(new Entrada(o.getProducto()),0));
+        }
+        Button but=(Button)this.findViewById(R.id.btnCarta);
+        but.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Carta_bar.this, ComandaDetallada.class);
+                for(int i=0;i<((ListView)v.findViewById(R.id.ll)).getChildCount();i++) {
+                    View a=(LinearLayout)((ListView)v.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                    if(a instanceof LinearLayout) {
+                        TextView tv=(TextView)((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayoutCarta)).findViewById(R.id.but);
+                            LineaComanda lc=lComanda.get(i);
+                            lc.setCantidad(Integer.parseInt(tv.getText().toString()));
+                            lComanda.remove(i);
+                            lComanda.add(i,lc);
+
+                    }
+                }
+                for(int i=0;i<lComanda.size();i++){
+                    if(lComanda.get(i).getCantidad()==0)
+                        lComanda.remove(i);
+                }
+                Comanda c=new Comanda(bar,lComanda);
+                //MANDAR A PERSISTENCIA
+                //Iniciamos la nueva actividad
+                startActivity(intent);
+            }
+        });
 
     }
 
