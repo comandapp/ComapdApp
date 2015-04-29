@@ -10,6 +10,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.objetos.Oferta;
+
 /**
  * Created by miauen on 29/03/2015.
  */

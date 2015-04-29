@@ -12,6 +12,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.objetos.Bar;
+import comandapp.comandappcliente.presentacion.actividades.BaresFavoritos;
+
 /**
  * Created by Jesús on 24/03/2015.
  */

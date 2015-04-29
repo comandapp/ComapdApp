@@ -11,16 +11,16 @@ public class Comanda
 {
     private Bar bar;
     private Date fecha;
-    private ArrayList<Linea_Comanda> lineasComanda;
+    private ArrayList<LineaComanda> lineasComanda;
 
     public Comanda(Bar bar)
     {
         this.setBar(bar);
         this.setFecha(Calendar.getInstance().getTime());
-        setLineasComanda(new ArrayList<Linea_Comanda>());
+        setLineasComanda(new ArrayList<LineaComanda>());
     }
 
-    public Comanda(Bar bar, ArrayList<Linea_Comanda> lineas)
+    public Comanda(Bar bar, ArrayList<LineaComanda> lineas)
     {
         this.setBar(bar);
         this.setFecha(Calendar.getInstance().getTime());
@@ -43,23 +43,23 @@ public class Comanda
         this.fecha = fecha;
     }
 
-    public ArrayList<Linea_Comanda> getLineasComanda() {
+    public ArrayList<LineaComanda> getLineasComanda() {
         return lineasComanda;
     }
 
-    public void setLineasComanda(ArrayList<Linea_Comanda> lineasComanda) {
+    public void setLineasComanda(ArrayList<LineaComanda> lineasComanda) {
         this.lineasComanda = lineasComanda;
     }
 
-    public boolean aniadeLinea(Linea_Comanda e) {
+    public boolean aniadeLinea(LineaComanda e) {
         return lineasComanda.add(e);
     }
 
-    public boolean eliminaLinea(Linea_Comanda e) {
+    public boolean eliminaLinea(LineaComanda e) {
         return lineasComanda.remove(e);
     }
 
-    public Linea_Comanda getLinea(int i) {
+    public LineaComanda getLinea(int i) {
         return lineasComanda.get(i);
     }
 
@@ -71,7 +71,7 @@ public class Comanda
     {
         double total = 0;
 
-        for(Linea_Comanda linea : lineasComanda)
+        for(LineaComanda linea : lineasComanda)
         {
             total += (linea.getEntradaProd().getPrecio() * linea.getCantidad());
         }

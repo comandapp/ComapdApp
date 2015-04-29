@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 import comandapp.comandappcliente.logicanegocio.objetos.Comanda;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
 import comandapp.comandappcliente.logicanegocio.objetos.Linea_Carta;
-import comandapp.comandappcliente.logicanegocio.objetos.Linea_Comanda;
 import comandapp.comandappcliente.logicanegocio.objetos.Producto;
 import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorComandaDetallada;
 
@@ -31,15 +31,15 @@ public class ComandaDetallada extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comanda_detallada);
 
-        ArrayList<Linea_Comanda> listadoLineasComanda = new ArrayList<Linea_Comanda>();
-        listadoLineasComanda.add(new Linea_Comanda(new Linea_Carta(new Producto(1, "Coca Cola"), 2.5), 3));
-        listadoLineasComanda.add(new Linea_Comanda(new Linea_Carta(new Producto(2, "7 UP"), 2.8), 1));
-        listadoLineasComanda.add(new Linea_Comanda(new Linea_Carta(new Producto(3, "Cerveza Franciscaner"), 4), 2));
-        listadoLineasComanda.add(new Linea_Comanda(new Linea_Carta(new Producto(4, "Combinado Barceló - Coca Cola"), 6), 1));
-        listadoLineasComanda.add(new Linea_Comanda(new Linea_Carta(new Producto(5, "Batido chocolate"), 2), 1));
-        listadoLineasComanda.add(new Linea_Comanda(new Linea_Carta(new Producto(6, "Fanta naranja"), 2.5), 3));
-        listadoLineasComanda.add(new Linea_Comanda(new Linea_Carta(new Producto(7, "Combinado Absolut - Tónica"), 6), 1));
-        listadoLineasComanda.add(new Linea_Comanda(new Linea_Carta(new Producto(8, "Bolsa de patatas"), 1.2), 2));
+        ArrayList<LineaComanda> listadoLineasComanda = new ArrayList<LineaComanda>();
+        listadoLineasComanda.add(new LineaComanda(new Linea_Carta(new Producto(1, "Coca Cola"), 2.5), 3));
+        listadoLineasComanda.add(new LineaComanda(new Linea_Carta(new Producto(2, "7 UP"), 2.8), 1));
+        listadoLineasComanda.add(new LineaComanda(new Linea_Carta(new Producto(3, "Cerveza Franciscaner"), 4), 2));
+        listadoLineasComanda.add(new LineaComanda(new Linea_Carta(new Producto(4, "Combinado Barceló - Coca Cola"), 6), 1));
+        listadoLineasComanda.add(new LineaComanda(new Linea_Carta(new Producto(5, "Batido chocolate"), 2), 1));
+        listadoLineasComanda.add(new LineaComanda(new Linea_Carta(new Producto(6, "Fanta naranja"), 2.5), 3));
+        listadoLineasComanda.add(new LineaComanda(new Linea_Carta(new Producto(7, "Combinado Absolut - Tónica"), 6), 1));
+        listadoLineasComanda.add(new LineaComanda(new Linea_Carta(new Producto(8, "Bolsa de patatas"), 1.2), 2));
 
         Comanda comanda = new Comanda(new Bar(1, "Café Madrid"), listadoLineasComanda);
 

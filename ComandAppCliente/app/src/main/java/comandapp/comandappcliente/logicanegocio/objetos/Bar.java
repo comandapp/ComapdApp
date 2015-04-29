@@ -15,7 +15,7 @@ public class Bar {
     private String Provincia;
     private String Municipio;
     private Bitmap foto;
-    
+    private Boolean favorito;
     private Version version;
     private Carta carta;
     private ArrayList<Oferta> ofertas;
@@ -52,7 +52,7 @@ public class Bar {
         this.carta = new Carta();
         this.ofertas = new ArrayList<Oferta>();
     }
-    
+
     public int getId() {
         return id;
     }
@@ -90,19 +90,28 @@ public class Bar {
     }
 
     public Bitmap getFoto() { return this.foto; }
-    
+
     public Version getVersion() {
         return this.version;
     }
-    
+
     public Carta getCarta() {
         return this.carta;
     }
-    
+
+    public Boolean getFavorito() {
+        return this.favorito;
+    }
+
+    public void setFavorito(Boolean fav)
+    {
+        this.favorito = fav;
+    }
+
     public ArrayList<Oferta> getOfertas() {
         return this.ofertas;
     }
-    
+
     public void importarInfoBar(Bar b) {
         //this.id=b.id;
         this.nombre=b.getNombre();
@@ -115,21 +124,21 @@ public class Bar {
         this.Municipio = b.getMunicipio();
         this.version.setVersionInfoLocal(b.version.getVersionInfoLocal());
     }
-    
+
     public void importarCarta(Carta c, int version) {
         this.carta.clear();
-        for(int i=0;i<c.numEntradas();i++) {
-            this.carta.aniadeEntrada(c.getEntrada(i));
+        for(int i=0;i<c.numLineas();i++) {
+            this.carta.aniadeLinea(c.getLinea(i));
         }
         this.version.setVersionCarta(version);
     }
-    
+
     public void importarOfertas(ArrayList<Oferta> o, int version) {
         this.ofertas.clear();
         for(Oferta of : o) this.ofertas.add(of);
         this.version.setVersionOfertas(version);
     }
-    
+
     public int compareTo(Bar b) {
         if(id < b.getId()) return -1;
         else if(id == b.getId()) return 0;

@@ -3,18 +3,18 @@ package comandapp.comandappcliente.logicanegocio.objetos;
 /**
  * Created by yoMismo on 30/03/2015.
  */
-public class Linea_Comanda
+public class LineaComanda
 {
     private Linea_Carta entradaProd;
     private int cantidad;
 
-    public Linea_Comanda(Linea_Carta entrada)
+    public LineaComanda(Linea_Carta entrada)
     {
         setEntradaProd(entrada);
         this.setCantidad(0);
     }
 
-    public Linea_Comanda(Linea_Carta entrada, int cantidad)
+    public LineaComanda(Linea_Carta entrada, int cantidad)
     {
         setEntradaProd(entrada);
         this.setCantidad(cantidad);

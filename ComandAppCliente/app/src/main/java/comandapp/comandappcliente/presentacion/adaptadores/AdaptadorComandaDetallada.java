@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
+
 import java.util.ArrayList;
 
-/**
- * Created by Jesús on 24/03/2015.
- */
 public class AdaptadorComandaDetallada extends ArrayAdapter<LineaComanda>
 {
     Activity context;
