@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LytContenedor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ListView android:id="@+id/ListaBares"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="#FFBD2E"
+        android:dividerHeight="2dp"/>
+
+</LinearLayout>
+<!-- From: file:/C:/Users/yoMismo/Documents/GitHub/ComapdApp/ComandApp/app/src/main/res/layout/activity_busqueda_bar.xml -->
