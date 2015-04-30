@@ -13,13 +13,13 @@ import java.util.ArrayList;
 
 import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
-import comandapp.comandappcliente.logicanegocio.objetos.Linea_Carta;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
 import comandapp.comandappcliente.logicanegocio.objetos.Producto;
 import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorCarta;
 
 
 public class Carta_bar extends ActionBarActivity {
-    ArrayList<Linea_Carta> le=null;
+    ArrayList<LineaCarta> le=null;
     AdaptadorCarta adaptador;
     ListView lstEntradas;
     Bar bar=null;
@@ -30,11 +30,11 @@ public class Carta_bar extends ActionBarActivity {
 
         bar=(Bar)this.getIntent().getExtras().getParcelable("bar");
 
-        le=new ArrayList<Linea_Carta>();
-        le.add(new Linea_Carta(new Producto(1,"patatas","comida"),12,"descrip",null));
-        le.add(new Linea_Carta(new Producto(2,"pats","comidsa"),12,"descrqqqqip",null));
-        le.add(new Linea_Carta(new Producto(3,"patas","comifda"),12,"descrrtip",null));
-        le.add(new Linea_Carta(new Producto(4,"patats","cogmida"),12,"deschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtrip",null));
+        le=new ArrayList<LineaCarta>();
+        le.add(new LineaCarta(new Producto(1,"patatas","comida"),12,"descrip",null));
+        le.add(new LineaCarta(new Producto(2,"pats","comidsa"),12,"descrqqqqip",null));
+        le.add(new LineaCarta(new Producto(3,"patas","comifda"),12,"descrrtip",null));
+        le.add(new LineaCarta(new Producto(4,"patats","cogmida"),12,"deschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtrip",null));
 
         adaptador = new AdaptadorCarta(this, le);
 

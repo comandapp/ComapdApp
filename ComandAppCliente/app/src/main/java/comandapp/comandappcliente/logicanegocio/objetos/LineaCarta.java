@@ -14,14 +14,14 @@ import android.util.Base64;
  *
  * @author G62
  */
-public class Linea_Carta {
+public class LineaCarta {
  
     private Producto producto;
     private double precio;
     private String descripcion;
     private Bitmap foto;
     
-    public Linea_Carta(Producto producto, double precio, String descripcion, String foto) {
+    public LineaCarta(Producto producto, double precio, String descripcion, String foto) {
         this.producto = producto;
         this.precio = precio;
         this.descripcion=descripcion;

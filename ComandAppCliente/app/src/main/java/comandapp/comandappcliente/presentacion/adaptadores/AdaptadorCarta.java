@@ -11,28 +11,28 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import comandapp.comandappcliente.R;
-import comandapp.comandappcliente.logicanegocio.objetos.Linea_Carta;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
 
 /**
  * Created by miauen on 29/03/2015.
  */
-public class AdaptadorCarta extends ArrayAdapter<Linea_Carta> {
+public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
     Activity context;
-    ArrayList<Linea_Carta> listadoEntrada;
-    ArrayList<Linea_Carta> listadoEntradaAux;
+    ArrayList<LineaCarta> listadoEntrada;
+    ArrayList<LineaCarta> listadoEntradaAux;
 
-    public AdaptadorCarta(Activity context, ArrayList<Linea_Carta> datos) {
+    public AdaptadorCarta(Activity context, ArrayList<LineaCarta> datos) {
         super(context, R.layout.listitem_carta, datos);
         this.context = context;
         listadoEntrada = datos;
-        listadoEntradaAux = new ArrayList<Linea_Carta>();
+        listadoEntradaAux = new ArrayList<LineaCarta>();
         listadoEntradaAux.addAll(listadoEntrada);
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         View item = convertView;
         ViewHolderListadoEntradas holder;
-        final Linea_Carta e = listadoEntrada.get(position);
+        final LineaCarta e = listadoEntrada.get(position);
 
         if(item == null)
         {
@@ -65,7 +65,7 @@ public class AdaptadorCarta extends ArrayAdapter<Linea_Carta> {
         }
         else
         {
-            for (Linea_Carta e : listadoEntradaAux)
+            for (LineaCarta e : listadoEntradaAux)
             {
                 if (e.getProducto().getNombre().toLowerCase(Locale.getDefault()).contains(charText))
                 {

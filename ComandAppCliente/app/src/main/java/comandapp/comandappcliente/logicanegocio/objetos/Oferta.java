@@ -1,40 +1,52 @@
 package comandapp.comandappcliente.logicanegocio.objetos;
 
-import android.graphics.Bitmap;
-
-import java.util.ArrayList;
-
 public class Oferta {
-    
-    private int id;
-    private ArrayList<Producto> productos;
-    private double precio;
+
+    private String nombre;
     private String descripcion;
-    private Bitmap foto;
-    
-    public Oferta(int id, double precio, String descripcion, Bitmap foto){
-        this.id = id;
-        this.productos = new ArrayList<Producto>();
-        this.precio = precio;
-        this.descripcion = descripcion;
-        this.foto = foto;
+    private int id_bar;
+    private int id_producto;
+    private double precio;
+
+    public Oferta(int id_bar, int id_producto, double precio,String nombre, String descripcion){
+        this.id_bar=id_bar;
+        this.id_producto=id_producto;
+        this.precio=precio;
+        this.nombre=nombre;
+        this.descripcion=descripcion;
     }
 
-    public int getId() {
-        return id;
+    public int getIdBar() {
+        return id_bar;
     }
-    
-    public ArrayList<Producto> getProductos() {
-        return productos;
+
+    public void setIdBar(int id_bar) {
+        this.id_bar = id_bar;
+    }
+
+    public int getIdProducto() {
+        return id_producto;
+    }
+
+    public void setIdProducto(int id_producto) {
+        this.id_producto = id_producto;
     }
 
     public double getPrecio() {
         return precio;
     }
 
-    public String getDescripcion() { return descripcion; }
-
-    public Bitmap getFoto() {
-        return foto;
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
+
+    public String getNombre(){return nombre;}
+
+    public void setNombre(String nombre){this.nombre=nombre;}
+
+    public String getDescripcion(){return descripcion;}
+
+    public void setDescripcion(String descripcion){this.descripcion=descripcion;}
+
 }
+

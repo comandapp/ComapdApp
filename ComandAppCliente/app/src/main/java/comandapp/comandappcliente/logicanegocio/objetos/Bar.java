@@ -8,7 +8,7 @@ public class Bar {
     private int id;
     private String nombre;
     private String direccion;
-    private int telefono;
+    private String telefono;
     private String correo;
     private double latitud;
     private double longitud;
@@ -24,19 +24,20 @@ public class Bar {
         this.id = id;
         this.nombre="";
         this.direccion="";
-        this.telefono=0;
+        this.telefono="";
         this.correo="";
         this.latitud=0;
         this.longitud=0;
         this.Provincia="";
         this.Municipio="";
         this.foto = null;
+        this.favorito=false;
         this.version = new Version();
         this.carta = new Carta();
         this.ofertas = new ArrayList<Oferta>();
     }
 
-    public Bar (int id, String nombre, String direccion ,int telefono, String correo,double latitud, double longitud, String provincia, String municipio, Bitmap foto, int vInfoLocal){
+    public Bar (int id, String nombre, String direccion ,String telefono, String correo,double latitud, double longitud, String provincia, String municipio, Bitmap foto, Boolean favorito, int vInfoLocal){
         this.id=id;
         this.nombre=nombre;
         this.direccion=direccion;
@@ -47,6 +48,7 @@ public class Bar {
         this.Provincia=provincia;
         this.Municipio=municipio;
         this.foto = foto;
+        this.favorito=favorito;
         this.version = new Version();
         this.version.setVersionInfoLocal(vInfoLocal);
         this.carta = new Carta();
@@ -65,7 +67,7 @@ public class Bar {
         return direccion;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
@@ -91,16 +93,14 @@ public class Bar {
 
     public Bitmap getFoto() { return this.foto; }
 
+    public Boolean getFavorito() { return this.favorito; }
+
     public Version getVersion() {
         return this.version;
     }
 
     public Carta getCarta() {
         return this.carta;
-    }
-
-    public Boolean getFavorito() {
-        return this.favorito;
     }
 
     public void setFavorito(Boolean fav)

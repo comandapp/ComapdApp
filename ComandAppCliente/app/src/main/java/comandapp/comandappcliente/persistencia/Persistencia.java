@@ -78,17 +78,18 @@ public class Persistencia {
                     c.getInt(0),
                     c.getString(1),
                     c.getString(2),
-                    c.getInt(3),
-                    c.getString(9),
+                    c.getString(3),
+                    c.getString(10),
                     c.getDouble(5),
                     c.getDouble(4),
                     c.getString(6),
                     c.getString(7),
                     ImgCodec.base64ToBitmap(c.getString(8)),
-                    c.getInt(10)
+                    (c.getInt(9) == 1) ? true : false,
+                    c.getInt(11)
             );
-            b.getVersion().setVersionCarta(c.getInt(11));
-            b.getVersion().setVersionOfertas(c.getInt(12));
+            b.getVersion().setVersionCarta(c.getInt(12));
+            b.getVersion().setVersionOfertas(c.getInt(13));
 
             ret.add(b);
         }
@@ -125,6 +126,7 @@ public class Persistencia {
                     "Provincia='" +b.getProvincia()+"',"+
                     "Municipio='" +b.getMunicipio()+"',"+
                     "Foto='" +b.getFoto()+"',"+
+                    "Favorito="+((b.getFavorito()) ? 1 : 0)+","+
                     "Correo='" +b.getCorreo()+"',"+
                     "VersionInfoBar=" +b.getVersion().getVersionInfoLocal()+","+
                     "VersionCarta=" +b.getVersion().getVersionCarta()+","+
@@ -169,7 +171,7 @@ public class Persistencia {
             SQLiteDatabase dbw = sql.getWritableDatabase();
 
             try {
-                dbw.execSQL("INSERT INTO bar (Id_Bar, Nombre, Direccion, Telefono, Latitud, Longitud, Provincia, Municipio, Correo, VersionInfoBar, VersionCarta, VersionOfertas) VALUES (" +
+                dbw.execSQL("INSERT INTO bar (Id_Bar, Nombre, Direccion, Telefono, Latitud, Longitud, Provincia, Municipio, Foto, Favorito, Correo, VersionInfoBar, VersionCarta, VersionOfertas) VALUES (" +
                         b.getId() + ", " +
                         b.getNombre() + ", " +
                         b.getDireccion() + ", " +
@@ -178,12 +180,14 @@ public class Persistencia {
                         b.getLongitud() + ", " +
                         b.getProvincia() + ", " +
                         b.getMunicipio() + ", " +
+                        ImgCodec.bitmapToBase64(b.getFoto()) + ", " +
+                        ((b.getFavorito()) ? 1 : 0) + ", " +
                         b.getCorreo() + ", " +
                         b.getVersion().getVersionInfoLocal() + ", " +
                         b.getVersion().getVersionCarta() + ", " +
                         b.getVersion().getVersionOfertas() + ");");
 
-                Linea_Carta e;
+                LineaCarta e;
                 for (int i = 0; i < b.getCarta().numLineas(); i++) {
                     e = b.getCarta().getLinea(i);
                     if (!existeProducto((SQLHelper) sql, e.getProducto()))
@@ -199,18 +203,7 @@ public class Persistencia {
                 Oferta o;
                 for (int i = 0; i < b.getOfertas().size(); i++) {
                     o = b.getOfertas().get(i);
-                    String productString = "";
-                    for (Producto p : o.getProductos()) {
-                        productString += p.getId() + ",";
-                    }
-                    productString = productString.substring(0, productString.length() - 1);
-                    dbw.execSQL("INSERT INTO oferta (Id_Oferta, Id_Bar, Precio, Descripcion, Productos, Foto) VALUES (" +
-                            o.getId() + ", " +
-                            b.getId() + ", " +
-                            o.getPrecio() + ", " +
-                            o.getDescripcion() + ", " +
-                            productString + ", " +
-                            o.getFoto() + ");");
+                    insertarOferta(con, o);
                 }
 
 
@@ -265,7 +258,7 @@ public class Persistencia {
 
         Cursor c = dbr.rawQuery("SELECT * FROM carta INNER JOIN producto ON carta.Id_Producto = producto.Id_Producto WHERE carta.Id_Bar = ?;", new String[]{Integer.toString(id_Bar)});
         while (c.moveToNext()) {
-            carta.aniadeLinea(new Linea_Carta(
+            carta.aniadeLinea(new LineaCarta(
                     new Producto(
                             c.getInt(0),
                             c.getString(6),
@@ -278,7 +271,7 @@ public class Persistencia {
         return carta;
     }
 
-    public void insertarCarta(Context con, int id_Bar, Linea_Carta e) {
+    public void insertarCarta(Context con, int id_Bar, LineaCarta e) {
         SQLiteOpenHelper sql = new SQLHelper(con, "ComandappClient", null, 1);
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
@@ -292,7 +285,7 @@ public class Persistencia {
         sql.close();
     }
 
-    private boolean existeLineaEnCarta(SQLHelper sql, int id_Bar, Linea_Carta e) {
+    private boolean existeLineaEnCarta(SQLHelper sql, int id_Bar, LineaCarta e) {
         SQLiteDatabase dbr = sql.getReadableDatabase();
         Cursor c = dbr.rawQuery("SELECT Id_Bar FROM carta WHERE Id_Bar="+id_Bar+" AND Id_Producto="+e.getProducto().getId()+";", null);
 
@@ -309,7 +302,7 @@ public class Persistencia {
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
         for(Map.Entry<Integer,Carta> tupla : cartas.entrySet()) {
-            Linea_Carta e;//Se recorren las entradas de cada carta comprobando si existe el producto
+            LineaCarta e;//Se recorren las entradas de cada carta comprobando si existe el producto
             for(int i=0;i<tupla.getValue().numLineas();i++) {
                 e = tupla.getValue().getLinea(i);
                 //Si no existe el producto se inserta
@@ -342,61 +335,47 @@ public class Persistencia {
         SQLiteOpenHelper sql = new SQLHelper(con, "ComandappClient", null, 1);
         SQLiteDatabase dbr = sql.getReadableDatabase();
 
-        Cursor c = dbr.rawQuery("SELECT * FROM oferta WHERE Id_Bar = ?;", new String[]{Integer.toString(id_Bar)});
-        while (c.moveToNext()) {
-            Oferta o = new Oferta(
-                    c.getInt(0),
-                    c.getDouble(2),
-                    "",
-                    ImgCodec.base64ToBitmap(c.getString(4))
-            );
-            String[] idArray = c.getString(3).split(",");
-            for (String s : idArray) {
-                Producto p = getProducto(sql, s);
-                if (p != null) o.getProductos().add(p);
-                else {/*Producto no existente*/}
-            }
-            ofertas.add(o);
-        }
+        Cursor c = dbr.rawQuery("SELECT * FROM oferta WHERE Id_Bar = ?;", new String[]{ ""+id_Bar });
 
+        while(c.moveToNext()) {
+            ofertas.add(new Oferta(c.getInt(0),c.getInt(1),c.getDouble(2),c.getString(3),c.getString(4)));
+        }
         return ofertas;
     }
 
-    private void actualizarOfertas(Context con, HashMap<Integer, ArrayList<Oferta>> listaOfertas) {
+    public ArrayList<Oferta> getOfertasByProducto(Context con, int id_Producto) {
+        ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
+        SQLiteOpenHelper sql = new SQLHelper(con, "ComandappClient", null, 1);
+        SQLiteDatabase dbr = sql.getReadableDatabase();
+
+        Cursor c = dbr.rawQuery("SELECT * FROM oferta WHERE Id_Producto = ?;", new String[]{ ""+id_Producto });
+
+        while(c.moveToNext()) {
+            ofertas.add(new Oferta(c.getInt(0),c.getInt(1),c.getDouble(2),c.getString(3),c.getString(4)));
+        }
+        return ofertas;
+    }
+
+    public void insertarOferta(Context con, Oferta o) {
         SQLiteOpenHelper sql = new SQLHelper(con, "ComandappClient", null, 1);
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
-        for(Map.Entry<Integer, ArrayList<Oferta>> tupla : listaOfertas.entrySet()) {
-            for(Oferta o : tupla.getValue()) {
+        dbw.execSQL("INSERT INTO oferta (Id_Bar, Id_Producto, Precio, Nombre, Descripcion) VALUES (" +
+                o.getIdBar() + ", " +
+                o.getIdProducto() + ", " +
+                o.getPrecio() + ", " +
+                o.getNombre() + ", " +
+                o.getDescripcion() + ");");
 
-                String idArrayProductos = "";
-                for(Producto p : o.getProductos()) {
-                    //Si no existe el producto se inserta
-                    if (!existeProducto((SQLHelper) sql, p)) {
-                        insertaProducto(p, dbw);
-                    }
-                    idArrayProductos += p.getId()+",";
-                }
-                idArrayProductos = idArrayProductos.substring(0, idArrayProductos.length()-1);
-
-                dbw.execSQL("UPDATE oferta SET " +
-                        "Precio=" + o.getPrecio() + ", " +
-                        "Descripcion='" + o.getDescripcion() + "', " +
-                        "Productos='" + idArrayProductos + "', " +
-                        "Foto='" + ImgCodec.bitmapToBase64(o.getFoto()) + "' " +
-                        "WHERE Id_Oferta=" + o.getId() + " AND " +
-                        "Id_Bar=" + tupla.getKey() + ");");
-            }
-        }
+        dbw.close();
+        sql.close();
     }
-
-
 
 
 
 
     //PRODUCTOS-------------------------------------------------------------------------------------
-    private Producto getProducto(SQLiteOpenHelper sql, String id) {
+    private Producto getProduct(SQLiteOpenHelper sql, String id) {
         Producto p = null;
 
         SQLiteDatabase dbr = sql.getReadableDatabase();
@@ -410,6 +389,11 @@ public class Persistencia {
 
         dbr.close();
         return null;
+    }
+
+    public Producto getProducto(Context con, int id) {
+        SQLiteOpenHelper sql = new SQLHelper(con, "ComandappClient", null, 1);
+        return getProduct(sql, ""+id);
     }
 
     public ArrayList<Producto> getProductos(Context con, ArrayList<Integer> ids) {
