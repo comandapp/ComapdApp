@@ -1,4 +1,4 @@
-package com.example.alumno.comandapp1;
+package com.example.alumno.comandappCliente;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,9 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class BusquedaBar extends ActionBarActivity {

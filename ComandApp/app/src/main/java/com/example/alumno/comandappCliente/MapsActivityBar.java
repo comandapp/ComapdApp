@@ -1,12 +1,9 @@
-package com.example.alumno.comandapp1;
+package com.example.alumno.comandappCliente;
 
 import android.location.Criteria;
-import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-        <activity android:name="com.example.alumno.comandapp1.ComandaDetallada"
+        <activity android:name="com.example.alumno.comandappCliente.ComandaDetallada"
             android:label="@string/title_activity_comanda_detallada"></activity>
     </application>
 

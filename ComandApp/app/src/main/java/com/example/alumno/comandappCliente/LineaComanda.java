@@ -1,4 +1,4 @@
-package com.example.alumno.comandapp1;
+package com.example.alumno.comandappCliente;
 
 /**
  * Created by yoMismo on 30/03/2015.

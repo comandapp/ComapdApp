@@ -1,4 +1,4 @@
-package com.example.alumno.comandapp1;
+package com.example.alumno.comandappCliente;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
