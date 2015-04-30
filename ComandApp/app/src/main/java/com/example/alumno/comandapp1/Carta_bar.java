@@ -76,8 +76,8 @@ public class Carta_bar extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Carta_bar.this, ComandaDetallada.class);
-                for(int i=0;i<((ListView)v.findViewById(R.id.ll)).getChildCount();i++) {
-                    View a=(LinearLayout)((ListView)v.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                for(int i=0;i<((ListView)findViewById(R.id.ll)).getChildCount();i++) {
+                    View a=(LinearLayout)((ListView)findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
                     if(a instanceof LinearLayout) {
                         TextView tv=(TextView)((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayoutCarta)).findViewById(R.id.but);
                             LineaComanda lc=lComanda.get(i);

@@ -10,14 +10,17 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 
 public class Ofertas_bar extends ActionBarActivity {
     private Bar bar=null;
+    ArrayList<LineaComanda> lComan;
     ArrayList<Oferta> lo=null;
     AdaptadorOfertas adaptador;
+    ArrayList<Entrada> le=null;
     ListView lstOfertas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +30,6 @@ public class Ofertas_bar extends ActionBarActivity {
         lo.add(new Oferta(1,2,12.5,"patatas","muuuuchas patatas"));
         lo.add(new Oferta(2,3,20.5,"Kebab","asdasfdasdf"));
         lo.add(new Oferta(3,2,52.5,"rrrrrrrrrrrr","muuuuchas rrrrrrrrrrrrrrrrr"));
-        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
-        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
-        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
-        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
-        lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
         lo.add(new Oferta(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
 
         ArrayList<LineaComanda> lComanda=new ArrayList<LineaComanda>();
@@ -58,6 +56,38 @@ public class Ofertas_bar extends ActionBarActivity {
                 //Creamos el Intent
                 Intent intent = new Intent(Ofertas_bar.this, InicioBar.class);
                 intent.putExtra("bar",bar);
+                //Iniciamos la nueva actividad
+                startActivity(intent);
+            }
+        });
+
+        lComan=new ArrayList<LineaComanda>();
+        for(Oferta o:lo){
+            lComan.add(new LineaComanda(new Entrada(new Producto(o.getId_producto(),o.getNombre()),o.getPrecio(),o.getDescripcion()),0));
+        }
+        Button but=(Button)this.findViewById(R.id.bComanda);
+        but.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Ofertas_bar.this, ComandaDetallada.class);
+                for(int i=0;i<((ListView)findViewById(R.id.lo)).getChildCount();i++) {
+                    View a=(LinearLayout)((ListView)findViewById(R.id.lo)).getChildAt(i).findViewById(R.id.LLayout);
+                    if(a instanceof LinearLayout) {
+                        TextView tv=(TextView)((LinearLayout)((LinearLayout)a).findViewById(R.id.hLayout)).findViewById(R.id.but2);
+                        LineaComanda lc=lComan.get(i);
+                        lc.setCantidad(Integer.parseInt(tv.getText().toString()));
+                        lComan.remove(i);
+                        lComan.add(i,lc);
+
+                    }
+                }
+                for(int i=0;i<lComan.size();i++){
+                    if(lComan.get(i).getCantidad()==0)
+                        lComan.remove(i);
+                }
+                Comanda c=new Comanda(bar,lComan);
+                //MANDAR A PERSISTENCIA
                 //Iniciamos la nueva actividad
                 startActivity(intent);
             }

@@ -35,7 +35,7 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
         listadoOfertaAux.addAll(listadoOferta);
         lComanda=new ArrayList<LineaComanda>();
         for(Oferta o:listadoOferta){
-            lComanda.add(new LineaComanda(new Entrada(new Producto(o.getId_producto(),o.getNombre())),0));
+            lComanda.add(new LineaComanda(new Entrada(new Producto(o.getId_producto(),o.getNombre()),o.getPrecio(),o.getDescripcion()),0));
         }
     }
 
@@ -58,6 +58,7 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
             LinearLayout hl=(LinearLayout)v.findViewById(R.id.hLayout);
             final TextView tv=new TextView(context);
             tv.setText("0");
+            tv.setId(R.id.but2);
             hl.addView(tv);
 
 
