@@ -12,19 +12,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorListadoBares;
 
 
 public class BusquedaBar extends ActionBarActivity {
 
-    ListView lstBares;
-    AdaptadorListadoBares adaptador;
-    EditText editFilter;
+    private ListView lstBares;
+    private AdaptadorListadoBares adaptador;
+    private EditText editFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,36 +36,16 @@ public class BusquedaBar extends ActionBarActivity {
         //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setIcon(R.drawable.logo_comandapp);
 
-        final ArrayList<Bar> listadoBares = new ArrayList<Bar>();
-        listadoBares.add(new Bar(1,"nombre","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0, true));
-        listadoBares.add(new Bar(1,"nombre2","dire",12345,"aaa",22.123123,22.123123,"aaaa","bbb",0,0, false));
-        listadoBares.add(new Bar(1,"nombre3","dire",12345,"aaa",32.123123,32.123123,"aaaa","bbb",0,0, true));
-        listadoBares.add(new Bar("Antrepuentes 1", true));
-        listadoBares.add(new Bar("Antrepuentes 1", true));
-        listadoBares.add(new Bar("Entrepuentes 1", false));
-        listadoBares.add(new Bar("Dntrepuentes 1", true));
-        listadoBares.add(new Bar("Dntrepuentes 1", false));
-        listadoBares.add(new Bar("Entrepuentes 1", false));
+        ArrayList<Bar> bares = LogicaNegocio.getInstancia().getAllBaresHuecos(this);
+        adaptador = new AdaptadorListadoBares(this, bares);
 
-        adaptador = new AdaptadorListadoBares(this, listadoBares);
-
-        lstBares = (ListView)findViewById(R.id.ListaBares);
+        ListView lstBares = (ListView)findViewById(R.id.ListaBares);
 
         lstBares.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-
-                Bar opcionSeleccionada = (Bar)a.getItemAtPosition(position);
-
                 Intent intent = new Intent(BusquedaBar.this, InicioBar.class);
-                intent.putExtra("bar",opcionSeleccionada);
-                //Creamos la información a pasar entre actividades
-                //Bundle b = new Bundle();
-                //b.put("BAR", opcionSeleccionada);
-
-                //Añadimos la información al intent
-                //intent.putExtra("BAR", opcionSeleccionada);
-
-                //Iniciamos la nueva actividad
+                Bar b = (Bar)a.getItemAtPosition(position);
+                intent.putExtra("id_bar",b.getIdBar());
                 startActivity(intent);
             }
         });

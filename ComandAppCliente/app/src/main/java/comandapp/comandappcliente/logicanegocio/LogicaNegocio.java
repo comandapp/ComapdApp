@@ -88,4 +88,13 @@ public class LogicaNegocio {
         }
         return array;
     }
+
+    public ArrayList<LineaCarta> getCarta(Context con, int id_Bar) {
+        return persistencia.getCarta(con,id_Bar);
+    }
+
+    public ArrayList<Oferta> getOfertas(Context con, int id_Bar) {
+        return persistencia.getOfertas(con,id_Bar);
+    }
+
 }

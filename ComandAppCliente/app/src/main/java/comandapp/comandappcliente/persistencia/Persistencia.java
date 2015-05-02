@@ -105,10 +105,10 @@ public class Persistencia {
     //Función privada auxiliar. Rellena una lista de objetos Bar con sus cartas y ofertas correspondientes
     private void rellenaBares(Context con, ArrayList<Bar> bares) {
         for(Bar bar : bares) {
-            Carta c = getCarta(con, bar.getId());
-            for(int i =0; i<c.numLineas();i++) {
-                bar.getCarta().aniadeLinea(c.getLinea(i));
-            }
+            ArrayList<LineaCarta> c = getCarta(con, bar.getIdBar());
+            ArrayList<Oferta> o = getOfertas(con, bar.getIdBar());
+            bar.setCarta(c);
+            bar.setOfertas(o);
         }
     }
 
@@ -131,7 +131,7 @@ public class Persistencia {
                     "VersionInfoBar=" +b.getVersion().getVersionInfoLocal()+","+
                     "VersionCarta=" +b.getVersion().getVersionCarta()+","+
                     "VersionOfertas=" +b.getVersion().getVersionOfertas()+" "+
-                    "WHERE Id_Bar=" +b.getId()+");");
+                    "WHERE Id_Bar=" +b.getIdBar()+");");
 
         }
         dbw.close();
@@ -153,18 +153,19 @@ public class Persistencia {
 
     //Función privada auxiliar. Genera un string adecuado para una consulta "SELECT * WHERE id IN _"
     private String idArrayToSqlSelect(int[] idArray) {
-        String ret = idArray.toString();
-        //idArrayString ahora vale = "[23,343,33,55,43]"
-        ret = ret.replace("[", "(");
-        ret = ret.replace("]", ")");
-        //Ahora "(23,343,33,55,43)" por lo que sirve para un SELECT
+        String ret = "(";
+        for(int i : idArray) {
+            ret+= i+",";
+        }
+        ret = ret.substring(0,ret.length()-1);
+        ret += ")";
         return ret;
     }
 
     //Inserta un nuevo bar en la base de datos.
     //Si algún producto de la carta no existe se crea también.
     public boolean insertarBar(Context con, Bar b) {
-        if(existeBar(con,b.getId())) {
+        if(existeBar(con,b.getIdBar())) {
             return false;
         } else {
             SQLiteOpenHelper sql = new SQLHelper(con, "ComandappClient", null, 1);
@@ -172,7 +173,7 @@ public class Persistencia {
 
             try {
                 dbw.execSQL("INSERT INTO bar (Id_Bar, Nombre, Direccion, Telefono, Latitud, Longitud, Provincia, Municipio, Foto, Favorito, Correo, VersionInfoBar, VersionCarta, VersionOfertas) VALUES (" +
-                        b.getId() + ", " +
+                        b.getIdBar() + ", " +
                         b.getNombre() + ", " +
                         b.getDireccion() + ", " +
                         b.getTelefono() + ", " +
@@ -187,14 +188,12 @@ public class Persistencia {
                         b.getVersion().getVersionCarta() + ", " +
                         b.getVersion().getVersionOfertas() + ");");
 
-                LineaCarta e;
-                for (int i = 0; i < b.getCarta().numLineas(); i++) {
-                    e = b.getCarta().getLinea(i);
+                for (LineaCarta e : b.getCarta()) {
                     if (!existeProducto((SQLHelper) sql, e.getProducto()))
                         insertaProducto(e.getProducto(), dbw);
                     dbw.execSQL("INSERT INTO carta (Id_Producto, Id_Bar, Precio, Descripcion, Foto) VALUES (" +
                             e.getProducto().getId() + ", " +
-                            b.getId() + ", " +
+                            b.getIdBar() + ", " +
                             e.getPrecio() + ", " +
                             e.getDescripcion() + ", " +
                             e.getFoto() + ");");
@@ -251,14 +250,14 @@ public class Persistencia {
 
 
     //CARTA ----------------------------------------------------------------------------------------
-    public Carta getCarta(Context con, int id_Bar) {
-        Carta carta = new Carta();
+    public ArrayList<LineaCarta> getCarta(Context con, int id_Bar) {
+        ArrayList<LineaCarta> carta = new ArrayList<LineaCarta>();
         SQLiteOpenHelper sql = new SQLHelper(con, "ComandappClient", null, 1);
         SQLiteDatabase dbr = sql.getReadableDatabase();
 
         Cursor c = dbr.rawQuery("SELECT * FROM carta INNER JOIN producto ON carta.Id_Producto = producto.Id_Producto WHERE carta.Id_Bar = ?;", new String[]{Integer.toString(id_Bar)});
         while (c.moveToNext()) {
-            carta.aniadeLinea(new LineaCarta(
+            carta.add(new LineaCarta(
                     new Producto(
                             c.getInt(0),
                             c.getString(6),
@@ -297,24 +296,23 @@ public class Persistencia {
         return false;
     }
 
-    public void actualizaCarta(Context con, HashMap<Integer,Carta> cartas) {
+    public void actualizaCarta(Context con, HashMap<Integer,ArrayList<LineaCarta>> cartas) {
         SQLiteOpenHelper sql = new SQLHelper(con, "ComandappClient", null, 1);
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
-        for(Map.Entry<Integer,Carta> tupla : cartas.entrySet()) {
-            LineaCarta e;//Se recorren las entradas de cada carta comprobando si existe el producto
-            for(int i=0;i<tupla.getValue().numLineas();i++) {
-                e = tupla.getValue().getLinea(i);
+        for(Map.Entry<Integer,ArrayList<LineaCarta>> tupla : cartas.entrySet()) {
+            //Se recorren las entradas de cada carta comprobando si existe el producto
+            for(LineaCarta linea : tupla.getValue()) {
                 //Si no existe el producto se inserta
-                if (!existeProducto((SQLHelper) sql, e.getProducto())) {
-                    insertaProducto(e.getProducto(), dbw);
+                if (!existeProducto((SQLHelper) sql, linea.getProducto())) {
+                    insertaProducto(linea.getProducto(), dbw);
                 }
 
                 dbw.execSQL("UPDATE carta SET " +
-                        "Precio=" + e.getPrecio() + ", " +
-                        "Descripcion='" + e.getDescripcion() + "', " +
-                        "Foto='" + ImgCodec.bitmapToBase64(e.getFoto()) + "' " +
-                        "WHERE Id_Producto=" + e.getProducto().getId() + " AND " +
+                        "Precio=" + linea.getPrecio() + ", " +
+                        "Descripcion='" + linea.getDescripcion() + "', " +
+                        "Foto='" + ImgCodec.bitmapToBase64(linea.getFoto()) + "' " +
+                        "WHERE Id_Producto=" + linea.getProducto().getId() + " AND " +
                         "Id_Bar=" + tupla.getKey() + ");");
 
             }

@@ -40,12 +40,7 @@ public class BaresFavoritos extends ActionBarActivity {
 
         ArrayList<Bar> listadoBares = new ArrayList<Bar>();
         ArrayList<Bar> listadoBaresAux = new ArrayList<Bar>();
-        listadoBares.add(new Bar(1,"Favorito 1","dire",12345,"aaa",12.123123,12.123123,"aaaa","bbb",0,0, true));
-        listadoBares.add(new Bar(1,"nombre1","dire",12345,"aaa",22.123123,22.123123,"aaaa","bbb",0,0, false));
-        listadoBares.add(new Bar(1,"Favorito 2","dire",12345,"aaa",32.123123,32.123123,"aaaa","bbb",0,0, true));
-        listadoBares.add(new Bar("Favorito 3", true));
-        listadoBares.add(new Bar("nombre2", false));
-        listadoBares.add(new Bar("Favorito 4", true));
+
 
 
         for(int i = 0; i < listadoBares.size(); i++)
@@ -68,7 +63,7 @@ public class BaresFavoritos extends ActionBarActivity {
                 Bar opcionSeleccionada = (Bar)a.getItemAtPosition(position);
 
                 Intent intent = new Intent(BaresFavoritos.this, InicioBar.class);
-                intent.putExtra("bar",opcionSeleccionada);
+                //intent.putExtra("bar",opcionSeleccionada);
                 startActivity(intent);
             }
         });

@@ -1,6 +1,7 @@
 package comandapp.comandappcliente.logicanegocio.utilidades;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import org.w3c.dom.Document;
@@ -37,7 +38,7 @@ public class DOMParser implements Runnable {
             if(doc != null) {
                 int[] idActualizados = DOMParser.getIdBaresActualizados(doc);
                 if(idActualizados != null) {
-                    persistencia.getBaresIntoArray(context,idActualizados,bares,0);
+                    //persistencia.getBaresIntoArray(context,idActualizados,bares,0);----------------------------------
                 }
                 DOMParser.rellenaArrayBaresLight(bares,doc);
 
@@ -96,11 +97,25 @@ public class DOMParser implements Runnable {
     }
 
     public static Bar parseBarLight(Element element) {
+        return null;
+        /*
         NodeList content = element.getChildNodes();
         String [] argum = new String[9];
         for (int j = 0; j < 9; j++) {
             argum[j + 2] = content.item(j).getFirstChild().getNodeValue();
         }
+        int id,
+        String nombre,
+        String direccion ,
+        String telefono,
+        String correo,
+        double latitud,
+        double longitud,
+        String provincia,
+        String municipio,
+                Bitmap        foto,
+        Boolean favorito,
+        int vInfoLocal
 
         return new Bar(Integer.parseInt(element.getAttribute("id")),
                 argum[0],//Nombre
@@ -113,6 +128,7 @@ public class DOMParser implements Runnable {
                 argum[7],//Municipio
                 ImgCodec.base64ToBitmap(argum[8]),//Foto
                 Integer.parseInt(element.getAttribute("version")));//VersionInfoBar
+                --------------------------------------------------------------------------------------------------------*/
     }
 
 //    public static HashMap<Integer,String> actualizarOfertas(ArrayList<Bar> bares) {

@@ -1,10 +1,14 @@
 package comandapp.comandappcliente.logicanegocio.objetos;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class Bar {
+
     private int id;
     private String nombre;
     private String direccion;
@@ -17,7 +21,7 @@ public class Bar {
     private Bitmap foto;
     private Boolean favorito;
     private Version version;
-    private Carta carta;
+    private ArrayList<LineaCarta> carta;
     private ArrayList<Oferta> ofertas;
 
     public Bar (int id) {
@@ -33,7 +37,7 @@ public class Bar {
         this.foto = null;
         this.favorito=false;
         this.version = new Version();
-        this.carta = new Carta();
+        this.carta = new ArrayList<LineaCarta>();
         this.ofertas = new ArrayList<Oferta>();
     }
 
@@ -51,11 +55,11 @@ public class Bar {
         this.favorito=favorito;
         this.version = new Version();
         this.version.setVersionInfoLocal(vInfoLocal);
-        this.carta = new Carta();
+        this.carta = new ArrayList<LineaCarta>();
         this.ofertas = new ArrayList<Oferta>();
     }
 
-    public int getId() {
+    public int getIdBar() {
         return id;
     }
 
@@ -99,7 +103,7 @@ public class Bar {
         return this.version;
     }
 
-    public Carta getCarta() {
+    public ArrayList<LineaCarta> getCarta() {
         return this.carta;
     }
 
@@ -112,36 +116,22 @@ public class Bar {
         return this.ofertas;
     }
 
-    public void importarInfoBar(Bar b) {
-        //this.id=b.id;
-        this.nombre=b.getNombre();
-        this.direccion=b.getDireccion();
-        this.telefono=b.getTelefono();
-        this.correo=b.getCorreo();
-        this.latitud=b.getLatitud();
-        this.longitud=b.getLongitud();
-        this.Provincia = b.getProvincia();
-        this.Municipio = b.getMunicipio();
-        this.version.setVersionInfoLocal(b.version.getVersionInfoLocal());
+    public boolean esHueco() {
+        return ((carta.size() == 0) && (ofertas.size() == 0));
     }
 
-    public void importarCarta(Carta c, int version) {
-        this.carta.clear();
-        for(int i=0;i<c.numLineas();i++) {
-            this.carta.aniadeLinea(c.getLinea(i));
-        }
-        this.version.setVersionCarta(version);
+    public void setCarta(ArrayList<LineaCarta> c) {
+        this.carta = c;
     }
 
-    public void importarOfertas(ArrayList<Oferta> o, int version) {
-        this.ofertas.clear();
-        for(Oferta of : o) this.ofertas.add(of);
-        this.version.setVersionOfertas(version);
+    public void setOfertas(ArrayList<Oferta> o) {
+        this.ofertas = o;
     }
 
     public int compareTo(Bar b) {
-        if(id < b.getId()) return -1;
-        else if(id == b.getId()) return 0;
+        if(id < b.getIdBar()) return -1;
+        else if(id == b.getIdBar()) return 0;
         else return 1;
     }
+
 }

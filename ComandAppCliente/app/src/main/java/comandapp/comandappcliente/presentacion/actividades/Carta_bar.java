@@ -12,6 +12,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
 import comandapp.comandappcliente.logicanegocio.objetos.Producto;
@@ -19,7 +20,7 @@ import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorCarta;
 
 
 public class Carta_bar extends ActionBarActivity {
-    ArrayList<LineaCarta> le=null;
+
     AdaptadorCarta adaptador;
     ListView lstEntradas;
     Bar bar=null;
@@ -28,28 +29,27 @@ public class Carta_bar extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carta_bar);
 
-        bar=(Bar)this.getIntent().getExtras().getParcelable("bar");
+        final int id_Bar = this.getIntent().getExtras().getInt("id_bar");
+        ArrayList<LineaCarta> carta = LogicaNegocio.getInstancia().getCarta(this,id_Bar);
 
-        le=new ArrayList<LineaCarta>();
-        le.add(new LineaCarta(new Producto(1,"patatas","comida"),12,"descrip",null));
-        le.add(new LineaCarta(new Producto(2,"pats","comidsa"),12,"descrqqqqip",null));
-        le.add(new LineaCarta(new Producto(3,"patas","comifda"),12,"descrrtip",null));
-        le.add(new LineaCarta(new Producto(4,"patats","cogmida"),12,"deschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtripdeschrtrip",null));
+        if(carta.size() == 0) {
+            //No hay elementos en la carta !!! Mostrar mensaje al usuario
+        } else {
+            adaptador = new AdaptadorCarta(this, carta);
 
-        adaptador = new AdaptadorCarta(this, le);
+            lstEntradas = (ListView)findViewById(R.id.ll);
+            lstEntradas.setAdapter(adaptador);
+        }
 
-        lstEntradas = (ListView)findViewById(R.id.ll);
-        lstEntradas.setAdapter(adaptador);
+
 
         Button btn = (Button)findViewById(R.id.button2);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Creamos el Intent
                 Intent intent = new Intent(Carta_bar.this, InicioBar.class);
-                intent.putExtra("bar",bar);
-                //Iniciamos la nueva actividad
+                intent.putExtra("id_bar",id_Bar);
                 startActivity(intent);
             }
         });
@@ -57,10 +57,8 @@ public class Carta_bar extends ActionBarActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Creamos el Intent
                 Intent intent = new Intent(Carta_bar.this, Ofertas_bar.class);
-                intent.putExtra("bar",bar);
-                //Iniciamos la nueva actividad
+                intent.putExtra("id_bar",id_Bar);
                 startActivity(intent);
             }
         });

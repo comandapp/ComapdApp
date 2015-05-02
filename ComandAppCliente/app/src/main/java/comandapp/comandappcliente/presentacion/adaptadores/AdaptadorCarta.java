@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             item = inflater.inflate(R.layout.listitem_carta, null);
 
             holder = new ViewHolderListadoEntradas();
+            holder.img = (ImageView)item.findViewById(R.id.imgEntrada);
             holder.nombre = (TextView)item.findViewById(R.id.lblNombreEntrada);
             holder.precio=(TextView)item.findViewById(R.id.lblPrecioEntrada);
             holder.descripcion=(TextView)item.findViewById(R.id.lblDescripcionEntrada);
@@ -50,6 +52,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             holder = (ViewHolderListadoEntradas)item.getTag();
         }
 
+        holder.img.setImageBitmap(e.getFoto());
         holder.nombre.setText(e.getProducto().getNombre());
         holder.precio.setText(e.getPrecio()+"€");
         holder.descripcion.setText(e.getDescripcion());
@@ -77,6 +80,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
     }
 
     static class ViewHolderListadoEntradas {
+        ImageView img;
         TextView nombre;
         TextView precio;
         TextView descripcion;

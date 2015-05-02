@@ -11,28 +11,28 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import comandapp.comandappcliente.R;
-import comandapp.comandappcliente.logicanegocio.objetos.Menu;
+import comandapp.comandappcliente.logicanegocio.objetos.Oferta;
 
 /**
  * Created by miauen on 29/03/2015.
  */
-public class AdaptadorOfertas extends ArrayAdapter<Menu> {
+public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
     Activity context;
-    ArrayList<Menu> listadoOferta;
-    ArrayList<Menu> listadoOfertaAux;
+    ArrayList<Oferta> listadoOferta;
+    ArrayList<Oferta> listadoOfertaAux;
 
-    public AdaptadorOfertas(Activity context, ArrayList<Menu> datos) {
+    public AdaptadorOfertas(Activity context, ArrayList<Oferta> datos) {
         super(context, R.layout.listitem_oferta, datos);
         this.context = context;
         listadoOferta = datos;
-        listadoOfertaAux = new ArrayList<Menu>();
+        listadoOfertaAux = new ArrayList<Oferta>();
         listadoOfertaAux.addAll(listadoOferta);
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         View item = convertView;
         ViewHolderListadoOfertas holder;
-        final Menu o = listadoOferta.get(position);
+        final Oferta o = listadoOferta.get(position);
 
         if(item == null)
         {
@@ -65,7 +65,7 @@ public class AdaptadorOfertas extends ArrayAdapter<Menu> {
         }
         else
         {
-            for (Menu o : listadoOfertaAux)
+            for (Oferta o : listadoOfertaAux)
             {
                 if (o.getNombre().toLowerCase(Locale.getDefault()).contains(charText))
                 {

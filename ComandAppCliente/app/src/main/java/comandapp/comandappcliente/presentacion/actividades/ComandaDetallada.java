@@ -31,6 +31,7 @@ public class ComandaDetallada extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comanda_detallada);
 
+        /*
         ArrayList<LineaComanda> listadoLineasComanda = new ArrayList<LineaComanda>();
         listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(1, "Coca Cola"), 2.5), 3));
         listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(2, "7 UP"), 2.8), 1));
@@ -42,6 +43,7 @@ public class ComandaDetallada extends ActionBarActivity {
         listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(8, "Bolsa de patatas"), 1.2), 2));
 
         Comanda comanda = new Comanda(new Bar(1, "Café Madrid"), listadoLineasComanda);
+
 
         ListView lv = (ListView)findViewById(R.id.listaDetalles);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) lv.getLayoutParams();
@@ -78,6 +80,7 @@ public class ComandaDetallada extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+        ----------------------------------------------------------------------------------------------------------*/
     }
 
 

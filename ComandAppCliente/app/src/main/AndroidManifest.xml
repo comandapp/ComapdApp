@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="comandapp.comandappcliente" >
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -16,6 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentacion.actividades.BusquedaBar"></activity>
+
+        <activity android:name=".presentacion.actividades.BaresFavoritos"
+            android:label="Bares Favoritos"></activity>
+        <activity android:name=".presentacion.actividades.InicioBar"
+            android:label="Inicio"></activity>
+        <activity android:name=".presentacion.actividades.Carta_bar"
+            android:label="Carta"></activity>
+        <activity android:name=".presentacion.actividades.ComandaDetallada"
+            android:label="Comanda Detalles"></activity>
+        <activity android:name=".presentacion.actividades.ComandaQR"
+            android:label="Comanda QR"></activity>
+        <activity android:name=".presentacion.actividades.Ofertas_bar"
+            android:label="Ofertas"></activity>
     </application>
 
 </manifest>

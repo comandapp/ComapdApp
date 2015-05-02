@@ -11,38 +11,40 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
-import comandapp.comandappcliente.logicanegocio.objetos.Menu;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
+import comandapp.comandappcliente.logicanegocio.objetos.Oferta;
 import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorOfertas;
 
 
 public class Ofertas_bar extends ActionBarActivity {
     private Bar bar=null;
-    ArrayList<Menu> lo=null;
+    ArrayList<Oferta> lo=null;
     AdaptadorOfertas adaptador;
     ListView lstOfertas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ofertas_bar);
-        lo=new ArrayList<Menu>();
-        lo.add(new Menu(1,2,12.5,"patatas","muuuuchas patatas"));
-        lo.add(new Menu(2,3,20.5,"Kebab","asdasfdasdf"));
-        lo.add(new Menu(3,2,52.5,"rrrrrrrrrrrr","muuuuchas rrrrrrrrrrrrrrrrr"));
-        lo.add(new Menu(4,4,72.5,"patttttttttttt","muuuuchas tttttttttttttt"));
-        adaptador = new AdaptadorOfertas(this, lo);
 
-        lstOfertas = (ListView)findViewById(R.id.lo);
-        lstOfertas.setAdapter(adaptador);
+        final int id_Bar = this.getIntent().getExtras().getInt("id_bar");
+        ArrayList<Oferta> ofertas = LogicaNegocio.getInstancia().getOfertas(this, id_Bar);
+
+        if(ofertas.size() == 0) {
+            //No hay ofertas. Mostrar mensaje de aviso
+        } else {
+            lstOfertas = (ListView) findViewById(R.id.lo);
+            lstOfertas.setAdapter(adaptador);
+        }
+
         Button btn = (Button)findViewById(R.id.button3);
         bar=(Bar)this.getIntent().getExtras().getParcelable("bar");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Creamos el Intent
                 Intent intent = new Intent(Ofertas_bar.this, Carta_bar.class);
-                intent.putExtra("bar",bar);
-                //Iniciamos la nueva actividad
+                intent.putExtra("id_bar",id_Bar);
                 startActivity(intent);
             }
         });
@@ -50,10 +52,8 @@ public class Ofertas_bar extends ActionBarActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Creamos el Intent
                 Intent intent = new Intent(Ofertas_bar.this, InicioBar.class);
-                intent.putExtra("bar",bar);
-                //Iniciamos la nueva actividad
+                intent.putExtra("id_bar",id_Bar);
                 startActivity(intent);
             }
         });

@@ -12,18 +12,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 
 
 public class InicioBar extends ActionBarActivity {
-    private Bar bar=null;
+
+    private Bar bar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_bar);
-        bar=(Bar)this.getIntent().getExtras().getParcelable("bar");
+
+        final int id_Bar = this.getIntent().getExtras().getInt("id_bar");
+        bar = LogicaNegocio.getInstancia().getBarHueco(this,id_Bar);
 
         String nom="Nombre: "+bar.getNombre();
         String direc="Direccion: "+bar.getDireccion();
@@ -43,10 +49,8 @@ public class InicioBar extends ActionBarActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Creamos el Intent
                 Intent intent = new Intent(InicioBar.this, Carta_bar.class);
-                intent.putExtra("bar",bar);
-                //Iniciamos la nueva actividad
+                intent.putExtra("id_bar",id_Bar);
                 startActivity(intent);
             }
         });
@@ -54,10 +58,8 @@ public class InicioBar extends ActionBarActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Creamos el Intent
                 Intent intent = new Intent(InicioBar.this, Ofertas_bar.class);
-                intent.putExtra("bar",bar);
-                //Iniciamos la nueva actividad
+                intent.putExtra("id_bar",id_Bar);
                 startActivity(intent);
             }
         });
@@ -88,39 +90,6 @@ public class InicioBar extends ActionBarActivity {
     }
     public void clickBoton(View v)
     {
-        final Intent intent = new Intent(InicioBar.this, MapsActivityBar.class);
-        Bundle b=new Bundle();
-
-        b.putString("nombre",bar.getNombre());
-        b.putDouble("latitud",bar.getLatitud());
-       b.putDouble("longitud",bar.getLongitud());
-        intent.putExtras(b);
-
-        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-        boolean enabled = service
-                .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-// check if enabled and if not send user to the GSP settings
-// Better solution would be to display a dialog and suggesting to
-// go to the settings
-        if (!enabled) {
-            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(InicioBar.this);
-            dlgAlert.setMessage("Es necesario tener los servicios de localización activados, se le redireccionara a dicho lugar.");
-            dlgAlert.setTitle("Aviso");
-            dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent2 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
-                    startActivity(intent2);
-                }
-                ;
-            });
-            dlgAlert.setCancelable(false);
-            dlgAlert.create().show();
-        }else{
-            startActivity(intent);
-        }
-        //Iniciamos la nueva actividad
 
     }
 }
