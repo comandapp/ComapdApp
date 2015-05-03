@@ -34,6 +34,7 @@ public class Ofertas_bar extends ActionBarActivity {
         if(ofertas.size() == 0) {
             //No hay ofertas. Mostrar mensaje de aviso
         } else {
+            adaptador = new AdaptadorOfertas(this,ofertas);
             lstOfertas = (ListView) findViewById(R.id.lo);
             lstOfertas.setAdapter(adaptador);
         }

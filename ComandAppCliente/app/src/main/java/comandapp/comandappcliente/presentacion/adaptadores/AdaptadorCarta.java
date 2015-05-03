@@ -20,14 +20,11 @@ import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
 public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
     Activity context;
     ArrayList<LineaCarta> listadoEntrada;
-    ArrayList<LineaCarta> listadoEntradaAux;
 
     public AdaptadorCarta(Activity context, ArrayList<LineaCarta> datos) {
         super(context, R.layout.listitem_carta, datos);
         this.context = context;
         listadoEntrada = datos;
-        listadoEntradaAux = new ArrayList<LineaCarta>();
-        listadoEntradaAux.addAll(listadoEntrada);
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -41,10 +38,10 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             item = inflater.inflate(R.layout.listitem_carta, null);
 
             holder = new ViewHolderListadoEntradas();
-            holder.img = (ImageView)item.findViewById(R.id.imgEntrada);
-            holder.nombre = (TextView)item.findViewById(R.id.lblNombreEntrada);
-            holder.precio=(TextView)item.findViewById(R.id.lblPrecioEntrada);
-            holder.descripcion=(TextView)item.findViewById(R.id.lblDescripcionEntrada);
+            holder.img = (ImageView)item.findViewById(R.id.LVICartaImg);
+            holder.nombre = (TextView)item.findViewById(R.id.LVICartaNombre);
+            holder.descripcion=(TextView)item.findViewById(R.id.LVICartaInfo);
+            holder.precio=(TextView)item.findViewById(R.id.LVICartaPrecio);
             item.setTag(holder);
         }
         else
@@ -52,7 +49,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             holder = (ViewHolderListadoEntradas)item.getTag();
         }
 
-        holder.img.setImageBitmap(e.getFoto());
+        holder.img.setImageBitmap(e.getProducto().getFoto());
         holder.nombre.setText(e.getProducto().getNombre());
         holder.precio.setText(e.getPrecio()+"€");
         holder.descripcion.setText(e.getDescripcion());
@@ -64,11 +61,11 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         charText = charText.toLowerCase(Locale.getDefault());
         listadoEntrada.clear();
         if (charText.length() == 0) {
-            listadoEntrada.addAll(listadoEntradaAux);
+            listadoEntrada.addAll(listadoEntrada);
         }
         else
         {
-            for (LineaCarta e : listadoEntradaAux)
+            for (LineaCarta e : listadoEntrada)
             {
                 if (e.getProducto().getNombre().toLowerCase(Locale.getDefault()).contains(charText))
                 {
@@ -82,7 +79,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
     static class ViewHolderListadoEntradas {
         ImageView img;
         TextView nombre;
-        TextView precio;
         TextView descripcion;
+        TextView precio;
     }
 }

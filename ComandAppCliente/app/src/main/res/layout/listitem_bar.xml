@@ -1,35 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
     android:paddingLeft="10dp"
     android:background="@drawable/estilo_barseleccionado">
 
-    <ImageView android:id="@+id/imgLogoBar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <ImageView android:id="@+id/LVIBarImg"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/logo_comandapp"
-        android:focusable="false"/>
-
-    <TextView android:id="@+id/lblNombreBar"
-        android:text="Entrepuentes"
-        android:layout_weight="1"
-        android:layout_marginLeft="10dp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:focusable="false"
-        style="@style/nombreBaresLista"/>
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <CheckBox android:id="@+id/checkBarFavorito"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:checked="false"
-        android:focusable="false"
-        android:gravity="right"
-        android:layout_marginRight="12dp"/>
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/LVIBarImg"
+        android:layout_marginLeft="6dp">
 
-</LinearLayout>
+        <TextView android:id="@+id/LVIBarNombre"
+            android:layout_weight="6"
+            android:layout_marginLeft="4dp"
+            style="@style/nombreBaresLista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"/>
+
+        <TextView android:id="@+id/LVIBarInfo"
+            android:layout_weight="6"
+            android:layout_marginLeft="4dp"
+            style="@style/infoBaresLista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

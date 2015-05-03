@@ -19,14 +19,11 @@ public class LineaCarta {
     private Producto producto;
     private double precio;
     private String descripcion;
-    private Bitmap foto;
     
-    public LineaCarta(Producto producto, double precio, String descripcion, String foto) {
+    public LineaCarta(Producto producto, double precio, String descripcion) {
         this.producto = producto;
         this.precio = precio;
         this.descripcion=descripcion;
-        byte[] decodedString = Base64.decode(foto, Base64.URL_SAFE);
-        this.foto = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
     
     public Producto getProducto() {
@@ -35,10 +32,6 @@ public class LineaCarta {
 
     public double getPrecio() {
         return precio;
-    }
-
-    public Bitmap getFoto() {
-        return foto;
     }
     
     public String getDescripcion() {

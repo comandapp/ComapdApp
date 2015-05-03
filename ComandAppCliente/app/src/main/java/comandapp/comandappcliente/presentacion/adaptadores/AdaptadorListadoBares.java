@@ -7,12 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 import comandapp.comandappcliente.presentacion.actividades.BaresFavoritos;
 
@@ -23,14 +28,11 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
 {
     Activity context;
     ArrayList<Bar> listadoBares;
-    ArrayList<Bar> listadoBaresAux;
 
     public AdaptadorListadoBares(Activity context, ArrayList<Bar> datos) {
         super(context, R.layout.listitem_bar, datos);
         this.context = context;
         listadoBares = datos;
-        listadoBaresAux = new ArrayList<Bar>();
-        listadoBaresAux.addAll(listadoBares);
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -44,25 +46,16 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
             item = inflater.inflate(R.layout.listitem_bar, null);
 
             holder = new ViewHolderListadoBares();
-            holder.nombre = (TextView)item.findViewById(R.id.lblNombreBar);
-            holder.checkFavorito = (CheckBox)item.findViewById(R.id.checkBarFavorito);
+            holder.imgBar = (ImageView)item.findViewById(R.id.LVIBarImg);
+            holder.nombre = (TextView)item.findViewById(R.id.LVIBarNombre);
+            holder.descripcion = (TextView)item.findViewById(R.id.LVIBarInfo);
+            /*holder.Fav = (ToggleButton)item.findViewById(R.id.LVIBarToggle);
 
-            holder.checkFavorito.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v)
-                {
-                    Log.w("-->", ((CheckBox) v).isChecked() + "");
-                    bar.setFavorito(((CheckBox) v).isChecked());
-
-                    if(!((CheckBox) v).isChecked() && context instanceof BaresFavoritos)
-                    {
-                        listadoBares.remove(position);
-                        notifyDataSetChanged();
-                    }
-
+            holder.Fav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    LogicaNegocio.getInstancia().setBarFavorito(context, bar, isChecked);
                 }
-            });
+            });*/
 
             item.setTag(holder);
         }
@@ -71,8 +64,10 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
             holder = (ViewHolderListadoBares)item.getTag();
         }
 
+        holder.imgBar.setImageBitmap(bar.getFoto());
         holder.nombre.setText(bar.getNombre());
-        holder.checkFavorito.setChecked(bar.getFavorito());
+        holder.descripcion.setText(bar.getMunicipio()+", "+bar.getProvincia());
+        //holder.Fav.setChecked(bar.getFavorito());
 
         return(item);
     }
@@ -82,11 +77,11 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
         charText = charText.toLowerCase(Locale.getDefault());
         listadoBares.clear();
         if (charText.length() == 0) {
-            listadoBares.addAll(listadoBaresAux);
+            listadoBares.addAll(listadoBares);
         }
         else
         {
-            for (Bar bar : listadoBaresAux)
+            for (Bar bar : listadoBares)
             {
                 if (bar.getNombre().toLowerCase(Locale.getDefault()).contains(charText))
                 {
@@ -98,7 +93,9 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
     }
 
     static class ViewHolderListadoBares {
+        ImageView imgBar;
         TextView nombre;
-        CheckBox checkFavorito;
+        TextView descripcion;
+        //ToggleButton Fav;
     }
 }

@@ -36,11 +36,9 @@ public class Carta_bar extends ActionBarActivity {
             //No hay elementos en la carta !!! Mostrar mensaje al usuario
         } else {
             adaptador = new AdaptadorCarta(this, carta);
-
             lstEntradas = (ListView)findViewById(R.id.ll);
             lstEntradas.setAdapter(adaptador);
         }
-
 
 
         Button btn = (Button)findViewById(R.id.button2);

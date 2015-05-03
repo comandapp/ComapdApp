@@ -2,17 +2,15 @@ package comandapp.comandappcliente.logicanegocio.objetos;
 
 public class Oferta {
 
-    private String nombre;
-    private String descripcion;
+    private Producto producto;
     private int id_bar;
-    private int id_producto;
+    private String descripcion;
     private double precio;
 
-    public Oferta(int id_bar, int id_producto, double precio,String nombre, String descripcion){
+    public Oferta(int id_bar, Producto prod,String descripcion, double precio){
         this.id_bar=id_bar;
-        this.id_producto=id_producto;
+        this.producto = prod;
         this.precio=precio;
-        this.nombre=nombre;
         this.descripcion=descripcion;
     }
 
@@ -20,16 +18,8 @@ public class Oferta {
         return id_bar;
     }
 
-    public void setIdBar(int id_bar) {
-        this.id_bar = id_bar;
-    }
-
-    public int getIdProducto() {
-        return id_producto;
-    }
-
-    public void setIdProducto(int id_producto) {
-        this.id_producto = id_producto;
+    public Producto getProducto() {
+        return producto;
     }
 
     public double getPrecio() {
@@ -39,10 +29,6 @@ public class Oferta {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-
-    public String getNombre(){return nombre;}
-
-    public void setNombre(String nombre){this.nombre=nombre;}
 
     public String getDescripcion(){return descripcion;}
 

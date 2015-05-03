@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -40,9 +41,10 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
             item = inflater.inflate(R.layout.listitem_oferta, null);
 
             holder = new ViewHolderListadoOfertas();
-            holder.nombre = (TextView)item.findViewById(R.id.lblNombreOferta);
-            holder.precio=(TextView)item.findViewById(R.id.lblPrecioOferta);
-            holder.descripcion=(TextView)item.findViewById(R.id.lblDescripcionOferta);
+            holder.img = (ImageView)item.findViewById(R.id.LVIOfertaImg);
+            holder.nombre = (TextView)item.findViewById(R.id.LVIOfertaNombre);
+            holder.descripcion = (TextView)item.findViewById(R.id.LVIOfertaInfo);
+            holder.precio = (TextView)item.findViewById(R.id.LVIOfertaPrecio);
             item.setTag(holder);
         }
         else
@@ -50,9 +52,10 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
             holder = (ViewHolderListadoOfertas)item.getTag();
         }
 
-        holder.nombre.setText(o.getNombre());
-        holder.precio.setText(o.getPrecio()+"€");
+        holder.img.setImageBitmap(o.getProducto().getFoto());
+        holder.nombre.setText(o.getProducto().getNombre());
         holder.descripcion.setText(o.getDescripcion());
+        holder.precio.setText(o.getPrecio()+"€");
         return(item);
     }
 
@@ -67,7 +70,7 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
         {
             for (Oferta o : listadoOfertaAux)
             {
-                if (o.getNombre().toLowerCase(Locale.getDefault()).contains(charText))
+                if (o.getProducto().getNombre().toLowerCase(Locale.getDefault()).contains(charText))
                 {
                     listadoOferta.add(o);
                 }
@@ -77,8 +80,9 @@ public class AdaptadorOfertas extends ArrayAdapter<Oferta> {
     }
 
     static class ViewHolderListadoOfertas {
+        ImageView img;
         TextView nombre;
-        TextView precio;
         TextView descripcion;
+        TextView precio;
     }
 }

@@ -41,6 +41,8 @@ public class BusquedaBar extends ActionBarActivity {
 
         ListView lstBares = (ListView)findViewById(R.id.ListaBares);
 
+        lstBares.setAdapter(adaptador);
+
         lstBares.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 Intent intent = new Intent(BusquedaBar.this, InicioBar.class);
@@ -50,7 +52,7 @@ public class BusquedaBar extends ActionBarActivity {
             }
         });
 
-        lstBares.setAdapter(adaptador);
+
     }
 
 

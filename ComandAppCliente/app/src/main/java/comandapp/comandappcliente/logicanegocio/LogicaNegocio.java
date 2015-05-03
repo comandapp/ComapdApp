@@ -80,6 +80,11 @@ public class LogicaNegocio {
         else return null;
     }
 
+    public void setBarFavorito(Context con, Bar b, boolean fav) {
+        b.setFavorito(fav);
+        persistencia.actualizaFavoritoBar(con, b);
+    }
+
 
     private int[] arrayListToArray(ArrayList<Integer> list) {
         int[] array = new int[list.size()];

@@ -49,7 +49,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="151dp"
-                android:id="@+id/imageView"
+                android:id="@+id/imageViewBar"
                 android:src="@drawable/logo_comandapp"
                 android:layout_marginTop="10dp" />
 

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class InicioBar extends ActionBarActivity {
         String tlf="Telefono: "+bar.getTelefono();
         String correo="Correo: " +bar.getCorreo();
 
+        ((ImageView)findViewById(R.id.imageViewBar)).setImageBitmap(bar.getFoto());
         ((TextView)findViewById(R.id.textView1)).setText(nom);
         ((TextView)findViewById(R.id.textView2)).setText(tlf);
         ((TextView)findViewById(R.id.textView3)).setText(direc);
