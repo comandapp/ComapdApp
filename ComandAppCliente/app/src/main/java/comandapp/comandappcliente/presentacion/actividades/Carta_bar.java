@@ -35,7 +35,7 @@ public class Carta_bar extends ActionBarActivity {
         if(carta.size() == 0) {
             //No hay elementos en la carta !!! Mostrar mensaje al usuario
         } else {
-            adaptador = new AdaptadorCarta(this, carta);
+            adaptador = new AdaptadorCarta(this, carta, LogicaNegocio.getInstancia().getOfertas(this,id_Bar));
             lstEntradas = (ListView)findViewById(R.id.ll);
             lstEntradas.setAdapter(adaptador);
         }

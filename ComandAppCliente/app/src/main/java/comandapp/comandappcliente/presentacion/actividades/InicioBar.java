@@ -1,6 +1,7 @@
 package comandapp.comandappcliente.presentacion.actividades;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -11,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +49,17 @@ public class InicioBar extends ActionBarActivity {
         ((TextView)findViewById(R.id.textView4)).setText(localidad);
         ((TextView)findViewById(R.id.textView5)).setText(municipio);
         ((TextView)findViewById(R.id.textView6)).setText(correo);
+        Switch fav = (Switch)findViewById(R.id.SwitchFavorito);
+        fav.setChecked(bar.getFavorito());
+
+        final Context con = this;
+
+        fav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LogicaNegocio.getInstancia().setBarFavorito(con,bar,isChecked);
+            }
+        });
+
         Button btn = (Button)findViewById(R.id.button3);
 
         btn.setOnClickListener(new View.OnClickListener() {

@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
         btnLocalizame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*final Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                final Intent intent = new Intent(MainActivity.this, MapaYLocalizacion.class);
                 LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
                 boolean enabled = service
                         .isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
                     dlgAlert.create().show();
                 }else{
                     startActivity(intent);
-                }*/
+                }
 
             }
         });

@@ -19,13 +19,12 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/LVICartaImg"
-        android:layout_marginLeft="6dp"
-        android:layout_toLeftOf="@+id/LVICartaPrecio"
-        android:layout_toStartOf="@+id/LVICartaPrecio">
+        android:layout_toLeftOf="@+id/linearLayout"
+        android:layout_toStartOf="@+id/linearLayout">
 
         <TextView android:id="@+id/LVICartaNombre"
             android:layout_weight="6"
@@ -45,14 +44,29 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        style="@style/nombreBaresLista"
-        android:id="@+id/LVICartaPrecio"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="4dp" />
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/nombreBaresLista"
+            android:id="@+id/LVICartaPrecio"
+            android:layout_marginRight="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/precioOferta"
+            android:id="@+id/LVICartaPrecioOferta"
+            android:layout_marginRight="4dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

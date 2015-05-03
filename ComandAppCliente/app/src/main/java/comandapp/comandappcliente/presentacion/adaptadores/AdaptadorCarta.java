@@ -1,6 +1,7 @@
 package comandapp.comandappcliente.presentacion.adaptadores;
 
 import android.app.Activity;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +13,24 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
+import comandapp.comandappcliente.logicanegocio.objetos.Oferta;
 
 /**
  * Created by miauen on 29/03/2015.
  */
 public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
-    Activity context;
-    ArrayList<LineaCarta> listadoEntrada;
 
-    public AdaptadorCarta(Activity context, ArrayList<LineaCarta> datos) {
+    private Activity context;
+    private ArrayList<LineaCarta> listadoEntrada;
+    private ArrayList<Oferta> ofertas;
+
+    public AdaptadorCarta(Activity context, ArrayList<LineaCarta> datos, ArrayList<Oferta> ofertas) {
         super(context, R.layout.listitem_carta, datos);
         this.context = context;
         listadoEntrada = datos;
+        this.ofertas=ofertas;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -42,6 +48,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             holder.nombre = (TextView)item.findViewById(R.id.LVICartaNombre);
             holder.descripcion=(TextView)item.findViewById(R.id.LVICartaInfo);
             holder.precio=(TextView)item.findViewById(R.id.LVICartaPrecio);
+            holder.precioOferta = (TextView)item.findViewById(R.id.LVICartaPrecioOferta);
             item.setTag(holder);
         }
         else
@@ -53,6 +60,14 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         holder.nombre.setText(e.getProducto().getNombre());
         holder.precio.setText(e.getPrecio()+"€");
         holder.descripcion.setText(e.getDescripcion());
+        double precioOf = LogicaNegocio.getInstancia().getPrecioFinalLineaCarta(context, e, ofertas);
+        if(precioOf > 0) {
+            holder.precio.setPaintFlags(holder.precio.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.precioOferta.setText(precioOf+"€");
+        } else {
+            holder.precio.setPaintFlags(holder.precio.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.precioOferta.setVisibility(View.GONE);
+        }
         return(item);
     }
 
@@ -81,5 +96,6 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         TextView nombre;
         TextView descripcion;
         TextView precio;
+        TextView precioOferta;
     }
 }

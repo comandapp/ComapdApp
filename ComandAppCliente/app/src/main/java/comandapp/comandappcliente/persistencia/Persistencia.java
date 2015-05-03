@@ -31,7 +31,7 @@ public class Persistencia {
     }
 
     private SQLHelper getSQL(Context con) {
-        return new SQLHelper(con, "ComandappClient", null, 5);
+        return new SQLHelper(con, "ComandappClient", null, 7);
     }
 
     //Obtiene el MAIN completo de la base de datos y lo devuelve en forma de HashMap junto al idBar correspondiente

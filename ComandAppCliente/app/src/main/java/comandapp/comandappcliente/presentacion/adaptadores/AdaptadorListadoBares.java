@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -49,13 +50,8 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
             holder.imgBar = (ImageView)item.findViewById(R.id.LVIBarImg);
             holder.nombre = (TextView)item.findViewById(R.id.LVIBarNombre);
             holder.descripcion = (TextView)item.findViewById(R.id.LVIBarInfo);
-            /*holder.Fav = (ToggleButton)item.findViewById(R.id.LVIBarToggle);
-
-            holder.Fav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    LogicaNegocio.getInstancia().setBarFavorito(context, bar, isChecked);
-                }
-            });*/
+            holder.fav = (ImageView)item.findViewById(R.id.imageViewFavorito);
+            holder.fila = (RelativeLayout)item.findViewById(R.id.LVItemRelLayout);
 
             item.setTag(holder);
         }
@@ -67,7 +63,12 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
         holder.imgBar.setImageBitmap(bar.getFoto());
         holder.nombre.setText(bar.getNombre());
         holder.descripcion.setText(bar.getMunicipio()+", "+bar.getProvincia());
-        //holder.Fav.setChecked(bar.getFavorito());
+        if(bar.getFavorito()) {
+            holder.fav.setVisibility(View.VISIBLE);
+            holder.fila.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.gradiente_lvitem_favorito));
+        } else {
+            holder.fav.setVisibility(View.INVISIBLE);
+        }
 
         return(item);
     }
@@ -96,6 +97,7 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
         ImageView imgBar;
         TextView nombre;
         TextView descripcion;
-        //ToggleButton Fav;
+        ImageView fav;
+        RelativeLayout fila;
     }
 }

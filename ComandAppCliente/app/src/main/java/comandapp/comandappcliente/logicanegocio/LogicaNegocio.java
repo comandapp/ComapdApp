@@ -102,4 +102,12 @@ public class LogicaNegocio {
         return persistencia.getOfertas(con,id_Bar);
     }
 
+    public double getPrecioFinalLineaCarta(Context con, LineaCarta lc, ArrayList<Oferta> ofertas) {
+        for(Oferta of : ofertas) {
+            if(lc.getProducto().getId() == of.getProducto().getId()) {
+                return of.getPrecio();
+            }
+        }
+        return -1;
+    }
 }
