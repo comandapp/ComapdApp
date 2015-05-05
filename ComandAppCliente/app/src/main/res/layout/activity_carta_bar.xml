@@ -41,5 +41,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/ll"         android:divider="#FFBD2E"
         android:dividerHeight="2dp"/>
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:text="Ver Comanda"
+        android:id="@+id/btnCarta" />
 </LinearLayout>

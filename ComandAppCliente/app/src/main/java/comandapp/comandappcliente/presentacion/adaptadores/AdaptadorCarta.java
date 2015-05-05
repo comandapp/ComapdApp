@@ -6,7 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +19,7 @@ import java.util.Locale;
 import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
 import comandapp.comandappcliente.logicanegocio.objetos.Oferta;
 
 /**
@@ -25,12 +30,16 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
     private Activity context;
     private ArrayList<LineaCarta> listadoEntrada;
     private ArrayList<Oferta> ofertas;
-
+    ArrayList<LineaComanda> lComanda;
     public AdaptadorCarta(Activity context, ArrayList<LineaCarta> datos, ArrayList<Oferta> ofertas) {
         super(context, R.layout.listitem_carta, datos);
         this.context = context;
         listadoEntrada = datos;
         this.ofertas=ofertas;
+        lComanda=new ArrayList<LineaComanda>();
+        for(LineaCarta lC:listadoEntrada){
+            lComanda.add(new LineaComanda(new LineaCarta(lC.getProducto(),lC.getPrecio(), lC.getDescripcion()),0));
+        }
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -42,13 +51,101 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         {
             LayoutInflater inflater = context.getLayoutInflater();
             item = inflater.inflate(R.layout.listitem_carta, null);
-
+            final View v=item;
             holder = new ViewHolderListadoEntradas();
             holder.img = (ImageView)item.findViewById(R.id.LVICartaImg);
             holder.nombre = (TextView)item.findViewById(R.id.LVICartaNombre);
             holder.descripcion=(TextView)item.findViewById(R.id.LVICartaInfo);
             holder.precio=(TextView)item.findViewById(R.id.LVICartaPrecio);
             holder.precioOferta = (TextView)item.findViewById(R.id.LVICartaPrecioOferta);
+            final ViewHolderListadoEntradas vhlo=holder;
+            LinearLayout hl=(LinearLayout)v.findViewById(R.id.linearLayout);
+            final TextView tv=new TextView(context);
+            tv.setText("0");
+            tv.setId(R.id.but);
+            hl.addView(tv);
+
+            ((RelativeLayout)item.findViewById(R.id.LLayoutCarta)).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v)
+                {
+
+                    for(int i=0;i<((ListView)context.findViewById(R.id.ll)).getChildCount();i++) {
+                        View a=(RelativeLayout)((ListView)context.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                        if(a instanceof RelativeLayout) {
+                            if(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildCount()>3) {
+                                //LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                //llp.setMargins(10, 0, 100, 0); // llp.setMargins(left, top, right, bottom);
+                                ((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).removeView(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildAt(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildCount()-3));
+                                ((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).removeView(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildAt(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildCount()-1));
+                            }
+                        }
+                    }
+                    // ((ViewGroup)v.getParent().getParent()).getId();
+                    // hl.removeView(aux);
+
+                    LinearLayout hl=(LinearLayout)v.findViewById(R.id.linearLayout);
+                    final TextView aux=(TextView)hl.findViewById(R.id.lblCantidadProd);
+                    final TextView textView=(TextView)hl.findViewById(R.id.LVICartaPrecio);
+                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    llp.setMargins(10, 0, 20, 0); // llp.setMargins(left, top, right, bottom);
+                    textView.setLayoutParams(llp);
+
+                    Button but=new Button(context);
+                    but.setText("▲");
+                    but.setTextSize(20);
+                    but.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            int auxInt = Integer.parseInt(tv.getText().toString()) + 1;
+                            for(int i=0;i<((ListView)context.findViewById(R.id.ll)).getChildCount();i++) {
+                                View a=(RelativeLayout)((ListView)context.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                                if(a instanceof RelativeLayout) {
+                                    if(((RelativeLayout)a).getChildCount()!=3) {
+                                        LineaComanda lc=lComanda.get(i);
+                                        lc.setCantidad(auxInt);
+                                        lComanda.remove(i);
+                                        lComanda.add(i,lc);
+                                    }
+                                }
+                            }
+
+                            tv.setText(auxInt + "");
+                        }
+                    });
+                    hl.addView(but, 2);
+                    but=new Button(context);
+                    but.setText("▼");
+                    but.setTextSize(20);
+                    but.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v)
+                        {
+                            int auxInt=Integer.parseInt(tv.getText().toString());
+                            if(auxInt>0) {
+                                auxInt--;
+                                for(int i=0;i<((ListView)context.findViewById(R.id.ll)).getChildCount();i++) {
+                                    View a=(RelativeLayout)((ListView)context.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                                    if(a instanceof RelativeLayout) {
+                                        if(((RelativeLayout)a).getChildCount()!=3) {
+                                            LineaComanda lc=lComanda.get(i);
+                                            lc.setCantidad(auxInt);
+                                            lComanda.remove(i);
+                                            lComanda.add(i,lc);
+                                        }
+                                    }
+                                }
+                                tv.setText(auxInt + "");
+                            }
+                        }
+                    });
+                    hl.addView(but,4);
+                    notifyDataSetChanged();
+                }
+            });
             item.setTag(holder);
         }
         else

@@ -7,14 +7,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
+import comandapp.comandappcliente.logicanegocio.objetos.Comanda;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
 import comandapp.comandappcliente.logicanegocio.objetos.Producto;
 import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorCarta;
 
@@ -24,6 +29,7 @@ public class Carta_bar extends ActionBarActivity {
     AdaptadorCarta adaptador;
     ListView lstEntradas;
     Bar bar=null;
+    ArrayList<LineaComanda> lComanda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +67,41 @@ public class Carta_bar extends ActionBarActivity {
             }
         });
 
+        lComanda=new ArrayList<LineaComanda>();
+        for(LineaCarta lC:carta){
+            lComanda.add(new LineaComanda(new LineaCarta(lC.getProducto(),lC.getPrecio(), lC.getDescripcion()),0));
+        }
+        Button but=(Button)this.findViewById(R.id.btnCarta);
+        but.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Carta_bar.this, ComandaDetallada.class);
+                for(int i=0;i<((ListView)findViewById(R.id.ll)).getChildCount();i++) {
+                    View a=(RelativeLayout)((ListView)findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                    if(a instanceof RelativeLayout) {
+                        TextView tv=(TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).findViewById(R.id.but);
+                        LineaComanda lc=lComanda.get(i);
+                        lc.setCantidad(Integer.parseInt(tv.getText().toString()));
+                        lComanda.remove(i);
+                        lComanda.add(i,lc);
+
+                    }
+                }
+                for(int i=0;i<lComanda.size();i++){
+                    if(lComanda.get(i).getCantidad()==0)
+                        lComanda.remove(i);
+                }
+                Comanda c=new Comanda(bar,lComanda);
+                //MANDAR A PERSISTENCIA
+                //
+                //
+                //
+                //
+                //
+                startActivity(intent);
+            }
+        });
     }
 
 
