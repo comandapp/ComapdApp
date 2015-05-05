@@ -17,7 +17,6 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".presentacion.actividades.MainActivity"
@@ -34,10 +33,12 @@
             android:label="Bares Favoritos" />
         <activity
             android:name=".presentacion.actividades.InicioBar"
-            android:label="Inicio" />
+            android:label="Inicio"
+            android:noHistory="true"/>
         <activity
             android:name=".presentacion.actividades.Carta_bar"
-            android:label="Carta" />
+            android:label="Carta"
+            android:noHistory="true"/>
         <activity
             android:name=".presentacion.actividades.ComandaDetallada"
             android:label="Comanda Detalles" />
@@ -46,7 +47,8 @@
             android:label="Comanda QR" />
         <activity
             android:name=".presentacion.actividades.Ofertas_bar"
-            android:label="Ofertas" />
+            android:label="Ofertas"
+            android:noHistory="true"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
