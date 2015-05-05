@@ -28,5 +28,6 @@
 	
 	<string name="title_activity_comanda_detallada">ComandaDetallada</string>
     <string name="title_activity_mapa_ylocalizacion">Mapa</string>
+    <string name="title_activity_historial_comandas">HistorialComandas</string>
 
 </resources>

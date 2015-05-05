@@ -4,15 +4,16 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <permission
         android:name="comandapp.comandappcliente.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="comandapp.comandappcliente.permission.MAPS_RECEIVE"/>
+        android:protectionLevel="signature" />
 
+    <uses-permission android:name="comandapp.comandappcliente.permission.MAPS_RECEIVE" />
 
     <application
         android:allowBackup="true"
@@ -34,11 +35,11 @@
         <activity
             android:name=".presentacion.actividades.InicioBar"
             android:label="Inicio"
-            android:noHistory="true"/>
+            android:noHistory="true" />
         <activity
             android:name=".presentacion.actividades.Carta_bar"
             android:label="Carta"
-            android:noHistory="true"/>
+            android:noHistory="true" />
         <activity
             android:name=".presentacion.actividades.ComandaDetallada"
             android:label="Comanda Detalles" />
@@ -48,7 +49,7 @@
         <activity
             android:name=".presentacion.actividades.Ofertas_bar"
             android:label="Ofertas"
-            android:noHistory="true"/>
+            android:noHistory="true" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -60,6 +61,10 @@
         <activity
             android:name=".presentacion.actividades.MapaYLocalizacion"
             android:label="@string/title_activity_mapa_ylocalizacion" >
+        </activity>
+        <activity
+            android:name=".presentacion.actividades.HistorialComandas"
+            android:label="@string/title_activity_historial_comandas" >
         </activity>
     </application>
 

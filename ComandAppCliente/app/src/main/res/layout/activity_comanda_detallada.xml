@@ -5,10 +5,37 @@
     android:orientation="vertical"
     android:gravity="center_horizontal">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/LytSubMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:weightSum="1">
+
+        <Button android:id="@+id/btnGuardarComanda"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:text="GUARDAR"
+            android:layout_weight="0.5"
+            android:drawableLeft="@drawable/guardar_icon"
+            android:layout_marginRight="4dp"
+            style="@style/botonCustomSubMenu"/>
+
+        <Button android:id="@+id/btnHistorial"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:text="Historial"
+            android:layout_weight="0.5"
+            android:drawableLeft="@drawable/historial_icon"
+            style="@style/botonCustomSubMenu"/>
+
+    </LinearLayout>
+
     <Button android:id="@+id/btnQR"
         android:layout_width="250dp"
         android:layout_height="42dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="6dp"
         android:layout_marginBottom="18dp"
         android:text="Realizar Pedido"
         style="@style/botonCustom"/>
