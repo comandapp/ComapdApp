@@ -1,9 +1,12 @@
 package comandapp.comandappcliente.presentacion.actividades;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -17,8 +20,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
@@ -26,13 +32,75 @@ import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 
 public class MapaYLocalizacion extends FragmentActivity {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    GoogleMap googleMap;
 
+    LatLng myPosition;
+    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mapa_ylocalizacion);
-        setUpMapIfNeeded();
+        setContentView(R.layout.activity_maps);
+
+        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+        // Getting GoogleMap object from the fragment
+        googleMap = fm.getMap();
+        // Enabling MyLocation Layer of Google Map
+        googleMap.setMyLocationEnabled(true);
+        // Getting LocationManager object from System Service LOCATION_SERVICE
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Creating a criteria object to retrieve provider
+        Criteria criteria = new Criteria();
+
+        // Getting the name of the best provider
+        String provider = locationManager.getBestProvider(criteria, true);
+
+        // Getting Current Location
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        if (location != null) {
+            // Getting latitude of the current location
+            double latitude = location.getLatitude();
+
+            // Getting longitude of the current location
+            double longitude = location.getLongitude();
+
+            // Creating a LatLng object for the current location
+            LatLng latLng = new LatLng(latitude, longitude);
+
+            myPosition = new LatLng(latitude, longitude);
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(myPosition)      // Sets the center of the map to LatLng (refer to previous snippet)
+                    .zoom(15)                   // Sets the zoom
+                    .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                    .build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            googleMap.addMarker(new MarkerOptions().position(myPosition).title("Posicion"));
+        }else{
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(MapaYLocalizacion.this);
+            dlgAlert.setMessage("Error al obtener la localización.");
+            dlgAlert.setTitle("Aviso");
+            dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+                ;
+            });
+            dlgAlert.setCancelable(false);
+            dlgAlert.create().show();
+        }
+        Bundle b=this.getIntent().getExtras();
+        ArrayList<Bar> lb=LogicaNegocio.getInstancia().getAllBares(this);
+        cargaBares(googleMap, lb);
+    }
+
+
+    public void cargaBares(GoogleMap googleMap, ArrayList<Bar> listaBares){
+        LatLng p=null;
+        for (Bar b:listaBares){
+            p=new LatLng(b.getLatitud(),b.getLongitud());
+            googleMap.addMarker(new MarkerOptions().position(p).title(b.getNombre()));
+        }
     }
 
     @Override
@@ -76,35 +144,6 @@ public class MapaYLocalizacion extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.setMyLocationEnabled(true);
 
-        CameraUpdateFactory.newLatLngZoom(new LatLng(42.4602928,-2.4483627), 14);
-        for(Bar b : LogicaNegocio.getInstancia().getAllBaresHuecos(this)) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(b.getLatitud(), b.getLongitud())).title(b.getNombre()));
-        }
-
-        mMap.setOnMyLocationChangeListener(myLocationChangeListener);
-
-    }
-
-    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
-        @Override
-        public void onMyLocationChange(Location location) {
-            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(loc));
-            if(mMap != null){
-                drawMarker(location);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-            }
-        }
-    };
-
-    private void drawMarker(Location location){
-        LatLng currentPosition = new LatLng(location.getLatitude(),location.getLongitude());
-        mMap.addMarker(new MarkerOptions()
-                .position(currentPosition)
-                .snippet("Lat:" + location.getLatitude() + "Lng:"+ location.getLongitude())
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .title("ME"));
     }
 }

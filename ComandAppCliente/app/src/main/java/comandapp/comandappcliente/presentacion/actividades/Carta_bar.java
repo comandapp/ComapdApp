@@ -7,14 +7,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
+import comandapp.comandappcliente.logicanegocio.objetos.Comanda;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
 import comandapp.comandappcliente.logicanegocio.objetos.Producto;
 import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorCarta;
 
@@ -24,14 +29,16 @@ public class Carta_bar extends ActionBarActivity {
     AdaptadorCarta adaptador;
     ListView lstEntradas;
     Bar bar=null;
+    ArrayList<LineaComanda> lComanda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carta_bar);
 
         final int id_Bar = this.getIntent().getExtras().getInt("id_bar");
+        //Comanda c=LogicaNegocio.getInstancia().getComandaTemporal(this)
+        //if(c==null)
         ArrayList<LineaCarta> carta = LogicaNegocio.getInstancia().getCarta(this,id_Bar);
-
         if(carta.size() == 0) {
             //No hay elementos en la carta !!! Mostrar mensaje al usuario
         } else {
@@ -39,8 +46,14 @@ public class Carta_bar extends ActionBarActivity {
             lstEntradas = (ListView)findViewById(R.id.ll);
             lstEntradas.setAdapter(adaptador);
         }
-
-
+        lComanda=new ArrayList<LineaComanda>();
+        for(LineaCarta lC:carta){
+            lComanda.add(new LineaComanda(new LineaCarta(lC.getProducto(),lC.getPrecio(), lC.getDescripcion()),0));
+        }
+        //else Si la comanda no es null
+        /*
+        Cargamos los objetos desde comanda a lComanda
+         */
         Button btn = (Button)findViewById(R.id.button2);
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +61,28 @@ public class Carta_bar extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Carta_bar.this, InicioBar.class);
                 intent.putExtra("id_bar",id_Bar);
+                for(int i=0;i<((ListView)findViewById(R.id.ll)).getChildCount();i++) {
+                    View a=(RelativeLayout)((ListView)findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                    if(a instanceof RelativeLayout) {
+                        TextView tv=(TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).findViewById(R.id.but);
+                        LineaComanda lc=lComanda.get(i);
+                        lc.setCantidad(Integer.parseInt(tv.getText().toString()));
+                        lComanda.remove(i);
+                        lComanda.add(i,lc);
+
+                    }
+                }
+                for(int i=0;i<lComanda.size();i++){
+                    if(lComanda.get(i).getCantidad()==0)
+                        lComanda.remove(i);
+                }
+                Comanda c=new Comanda(bar,lComanda);
+                //MANDAR A PERSISTENCIA
+                //
+                //
+                //
+                //
+                //
                 startActivity(intent);
             }
         });
@@ -57,9 +92,32 @@ public class Carta_bar extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Carta_bar.this, Ofertas_bar.class);
                 intent.putExtra("id_bar",id_Bar);
+                for(int i=0;i<((ListView)findViewById(R.id.ll)).getChildCount();i++) {
+                    View a=(RelativeLayout)((ListView)findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                    if(a instanceof RelativeLayout) {
+                        TextView tv=(TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).findViewById(R.id.but);
+                        LineaComanda lc=lComanda.get(i);
+                        lc.setCantidad(Integer.parseInt(tv.getText().toString()));
+                        lComanda.remove(i);
+                        lComanda.add(i,lc);
+
+                    }
+                }
+                for(int i=0;i<lComanda.size();i++){
+                    if(lComanda.get(i).getCantidad()==0)
+                        lComanda.remove(i);
+                }
+                Comanda c=new Comanda(bar,lComanda);
+                //MANDAR A PERSISTENCIA
+                //
+                //
+                //
+                //
+                //
                 startActivity(intent);
             }
         });
+
 
 
     }

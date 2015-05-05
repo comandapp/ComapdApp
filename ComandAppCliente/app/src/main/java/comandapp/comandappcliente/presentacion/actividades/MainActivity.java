@@ -49,10 +49,11 @@ public class MainActivity extends ActionBarActivity {
                 LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
                 boolean enabled = service
                         .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
                 if (!enabled) {
                     AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(MainActivity.this);
-                    dlgAlert.setMessage("No tienes activada la localización. Sin ella no podremos saber donde estás. ¿Quiéres activarla?");
-                    dlgAlert.setTitle("Aviso sobre localización");
+                    dlgAlert.setMessage("Es necesario tener los servicios de localización activados, se le redireccionara a dicho lugar.");
+                    dlgAlert.setTitle("Aviso");
                     dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent2 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
