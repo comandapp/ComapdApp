@@ -49,6 +49,29 @@ public class SQLHelper extends SQLiteOpenHelper {
             "Foto VARCHAR,"+
             "CONSTRAINT pk_Producto PRIMARY KEY(Id_Producto));";
 
+    String sqlCreateComanda = "CREATE TABLE comanda ("+
+            "Nombre_comanda VARCHAR,"+
+            "Bar INTEGER,"+
+            "Fecha datetime default current_timestamp,"+
+            "CONSTRAINT pk_Comanda PRIMARY KEY(Nombre_comanda));";
+
+    String sqlCreateLineaComanda = "CREATE TABLE lineaComanda ("+
+            "Nombre_comanda VARCHAR,"+
+            "Id_Producto INTEGER,"+
+            "Id_Bar INTEGER,"+
+            "CONSTRAINT pk_LineaComanda PRIMARY KEY(Nombre_comanda,Id_Producto,Id_Bar),"+
+            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto)),"+
+            "CONSTRAINT fk_LineaBar FOREIGN KEY(Id_Bar) REFERENCES bar(Id_Bar));";
+
+    String sqlCreateLineaCarta = "CREATE TABLE lineaCarta ("+
+            "Id_Producto INTEGER,"+
+            "Id_Bar INTEGER,"+
+            "Precio DOUBLE,"+
+            "Descripcion VARCHAR,"+
+            "CONSTRAINT pk_LineaCarta PRIMARY KEY(Id_Producto,Id_Bar),"+
+            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto)),"+
+            "CONSTRAINT fk_LineaBar FOREIGN KEY(Id_Bar) REFERENCES bar(Id_Bar));";
+
     String sqlInsertBar = "INSERT INTO bar (Id_Bar, Nombre, Direccion, Telefono, Latitud, Longitud, Provincia, Municipio, Foto, Favorito, Correo, VersionInfoBar, VersionCarta, VersionOfertas) VALUES" +
             "(1," +
             "'Ángel Fernandez Lasanta'," +
@@ -104,11 +127,17 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS carta;");
         db.execSQL("DROP TABLE IF EXISTS bar;");
         db.execSQL("DROP TABLE IF EXISTS producto;");
+        db.execSQL("DROP TABLE IF EXISTS comanda;");
+        db.execSQL("DROP TABLE IF EXISTS lineaComanda;");
+        db.execSQL("DROP TABLE IF EXISTS lineaCarta;");
 
         db.execSQL(sqlCreateBar);
         db.execSQL(sqlCreateCarta);
         db.execSQL(sqlCreateOferta);
         db.execSQL(sqlCreateProducto);
+        db.execSQL(sqlCreateComanda);
+        db.execSQL(sqlCreateLineaComanda);
+        db.execSQL(sqlCreateLineaCarta);
 
         db.execSQL(sqlInsertBar);
         db.execSQL(sqlInsertCarta);
@@ -122,11 +151,17 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS carta;");
         db.execSQL("DROP TABLE IF EXISTS bar;");
         db.execSQL("DROP TABLE IF EXISTS producto;");
+        db.execSQL("DROP TABLE IF EXISTS comanda;");
+        db.execSQL("DROP TABLE IF EXISTS lineaComanda;");
+        db.execSQL("DROP TABLE IF EXISTS lineaCarta;");
 
         db.execSQL(sqlCreateBar);
         db.execSQL(sqlCreateCarta);
         db.execSQL(sqlCreateOferta);
         db.execSQL(sqlCreateProducto);
+        db.execSQL(sqlCreateComanda);
+        db.execSQL(sqlCreateLineaComanda);
+        db.execSQL(sqlCreateLineaCarta);
 
         db.execSQL(sqlInsertBar);
         db.execSQL(sqlInsertCarta);

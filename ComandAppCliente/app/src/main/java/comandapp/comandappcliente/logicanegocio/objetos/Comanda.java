@@ -9,22 +9,41 @@ import java.util.Date;
  */
 public class Comanda
 {
+    private String nombreComanda;
     private Bar bar;
     private Date fecha;
     private ArrayList<LineaComanda> lineasComanda;
 
-    public Comanda(Bar bar)
+    public Comanda(String nombre)
     {
+        this.nombreComanda = nombre;
+        this.bar = null;
+        this.setFecha(Calendar.getInstance().getTime());
+        setLineasComanda(new ArrayList<LineaComanda>());
+    }
+
+    public Comanda(String nombre, Bar bar)
+    {
+        this.nombreComanda = nombre;
         this.setBar(bar);
         this.setFecha(Calendar.getInstance().getTime());
         setLineasComanda(new ArrayList<LineaComanda>());
     }
 
-    public Comanda(Bar bar, ArrayList<LineaComanda> lineas)
+    public Comanda(String nombre, Bar bar, ArrayList<LineaComanda> lineas)
     {
+        this.nombreComanda = nombre;
         this.setBar(bar);
         this.setFecha(Calendar.getInstance().getTime());
         setLineasComanda(lineas);
+    }
+
+    public String getNombre() {
+        return nombreComanda;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombreComanda = nombre;
     }
 
     public Bar getBar() {

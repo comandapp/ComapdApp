@@ -80,6 +80,12 @@ public class LogicaNegocio {
         else return null;
     }
 
+    public ArrayList<Comanda> getAllComandas(Context con) {
+        ArrayList<Comanda> c = persistencia.getComandas(con, null);
+        if(c.size()>0) return c;
+        else return null;
+    }
+
     public void setBarFavorito(Context con, Bar b, boolean fav) {
         b.setFavorito(fav);
         persistencia.actualizaFavoritoBar(con, b);

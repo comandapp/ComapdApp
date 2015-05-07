@@ -28,9 +28,5 @@
 	
 	<string name="title_activity_comanda_detallada">ComandaDetallada</string>
     <string name="title_activity_mapa_ylocalizacion">Mapa</string>
-<<<<<<< HEAD
     <string name="title_activity_historial_comandas">HistorialComandas</string>
-
-=======
->>>>>>> origin/Rama---Proyecto-Unificado
 </resources>

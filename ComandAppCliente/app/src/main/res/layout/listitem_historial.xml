@@ -1,54 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    android:paddingLeft="10dp"
-    android:background="@drawable/estilo_barseleccionado">
+    android:paddingLeft="6dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/estilo_barseleccionado"
+    android:id="@+id/LVItemRelLayout">
 
-    <ImageView android:id="@+id/imgLogoBar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <ImageView android:id="@+id/imgBar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/logo_comandapp"
-        android:focusable="false"/>
+        android:focusable="false"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp">
+        android:layout_toRightOf="@+id/LVIBarImg"
+        android:layout_marginLeft="6dp"
+        android:layout_toLeftOf="@+id/imageViewFavorito"
+        android:layout_toStartOf="@+id/imageViewFavorito">
 
         <TextView android:id="@+id/lblNombreComanda"
-            android:text="Mi comanda de prueba"
+            android:layout_weight="6"
+            android:layout_marginLeft="4dp"
+            style="@style/nombreBaresLista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            style="@style/nombreBaresLista"/>
+            android:focusable="false"/>
 
-        <TextView android:id="@+id/lblNombreBar"
+        <TextView android:id="@+id/lblFecha"
+            android:layout_weight="6"
+            android:layout_marginLeft="4dp"
             style="@style/infoBaresLista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Entrepuentes"
-            android:gravity="right"
             android:focusable="false"/>
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="20dp" />
-
     <TextView android:id="@+id/lblPrecioComanda"
-        android:text="25.55 €"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusable="false"
-        style="@style/nombreBaresLista"/>
+        style="@style/nombreBaresLista"
+        android:layout_marginRight="4dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"/>
 
-</LinearLayout>
+</RelativeLayout>

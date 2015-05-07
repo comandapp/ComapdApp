@@ -29,11 +29,14 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
 {
     Activity context;
     ArrayList<Bar> listadoBares;
+    ArrayList<Bar> listadoBaresAux;
 
     public AdaptadorListadoBares(Activity context, ArrayList<Bar> datos) {
         super(context, R.layout.listitem_bar, datos);
         this.context = context;
         listadoBares = datos;
+        listadoBaresAux = new ArrayList<Bar>();
+        listadoBaresAux.addAll(listadoBares);
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -78,11 +81,11 @@ public class AdaptadorListadoBares extends ArrayAdapter<Bar>
         charText = charText.toLowerCase(Locale.getDefault());
         listadoBares.clear();
         if (charText.length() == 0) {
-            listadoBares.addAll(listadoBares);
+            listadoBares.addAll(listadoBaresAux);
         }
         else
         {
-            for (Bar bar : listadoBares)
+            for (Bar bar : listadoBaresAux)
             {
                 if (bar.getNombre().toLowerCase(Locale.getDefault()).contains(charText))
                 {

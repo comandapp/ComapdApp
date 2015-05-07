@@ -304,7 +304,7 @@ public class Persistencia {
 
     private boolean existeLineaEnCarta(SQLHelper sql, int id_Bar, LineaCarta e) {
         SQLiteDatabase dbr = sql.getReadableDatabase();
-        Cursor c = dbr.rawQuery("SELECT Id_Bar FROM carta WHERE Id_Bar="+id_Bar+" AND Id_Producto="+e.getProducto().getId()+";", null);
+        Cursor c = dbr.rawQuery("SELECT Id_Bar FROM carta WHERE Id_Bar=" + id_Bar + " AND Id_Producto=" + e.getProducto().getId() + ";", null);
 
         if(c.moveToFirst()) {
             dbr.close();
@@ -338,7 +338,44 @@ public class Persistencia {
         sql.close();
     }
 
+    //COMANDAS-----------------------------------------------------------------------------------------
+    //Obtiene las comandas almacenadas en la base de datos.
+    //Argumentos:
+    // - idArray
+    //Si se le pasa un array de identificadores devuelve los bares correspondientes
+    //Si se le pasa null o la lista vacía devuelve todos los existentes
+    // - opcion
+    // false = Devuelve los bares sin cartas ni ofertas
+    // true = Devuelve los bares con sus cartas y ofertas
+    public ArrayList<Comanda> getComandas(Context con, int[] idArray) {
+        ArrayList<Comanda> ret = new ArrayList<Comanda>();
 
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbr = sql.getReadableDatabase();
+
+        Cursor c;
+        String idArrayString = null;
+        if(idArray != null && idArray.length > 0) {
+            idArrayString = idArrayToSqlSelect(idArray);
+            c = dbr.rawQuery("SELECT * FROM comanda WHERE Nombre_comanda in "+idArrayString+";", null);
+        } else {
+            c = dbr.rawQuery("SELECT * FROM comanda;", null);
+        }
+
+        Comanda com;
+        while(c.moveToNext()) {
+            com = new Comanda(
+                    c.getString(0)
+            );
+
+            ret.add(com);
+        }
+
+        dbr.close();
+        sql.close();
+
+        return ret;
+    }
 
 
 

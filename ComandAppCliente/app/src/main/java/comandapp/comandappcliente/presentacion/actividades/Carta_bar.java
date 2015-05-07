@@ -76,7 +76,7 @@ public class Carta_bar extends ActionBarActivity {
                     if(lComanda.get(i).getCantidad()==0)
                         lComanda.remove(i);
                 }
-                Comanda c=new Comanda(bar,lComanda);
+                //Comanda c=new Comanda(bar,lComanda);
                 //MANDAR A PERSISTENCIA
                 //
                 //
@@ -107,7 +107,7 @@ public class Carta_bar extends ActionBarActivity {
                     if(lComanda.get(i).getCantidad()==0)
                         lComanda.remove(i);
                 }
-                Comanda c=new Comanda(bar,lComanda);
+                //Comanda c=new Comanda(bar,lComanda);
                 //MANDAR A PERSISTENCIA
                 //
                 //
