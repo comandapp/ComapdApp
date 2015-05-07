@@ -31,6 +31,8 @@ public class ComandaDetallada extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comanda_detallada);
 
+        final int id_Bar = this.getIntent().getExtras().getInt("id_bar");
+
         /*
         ArrayList<LineaComanda> listadoLineasComanda = new ArrayList<LineaComanda>();
         listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(1, "Coca Cola"), 2.5), 3));
@@ -81,6 +83,39 @@ public class ComandaDetallada extends ActionBarActivity {
             }
         });
         ----------------------------------------------------------------------------------------------------------*/
+
+        Button btnMenuCarta = (Button)findViewById(R.id.btnMenuCarta);
+        Button btnMenuInicio = (Button)findViewById(R.id.btnMenuInicio);
+        Button btnMenuOferta = (Button)findViewById(R.id.btnMenuOfertas);
+
+        btnMenuCarta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ComandaDetallada.this, Carta_bar.class);
+                intent.putExtra("id_bar",id_Bar);
+                startActivity(intent);
+            }
+        });
+
+        btnMenuInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ComandaDetallada.this, InicioBar.class);
+                intent.putExtra("id_bar",id_Bar);
+                startActivity(intent);
+            }
+        });
+
+        btnMenuOferta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ComandaDetallada.this, Ofertas_bar.class);
+
+                intent.putExtra("id_bar",id_Bar);
+
+                startActivity(intent);
+            }
+        });
     }
 
 

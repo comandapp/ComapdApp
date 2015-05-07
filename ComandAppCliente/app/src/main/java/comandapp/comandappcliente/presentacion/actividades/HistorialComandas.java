@@ -56,15 +56,15 @@ public class HistorialComandas extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //Colocamos el menú definido para esta vista:
+        //Colocamos el menu definido para esta vista:
         getMenuInflater().inflate(R.menu.menu_historial_comandas, menu);
 
-        //Obtenemos la referencia al cajetín de búsqueda de la ActionBar:
+        //Obtenemos la referencia al cajeton de busqueda de la ActionBar:
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
 
-        //Le añadimos al cajetín de búsqueda la configuración de searchable.xml:
+        //Le anadimos al cajeton de busqueda la configuracion de searchable.xml:
             /*
-            Sin olvidar que para que encuentre el searchable tendremos que añadir lo siguiente al
+            Sin olvidar que para que encuentre el searchable tendremos que anadir lo siguiente al
             manifest, para esta clase:
                 <intent-filter>
                     <action android:name="android.intent.action.SEARCH" />
@@ -83,7 +83,7 @@ public class HistorialComandas extends ActionBarActivity {
             }
 
             public boolean onQueryTextSubmit(String query) {
-                //Desde aquí se puede obtener el texto "query" introducido en la caja de búsqueda de la ActionBar
+                //Desde aqui se puede obtener el texto "query" introducido en la caja de busqueda de la ActionBar
                 return true;
             }
         };

@@ -15,7 +15,7 @@ import android.util.Base64;
  * @author G62
  */
 public class LineaCarta {
- 
+
     private Producto producto;
     private double precio;
     private String descripcion;

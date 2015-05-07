@@ -12,27 +12,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Inicio"
-            android:id="@+id/button2"
+            android:id="@+id/btnMenuInicio"
             android:background="@drawable/boton_selec"
-            android:layout_weight=".33"
+            android:layout_weight=".25"
             android:textSize="16dp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Carta"
-            android:id="@+id/button3"
+            android:id="@+id/btnMenuCarta"
             android:background="#ffff9615"
-            android:layout_weight=".33"
+            android:layout_weight=".25"
+            android:textSize="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ofertas"
+            android:id="@+id/btnMenuOfertas"
+            android:background="#ffff9615"
+            android:layout_weight=".25"
             android:textSize="16dp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Comanda"
-            android:id="@+id/button4"
+            android:id="@+id/btnMenuComanda"
             android:background="#ffff9615"
-            android:layout_weight=".33"
+            android:layout_weight=".25"
             android:textSize="16dp" />
     </LinearLayout>
 

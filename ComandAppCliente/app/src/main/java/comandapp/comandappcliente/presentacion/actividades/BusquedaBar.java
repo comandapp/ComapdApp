@@ -47,6 +47,7 @@ public class BusquedaBar extends ActionBarActivity {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 Intent intent = new Intent(BusquedaBar.this, InicioBar.class);
                 Bar b = (Bar)a.getItemAtPosition(position);
+
                 intent.putExtra("id_bar",b.getIdBar());
                 startActivity(intent);
             }

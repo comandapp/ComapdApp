@@ -4,6 +4,48 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inicio"
+            android:id="@+id/btnMenuInicio"
+            android:background="#ffff9615"
+            android:layout_weight=".25"
+            android:textSize="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carta"
+            android:id="@+id/btnMenuCarta"
+            android:background="#ffff9615"
+            android:layout_weight=".25"
+            android:textSize="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comanda"
+            android:id="@+id/btnMenuComanda"
+            android:background="#ffff9615"
+            android:layout_weight=".25"
+            android:textSize="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Historial"
+            android:id="@+id/btnMenuHistorial"
+            android:background="@drawable/boton_selec"
+            android:layout_weight=".25"
+            android:textSize="16dp" />
+    </LinearLayout>
+
     <ListView android:id="@+id/ListaComandas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

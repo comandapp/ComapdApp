@@ -60,7 +60,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             "Id_Producto INTEGER,"+
             "Id_Bar INTEGER,"+
             "CONSTRAINT pk_LineaComanda PRIMARY KEY(Nombre_comanda,Id_Producto,Id_Bar),"+
-            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto)),"+
+            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto),"+
             "CONSTRAINT fk_LineaBar FOREIGN KEY(Id_Bar) REFERENCES bar(Id_Bar));";
 
     String sqlCreateLineaCarta = "CREATE TABLE lineaCarta ("+
@@ -69,7 +69,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             "Precio DOUBLE,"+
             "Descripcion VARCHAR,"+
             "CONSTRAINT pk_LineaCarta PRIMARY KEY(Id_Producto,Id_Bar),"+
-            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto)),"+
+            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto),"+
             "CONSTRAINT fk_LineaBar FOREIGN KEY(Id_Bar) REFERENCES bar(Id_Bar));";
 
     String sqlInsertBar = "INSERT INTO bar (Id_Bar, Nombre, Direccion, Telefono, Latitud, Longitud, Provincia, Municipio, Foto, Favorito, Correo, VersionInfoBar, VersionCarta, VersionOfertas) VALUES" +

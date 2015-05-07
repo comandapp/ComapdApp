@@ -52,6 +52,7 @@
             android:noHistory="true" />
         <activity
             android:name=".presentacion.actividades.ComandaDetallada"
+            android:noHistory="true"
             android:label="Comanda Detalles" />
         <activity
             android:name=".presentacion.actividades.ComandaQR"

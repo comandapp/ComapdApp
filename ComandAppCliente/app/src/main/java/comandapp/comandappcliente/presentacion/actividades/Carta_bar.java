@@ -54,74 +54,70 @@ public class Carta_bar extends ActionBarActivity {
         /*
         Cargamos los objetos desde comanda a lComanda
          */
-        Button btn = (Button)findViewById(R.id.button2);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        Button btnMenuInicio = (Button)findViewById(R.id.btnMenuInicio);
+        Button btnMenuOfertas = (Button)findViewById(R.id.btnMenuOfertas);
+        Button btnMenuComanda = (Button)findViewById(R.id.btnMenuComanda);
+
+        btnMenuInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Carta_bar.this, InicioBar.class);
                 intent.putExtra("id_bar",id_Bar);
-                for(int i=0;i<((ListView)findViewById(R.id.ll)).getChildCount();i++) {
-                    View a=(RelativeLayout)((ListView)findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
-                    if(a instanceof RelativeLayout) {
-                        TextView tv=(TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).findViewById(R.id.but);
-                        LineaComanda lc=lComanda.get(i);
-                        lc.setCantidad(Integer.parseInt(tv.getText().toString()));
-                        lComanda.remove(i);
-                        lComanda.add(i,lc);
 
-                    }
-                }
-                for(int i=0;i<lComanda.size();i++){
-                    if(lComanda.get(i).getCantidad()==0)
-                        lComanda.remove(i);
-                }
-                //Comanda c=new Comanda(bar,lComanda);
+                guardaComanda();
                 //MANDAR A PERSISTENCIA
-                //
-                //
-                //
-                //
-                //
+
                 startActivity(intent);
             }
         });
-        Button btn2 = (Button)findViewById(R.id.button4);
-        btn2.setOnClickListener(new View.OnClickListener() {
+
+        btnMenuOfertas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Carta_bar.this, Ofertas_bar.class);
                 intent.putExtra("id_bar",id_Bar);
-                for(int i=0;i<((ListView)findViewById(R.id.ll)).getChildCount();i++) {
-                    View a=(RelativeLayout)((ListView)findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
-                    if(a instanceof RelativeLayout) {
-                        TextView tv=(TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).findViewById(R.id.but);
-                        LineaComanda lc=lComanda.get(i);
-                        lc.setCantidad(Integer.parseInt(tv.getText().toString()));
-                        lComanda.remove(i);
-                        lComanda.add(i,lc);
 
-                    }
-                }
-                for(int i=0;i<lComanda.size();i++){
-                    if(lComanda.get(i).getCantidad()==0)
-                        lComanda.remove(i);
-                }
-                //Comanda c=new Comanda(bar,lComanda);
+                guardaComanda();
                 //MANDAR A PERSISTENCIA
-                //
-                //
-                //
-                //
-                //
+
                 startActivity(intent);
             }
         });
 
+        btnMenuComanda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Carta_bar.this, ComandaDetallada.class);
+                intent.putExtra("id_bar",id_Bar);
+                guardaComanda();
+                //MANDAR A PERSISTENCIA
 
-
+                startActivity(intent);
+            }
+        });
     }
 
+    private void guardaComanda()
+    {
+        for(int i=0;i<((ListView)findViewById(R.id.ll)).getChildCount();i++)
+        {
+            View a=(RelativeLayout)((ListView)findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+            if(a instanceof RelativeLayout) {
+                TextView tv=(TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).findViewById(R.id.but);
+                LineaComanda lc=lComanda.get(i);
+                lc.setCantidad(Integer.parseInt(tv.getText().toString()));
+                lComanda.remove(i);
+                lComanda.add(i,lc);
+
+            }
+        }
+        for(int i=0;i<lComanda.size();i++)
+        {
+            if(lComanda.get(i).getCantidad()==0)
+                lComanda.remove(i);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

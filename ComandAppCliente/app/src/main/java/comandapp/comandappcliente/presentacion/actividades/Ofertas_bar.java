@@ -39,9 +39,11 @@ public class Ofertas_bar extends ActionBarActivity {
             lstOfertas.setAdapter(adaptador);
         }
 
-        Button btn = (Button)findViewById(R.id.button3);
-        bar=(Bar)this.getIntent().getExtras().getParcelable("bar");
-        btn.setOnClickListener(new View.OnClickListener() {
+        Button btnMenuCarta = (Button)findViewById(R.id.btnMenuCarta);
+        Button btnMenuInicio = (Button)findViewById(R.id.btnMenuInicio);
+        Button btnMenuComanda = (Button)findViewById(R.id.btnMenuComanda);
+
+        btnMenuCarta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Ofertas_bar.this, Carta_bar.class);
@@ -49,11 +51,20 @@ public class Ofertas_bar extends ActionBarActivity {
                 startActivity(intent);
             }
         });
-        Button btn2 = (Button)findViewById(R.id.button2);
-        btn2.setOnClickListener(new View.OnClickListener() {
+
+        btnMenuInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Ofertas_bar.this, InicioBar.class);
+                intent.putExtra("id_bar",id_Bar);
+                startActivity(intent);
+            }
+        });
+
+        btnMenuComanda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Ofertas_bar.this, ComandaDetallada.class);
                 intent.putExtra("id_bar",id_Bar);
                 startActivity(intent);
             }

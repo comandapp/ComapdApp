@@ -5,27 +5,40 @@ package comandapp.comandappcliente.logicanegocio.objetos;
  */
 public class LineaComanda
 {
-    private LineaCarta entradaProd;
+    private String nombre;
+    private Producto producto;
     private int cantidad;
 
-    public LineaComanda(LineaCarta entrada)
+    public LineaComanda(String nombre, Producto producto)
     {
-        setEntradaProd(entrada);
+        this.nombre = nombre;
+        setProducto(producto);
         this.setCantidad(0);
     }
 
-    public LineaComanda(LineaCarta entrada, int cantidad)
+    public LineaComanda(String nombre, Producto producto, int cantidad)
     {
-        setEntradaProd(entrada);
+        this.nombre = nombre;
+        setProducto(producto);
         this.setCantidad(cantidad);
     }
 
-    public LineaCarta getEntradaProd() {
-        return entradaProd;
+    public String getNombre()
+    {
+        return nombre;
     }
 
-    public void setEntradaProd(LineaCarta entradaProd) {
-        this.entradaProd = entradaProd;
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto prod) {
+        this.producto = prod;
     }
 
     public int getCantidad() {

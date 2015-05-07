@@ -23,6 +23,7 @@ import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 
 
+
 public class InicioBar extends ActionBarActivity {
 
     private Bar bar;
@@ -60,9 +61,11 @@ public class InicioBar extends ActionBarActivity {
             }
         });
 
-        Button btn = (Button)findViewById(R.id.button3);
+        Button btnMenuCarta = (Button)findViewById(R.id.btnMenuCarta);
+        Button btnMenuOfertas = (Button)findViewById(R.id.btnMenuOfertas);
+        Button btnMenuComanda = (Button)findViewById(R.id.btnMenuComanda);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnMenuCarta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(InicioBar.this, Carta_bar.class);
@@ -70,11 +73,20 @@ public class InicioBar extends ActionBarActivity {
                 startActivity(intent);
             }
         });
-        Button btn2 = (Button)findViewById(R.id.button4);
-        btn2.setOnClickListener(new View.OnClickListener() {
+
+        btnMenuOfertas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(InicioBar.this, Ofertas_bar.class);
+                intent.putExtra("id_bar",id_Bar);
+                startActivity(intent);
+            }
+        });
+
+        btnMenuComanda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InicioBar.this, ComandaDetallada.class);
                 intent.putExtra("id_bar",id_Bar);
                 startActivity(intent);
             }
