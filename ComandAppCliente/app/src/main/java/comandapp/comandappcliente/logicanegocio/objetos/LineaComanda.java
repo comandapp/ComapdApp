@@ -7,7 +7,10 @@ public class LineaComanda
 {
     private LineaCarta productoCarta;
     private int cantidad;
+<<<<<<< HEAD
     private LineaCarta lineaCarta;
+=======
+>>>>>>> parent of 159a274... Mapa arreglado
 
     public LineaComanda(String nombre, Producto producto)
     {

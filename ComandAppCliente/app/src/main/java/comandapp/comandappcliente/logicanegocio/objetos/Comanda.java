@@ -92,7 +92,11 @@ public class Comanda
 
         for(LineaComanda linea : lineasComanda)
         {
+<<<<<<< HEAD
             total += (linea.getProductoCarta().getPrecio() * linea.getCantidad());
+=======
+            total += (linea.getEntradaProd().getPrecio() * linea.getCantidad());
+>>>>>>> parent of 159a274... Mapa arreglado
         }
 
         return  total;
