@@ -118,6 +118,32 @@ public class InicioBar extends ActionBarActivity {
     }
     public void clickBoton(View v)
     {
+        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean enabled = service
+                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+        final Intent intent = new Intent(InicioBar.this, MapsActivityBar.class);
+        Bundle b=new Bundle();
 
+        b.putInt("bar",bar.getIdBar());
+// check if enabled and if not send user to the GSP settings
+// Better solution would be to display a dialog and suggesting to
+// go to the settings
+        if (!enabled) {
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(InicioBar.this);
+            dlgAlert.setMessage("Es necesario tener los servicios de localización activados, se le redireccionara a dicho lugar.");
+            dlgAlert.setTitle("Aviso");
+            dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent2 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                    startActivity(intent2);
+                }
+                ;
+            });
+            dlgAlert.setCancelable(false);
+            dlgAlert.create().show();
+        }else{
+            startActivity(intent);
+        }
     }
 }

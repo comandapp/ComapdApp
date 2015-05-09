@@ -29,7 +29,7 @@ public class Carta_bar extends ActionBarActivity {
     AdaptadorCarta adaptador;
     ListView lstEntradas;
     Bar bar=null;
-    ArrayList<LineaComanda> lComanda;
+    ArrayList<LineaComanda> lineasComanda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,16 +39,23 @@ public class Carta_bar extends ActionBarActivity {
         //Comanda c=LogicaNegocio.getInstancia().getComandaTemporal(this)
         //if(c==null)
         ArrayList<LineaCarta> carta = LogicaNegocio.getInstancia().getCarta(this,id_Bar);
-        if(carta.size() == 0) {
+
+        if(carta.size() == 0)
+        {
             //No hay elementos en la carta !!! Mostrar mensaje al usuario
-        } else {
+        }
+        else
+        {
             adaptador = new AdaptadorCarta(this, carta, LogicaNegocio.getInstancia().getOfertas(this,id_Bar));
-            lstEntradas = (ListView)findViewById(R.id.ll);
+            lstEntradas = (ListView)findViewById(R.id.listaCarta);
             lstEntradas.setAdapter(adaptador);
         }
-        lComanda=new ArrayList<LineaComanda>();
-        for(LineaCarta lC:carta){
-            lComanda.add(new LineaComanda(new LineaCarta(lC.getProducto(),lC.getPrecio(), lC.getDescripcion()),0));
+
+        lineasComanda=new ArrayList<LineaComanda>();
+
+        for(LineaCarta lineaCarta : carta)
+        {
+            lineasComanda.add(new LineaComanda(new LineaCarta(lineaCarta.getProducto(), lineaCarta.getPrecio(), lineaCarta.getDescripcion()), 0));
         }
         //else Si la comanda no es null
         /*
@@ -100,22 +107,23 @@ public class Carta_bar extends ActionBarActivity {
 
     private void guardaComanda()
     {
-        for(int i=0;i<((ListView)findViewById(R.id.ll)).getChildCount();i++)
+        for(int i=0; i < ((ListView)findViewById(R.id.listaCarta)).getChildCount(); i++)
         {
-            View a=(RelativeLayout)((ListView)findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
-            if(a instanceof RelativeLayout) {
-                TextView tv=(TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).findViewById(R.id.but);
-                LineaComanda lc=lComanda.get(i);
-                lc.setCantidad(Integer.parseInt(tv.getText().toString()));
-                lComanda.remove(i);
-                lComanda.add(i,lc);
+            View a = (RelativeLayout)((ListView)findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
 
+            if(a instanceof RelativeLayout)
+            {
+                TextView tv = (TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).findViewById(R.id.but);
+                LineaComanda lc = lineasComanda.get(i);
+                lc.setCantidad(Integer.parseInt(tv.getText().toString()));
+                lineasComanda.remove(i);
+                lineasComanda.add(i, lc);
             }
         }
-        for(int i=0;i<lComanda.size();i++)
+        for(int i=0; i < lineasComanda.size(); i++)
         {
-            if(lComanda.get(i).getCantidad()==0)
-                lComanda.remove(i);
+            if(lineasComanda.get(i).getCantidad()==0)
+                lineasComanda.remove(i);
         }
     }
 

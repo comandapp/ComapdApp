@@ -470,7 +470,7 @@ public class Persistencia {
 
     private boolean existeProducto(SQLHelper sql, Producto p) {
         SQLiteDatabase dbr = sql.getReadableDatabase();
-        Cursor c = dbr.rawQuery("SELECT Id_Producto FROM producto WHERE Id_Producto = ?;", new String[]{ Integer.toString(p.getId()) });
+        Cursor c = dbr.rawQuery("SELECT Id_Producto FROM producto WHERE Id_Producto = ?;", new String[]{Integer.toString(p.getId())});
 
         if(c.moveToFirst()) {
             dbr.close();
@@ -481,7 +481,6 @@ public class Persistencia {
     }
 
     public void insertaProducto(Producto p, SQLiteDatabase dbw) {
-        dbw.execSQL("INSERT INTO producto (Id_Producto, Nombre, Categoria) VALUES ("+p.getId()+", "+p.getNombre()+", "+p.getCategoria()+");");
+        dbw.execSQL("INSERT INTO producto (Id_Producto, Nombre, Categoria) VALUES (" + p.getId() + ", " + p.getNombre() + ", " + p.getCategoria() + ");");
     }
-
 }

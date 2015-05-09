@@ -92,7 +92,9 @@ public class Comanda
 
         for(LineaComanda linea : lineasComanda)
         {
-   //         total += (linea.getEntradaProd().getPrecio() * linea.getCantidad());
+
+            total += (linea.getProductoCarta().getPrecio() * linea.getCantidad());
+
         }
 
         return  total;
