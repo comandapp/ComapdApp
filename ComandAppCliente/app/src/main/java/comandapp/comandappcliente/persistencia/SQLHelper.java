@@ -26,14 +26,6 @@ public class SQLHelper extends SQLiteOpenHelper {
             "VersionOfertas INTEGER,"+
             "CONSTRAINT pk_Bar PRIMARY KEY(Id_Bar));";
 
-    String sqlCreateCarta = "CREATE TABLE carta ("+
-            "Id_Producto INTEGER,"+
-            "Id_Bar INTEGER,"+
-            "Precio DOUBLE,"+
-            "Descripcion VARCHAR,"+
-            "CONSTRAINT pk_Carta PRIMARY KEY(Id_Producto,Id_Bar),"+
-            "CONSTRAINT fk_Carta_Bar FOREIGN KEY(Id_Bar) REFERENCES bar(Id_Bar));";
-
     String sqlCreateOferta = "CREATE TABLE oferta ("+
             "Id_Producto INTEGER,"+
             "Id_Bar INTEGER,"+
@@ -58,12 +50,12 @@ public class SQLHelper extends SQLiteOpenHelper {
     String sqlCreateLineaComanda = "CREATE TABLE lineaComanda ("+
             "Nombre_comanda VARCHAR,"+
             "Id_Producto INTEGER,"+
-            "Id_Bar INTEGER,"+
-            "CONSTRAINT pk_LineaComanda PRIMARY KEY(Nombre_comanda,Id_Producto,Id_Bar),"+
-            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto),"+
-            "CONSTRAINT fk_LineaBar FOREIGN KEY(Id_Bar) REFERENCES bar(Id_Bar));";
+            "Cantidad INTEGER"+
+            "CONSTRAINT pk_LineaComanda PRIMARY KEY(Nombre_comanda,Id_Producto),"+
+            "CONSTRAINT fk_Comanda FOREIGN KEY(Nombre_comanda) REFERENCES comanda(Nombre_comanda),"+
+            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto));";
 
-    String sqlCreateLineaCarta = "CREATE TABLE lineaCarta ("+
+    String sqlCreateCarta = "CREATE TABLE lineaCarta ("+
             "Id_Producto INTEGER,"+
             "Id_Bar INTEGER,"+
             "Precio DOUBLE,"+
@@ -137,7 +129,6 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.execSQL(sqlCreateProducto);
         db.execSQL(sqlCreateComanda);
         db.execSQL(sqlCreateLineaComanda);
-        db.execSQL(sqlCreateLineaCarta);
 
         db.execSQL(sqlInsertBar);
         db.execSQL(sqlInsertCarta);
@@ -161,7 +152,6 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.execSQL(sqlCreateProducto);
         db.execSQL(sqlCreateComanda);
         db.execSQL(sqlCreateLineaComanda);
-        db.execSQL(sqlCreateLineaCarta);
 
         db.execSQL(sqlInsertBar);
         db.execSQL(sqlInsertCarta);
