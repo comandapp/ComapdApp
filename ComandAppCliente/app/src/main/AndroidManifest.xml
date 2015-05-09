@@ -58,6 +58,9 @@
             android:name=".presentacion.actividades.ComandaQR"
             android:label="Comanda QR" />
         <activity
+            android:name=".presentacion.actividades.MapsActivityBar"
+            android:label="Localizacion Bar" />
+        <activity
             android:name=".presentacion.actividades.Ofertas_bar"
             android:label="Ofertas"
             android:noHistory="true" />

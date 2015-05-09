@@ -48,8 +48,8 @@ public class AdaptadorComandaDetallada extends ArrayAdapter<LineaComanda>
             holder = (ViewHolderLineasComanda)item.getTag();
         }
 
-        holder.nombre.setText(linea.getEntradaProd().getProducto().getNombre());
-        double precio = linea.getEntradaProd().getPrecio();
+        holder.nombre.setText(linea.getNombre());
+        double precio = linea.getProductoCarta().getPrecio();
         holder.precioIndividual.setText(precio + "");
         int cantidad = linea.getCantidad();
         holder.cantidad.setText("x " + cantidad);

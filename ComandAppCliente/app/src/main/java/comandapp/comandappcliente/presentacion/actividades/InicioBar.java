@@ -122,9 +122,8 @@ public class InicioBar extends ActionBarActivity {
         boolean enabled = service
                 .isProviderEnabled(LocationManager.GPS_PROVIDER);
         final Intent intent = new Intent(InicioBar.this, MapsActivityBar.class);
-        Bundle b=new Bundle();
-
-        b.putInt("bar",bar.getIdBar());
+        
+        intent.putExtra("bar",bar.getIdBar());
 // check if enabled and if not send user to the GSP settings
 // Better solution would be to display a dialog and suggesting to
 // go to the settings

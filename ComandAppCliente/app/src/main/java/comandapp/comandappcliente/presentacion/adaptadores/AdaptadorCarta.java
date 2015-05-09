@@ -59,33 +59,33 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             holder.precio=(TextView)item.findViewById(R.id.LVICartaPrecio);
             holder.precioOferta = (TextView)item.findViewById(R.id.LVICartaPrecioOferta);
             final ViewHolderListadoEntradas vhlo=holder;
-            LinearLayout hl=(LinearLayout)v.findViewById(R.id.linearLayout);
+            LinearLayout hl=(LinearLayout)v.findViewById(R.id.layoutPrecios);
             final TextView tv=new TextView(context);
             tv.setText("0");
             tv.setId(R.id.but);
             hl.addView(tv);
 
-            ((RelativeLayout)item.findViewById(R.id.LLayoutCarta)).setOnClickListener(new View.OnClickListener() {
+            ((RelativeLayout)item.findViewById(R.id.layoutCartaGlobal)).setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v)
                 {
 
-                    for(int i=0;i<((ListView)context.findViewById(R.id.ll)).getChildCount();i++) {
-                        View a=(RelativeLayout)((ListView)context.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                    for(int i=0;i<((ListView)context.findViewById(R.id.listaCarta)).getChildCount();i++) {
+                        View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
                         if(a instanceof RelativeLayout) {
-                            if(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildCount()>3) {
+                            if(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildCount()>3) {
                                 //LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 //llp.setMargins(10, 0, 100, 0); // llp.setMargins(left, top, right, bottom);
-                                ((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).removeView(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildAt(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildCount()-3));
-                                ((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).removeView(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildAt(((LinearLayout)((RelativeLayout)a).findViewById(R.id.linearLayout)).getChildCount()-1));
+                                ((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).removeView(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildAt(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildCount()-3));
+                                ((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).removeView(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildAt(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildCount()-1));
                             }
                         }
                     }
                     // ((ViewGroup)v.getParent().getParent()).getId();
                     // hl.removeView(aux);
 
-                    LinearLayout hl=(LinearLayout)v.findViewById(R.id.linearLayout);
+                    LinearLayout hl=(LinearLayout)v.findViewById(R.id.layoutPrecios);
                     final TextView aux=(TextView)hl.findViewById(R.id.lblCantidadProd);
                     final TextView textView=(TextView)hl.findViewById(R.id.LVICartaPrecio);
                     LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -100,8 +100,8 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
                         @Override
                         public void onClick(View v) {
                             int auxInt = Integer.parseInt(tv.getText().toString()) + 1;
-                            for(int i=0;i<((ListView)context.findViewById(R.id.ll)).getChildCount();i++) {
-                                View a=(RelativeLayout)((ListView)context.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                            for(int i=0;i<((ListView)context.findViewById(R.id.listaCarta)).getChildCount();i++) {
+                                View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
                                 if(a instanceof RelativeLayout) {
                                     if(((RelativeLayout)a).getChildCount()!=3) {
                                         LineaComanda lc=lComanda.get(i);
@@ -127,8 +127,8 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
                             int auxInt=Integer.parseInt(tv.getText().toString());
                             if(auxInt>0) {
                                 auxInt--;
-                                for(int i=0;i<((ListView)context.findViewById(R.id.ll)).getChildCount();i++) {
-                                    View a=(RelativeLayout)((ListView)context.findViewById(R.id.ll)).getChildAt(i).findViewById(R.id.LLayoutCarta);
+                                for(int i=0;i<((ListView)context.findViewById(R.id.listaCarta)).getChildCount();i++) {
+                                    View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
                                     if(a instanceof RelativeLayout) {
                                         if(((RelativeLayout)a).getChildCount()!=3) {
                                             LineaComanda lc=lComanda.get(i);

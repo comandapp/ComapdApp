@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 
@@ -47,16 +48,16 @@ public class MapsActivityBar extends ActionBarActivity {
 
         // Getting the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
-
-        Bar bar=LogicaNegocio.getInstancia().getBar(this,b.getInt("bar"));
-        myPosition = new LatLng(bar.getLatitud(), bar.getLongitud());
+        int id_Bar = this.getIntent().getExtras().getInt("bar");
+        Bar bar=LogicaNegocio.getInstancia().getBar(this,id_Bar);
+        myPosition = new LatLng(bar.getLatitud(),bar.getLongitud());
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(myPosition)      // Sets the center of the map to LatLng (refer to previous snippet)
                 .zoom(12)                   // Sets the zoom
                 .tilt(30)                   // Sets the tilt of the camera to 30 degrees
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        googleMap.addMarker(new MarkerOptions().position(myPosition).title(b.getString("nombre")));
+        googleMap.addMarker(new MarkerOptions().position(myPosition).title(bar.getNombre()));
 
     }
 
