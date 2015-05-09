@@ -7,8 +7,11 @@ public class LineaComanda
 {
     private LineaCarta productoCarta;
     private int cantidad;
+<<<<<<< HEAD
     private LineaCarta lineaCarta;
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 159a274... Mapa arreglado
 =======
 >>>>>>> parent of 159a274... Mapa arreglado
 
@@ -28,6 +31,9 @@ public class LineaComanda
         this.setCantidad(cantidad);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 159a274... Mapa arreglado
 
     public String getNombre()
     {
@@ -57,5 +63,4 @@ public class LineaComanda
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-    public LineaCarta getLineaCarta(){return this.lineaCarta;}
 }
