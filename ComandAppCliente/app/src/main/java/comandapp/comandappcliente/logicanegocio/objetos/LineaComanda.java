@@ -7,9 +7,14 @@ public class LineaComanda
 {
     private LineaCarta productoCarta;
     private int cantidad;
+<<<<<<< HEAD
     private LineaCarta lineaCarta;
 
     public LineaComanda(LineaCarta productoCarta)
+=======
+
+    public LineaComanda(String nombre, Producto producto)
+>>>>>>> parent of 159a274... Mapa arreglado
     {
         setProductoCarta(productoCarta);
         this.setCantidad(0);
@@ -20,6 +25,19 @@ public class LineaComanda
         setProductoCarta(productoCarta);
         this.setCantidad(cantidad);
     }
+<<<<<<< HEAD
+=======
+
+    public String getNombre()
+    {
+        return nombre;
+    }
+
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
+    }
+>>>>>>> parent of 159a274... Mapa arreglado
 
     public LineaCarta getProductoCarta() {
         return productoCarta;
@@ -36,5 +54,4 @@ public class LineaComanda
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-    public LineaCarta getLineaCarta(){return this.lineaCarta;}
 }
