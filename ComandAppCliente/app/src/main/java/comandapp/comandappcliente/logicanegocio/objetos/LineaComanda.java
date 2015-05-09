@@ -8,10 +8,13 @@ public class LineaComanda
     private LineaCarta productoCarta;
     private int cantidad;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private LineaCarta lineaCarta;
 
     public LineaComanda(LineaCarta productoCarta)
 =======
+=======
+>>>>>>> parent of 159a274... Mapa arreglado
 
     public LineaComanda(String nombre, Producto producto)
 >>>>>>> parent of 159a274... Mapa arreglado
@@ -26,7 +29,10 @@ public class LineaComanda
         this.setCantidad(cantidad);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 159a274... Mapa arreglado
 
     public String getNombre()
     {
