@@ -9,10 +9,13 @@ public class LineaComanda
     private int cantidad;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     private LineaCarta lineaCarta;
 
     public LineaComanda(LineaCarta productoCarta)
 =======
+=======
+>>>>>>> parent of 159a274... Mapa arreglado
 =======
 >>>>>>> parent of 159a274... Mapa arreglado
 
@@ -30,7 +33,10 @@ public class LineaComanda
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 159a274... Mapa arreglado
 =======
 >>>>>>> parent of 159a274... Mapa arreglado
 
