@@ -8,7 +8,7 @@ public class LineaComanda
     private String nombre;
     private Producto producto;
     private int cantidad;
-
+    private LineaCarta lineaCarta;
     public LineaComanda(String nombre, Producto producto)
     {
         this.nombre = nombre;
@@ -21,6 +21,10 @@ public class LineaComanda
         this.nombre = nombre;
         setProducto(producto);
         this.setCantidad(cantidad);
+    }
+    public LineaComanda(LineaCarta lc, int cantidad){
+    this.lineaCarta=lc;
+    this.setCantidad(cantidad);
     }
 
     public String getNombre()
@@ -48,4 +52,5 @@ public class LineaComanda
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+    public LineaCarta getLineaCarta(){return this.lineaCarta;}
 }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="comandapp.comandappcliente" >
 
@@ -9,13 +10,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <permission
-        android:name="comandapp.comandappcliente.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
 
-    <uses-permission android:name="comandapp.comandappcliente.permission.MAPS_RECEIVE" />
 
     <application
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme" >
@@ -84,6 +82,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
     </application>
 
 </manifest>

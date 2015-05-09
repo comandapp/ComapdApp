@@ -39,7 +39,7 @@ public class MapaYLocalizacion extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_mapa_ylocalizacion);
 
         SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
@@ -89,7 +89,6 @@ public class MapaYLocalizacion extends FragmentActivity {
             dlgAlert.setCancelable(false);
             dlgAlert.create().show();
         }
-        Bundle b=this.getIntent().getExtras();
         ArrayList<Bar> lb=LogicaNegocio.getInstancia().getAllBares(this);
         cargaBares(googleMap, lb);
     }
