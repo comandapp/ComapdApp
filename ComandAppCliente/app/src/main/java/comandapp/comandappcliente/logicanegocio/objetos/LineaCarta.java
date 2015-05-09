@@ -25,7 +25,7 @@ public class LineaCarta {
         this.precio = precio;
         this.descripcion=descripcion;
     }
-    
+
     public Producto getProducto() {
         return producto;
     }
