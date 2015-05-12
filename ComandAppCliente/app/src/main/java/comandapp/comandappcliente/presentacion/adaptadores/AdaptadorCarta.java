@@ -20,6 +20,7 @@ import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaComandaEnCurso;
 import comandapp.comandappcliente.logicanegocio.objetos.Oferta;
 
 /**
@@ -30,15 +31,30 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
     private Activity context;
     private ArrayList<LineaCarta> listadoEntrada;
     private ArrayList<Oferta> ofertas;
-    ArrayList<LineaComanda> lComanda;
+    ArrayList<LineaComandaEnCurso> lComanda;
     public AdaptadorCarta(Activity context, ArrayList<LineaCarta> datos, ArrayList<Oferta> ofertas) {
         super(context, R.layout.listitem_carta, datos);
         this.context = context;
         listadoEntrada = datos;
         this.ofertas=ofertas;
-        lComanda=new ArrayList<LineaComanda>();
-        for(LineaCarta lC:listadoEntrada){
-            lComanda.add(new LineaComanda(new LineaCarta(lC.getProducto(),lC.getPrecio(), lC.getDescripcion()),0));
+        lComanda=new ArrayList<LineaComandaEnCurso>();
+        if(LogicaNegocio.getInstancia().getLineasComandaEnCurso(context)==null) {
+            for (LineaCarta lC : listadoEntrada) {
+                lComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
+            }
+        }else{
+            lComanda=LogicaNegocio.getInstancia().getLineasComandaEnCurso(context);
+            for (LineaCarta lC : listadoEntrada) {
+                boolean enc=false;
+                for(LineaComandaEnCurso lcc:lComanda) {
+                    if (lC.getProducto().getId() == lcc.getIdProducto()) {
+                        enc = true;
+                    }
+                }
+                if(!enc){
+                    lComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
+                }
+            }
         }
     }
 
@@ -61,7 +77,12 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             final ViewHolderListadoEntradas vhlo=holder;
             LinearLayout hl=(LinearLayout)v.findViewById(R.id.layoutPrecios);
             final TextView tv=new TextView(context);
-            tv.setText("0");
+            for(LineaComandaEnCurso lcc:lComanda) {
+                if(lcc.getIdProducto()==listadoEntrada.get(position).getProducto().getId())
+                    tv.setText(""+lcc.getCantidad());
+                else
+                    tv.setText("0");
+            }
             tv.setId(R.id.tvCantidad);
             hl.addView(tv);
 
@@ -104,7 +125,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
                                 View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
                                 if(a instanceof RelativeLayout) {
                                     if(((RelativeLayout)a).getChildCount()!=3) {
-                                        LineaComanda lc=lComanda.get(i);
+                                        LineaComandaEnCurso lc=lComanda.get(i);
                                         lc.setCantidad(auxInt);
                                         lComanda.remove(i);
                                         lComanda.add(i,lc);
@@ -131,7 +152,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
                                     View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
                                     if(a instanceof RelativeLayout) {
                                         if(((RelativeLayout)a).getChildCount()!=3) {
-                                            LineaComanda lc=lComanda.get(i);
+                                            LineaComandaEnCurso lc=lComanda.get(i);
                                             lc.setCantidad(auxInt);
                                             lComanda.remove(i);
                                             lComanda.add(i,lc);

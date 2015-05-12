@@ -594,5 +594,13 @@ public class Persistencia {
         dbw.close();
         sql.close();
     }
+
+    public void borraLineaComandaEnCurso(Context con){
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbw = sql.getWritableDatabase();
+        dbw.execSQL("DELETE FROM lineaComandaEnCurso;");
+        dbw.close();
+        sql.close();
+    }
     //-------------------------------------------------------------------------------------
 }

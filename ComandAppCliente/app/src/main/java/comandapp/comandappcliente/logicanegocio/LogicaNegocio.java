@@ -149,4 +149,8 @@ public class LogicaNegocio {
 
         return null;
     }
+
+    public void borraLineasComandaEnCurso(Context con){
+        persistencia.borraLineaComandaEnCurso(con);
+    }
 }

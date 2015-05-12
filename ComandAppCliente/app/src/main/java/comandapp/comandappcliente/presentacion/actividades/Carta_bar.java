@@ -19,6 +19,7 @@ import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaComandaEnCurso;
 import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorCarta;
 
 
@@ -27,7 +28,7 @@ public class Carta_bar extends ActionBarActivity {
     AdaptadorCarta adaptador;
     ListView lstEntradas;
     Bar bar=null;
-    ArrayList<LineaComanda> lineasComanda;
+    ArrayList<LineaComandaEnCurso> lineasComanda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +50,27 @@ public class Carta_bar extends ActionBarActivity {
             lstEntradas.setAdapter(adaptador);
         }
 
-        lineasComanda=new ArrayList<LineaComanda>();
+        lineasComanda=new ArrayList<LineaComandaEnCurso>();
 
-        for(LineaCarta lineaCarta : carta)
-        {
-            lineasComanda.add(new LineaComanda(new LineaCarta(lineaCarta.getProducto(), lineaCarta.getPrecio(), lineaCarta.getDescripcion()), 0));
+        if(LogicaNegocio.getInstancia().getLineasComandaEnCurso(this)==null) {
+            for (LineaCarta lC : carta) {
+                lineasComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
+            }
+        }else{
+            lineasComanda=LogicaNegocio.getInstancia().getLineasComandaEnCurso(this);
+            for (LineaCarta lC : carta) {
+                boolean enc=false;
+                for(LineaComandaEnCurso lcc:lineasComanda) {
+                    if (lC.getProducto().getId() == lcc.getIdProducto()) {
+                        enc = true;
+                    }
+                }
+                if(!enc){
+                    lineasComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
+                }
+            }
         }
+
         //else Si la comanda no es null
         /*
         Cargamos los objetos desde comanda a lComanda
@@ -71,7 +87,8 @@ public class Carta_bar extends ActionBarActivity {
                 intent.putExtra("id_bar",id_Bar);
 
                 guardaComanda();
-                //MANDAR A PERSISTENCIA
+                LogicaNegocio.getInstancia().borraLineasComandaEnCurso(Carta_bar.this);
+                LogicaNegocio.getInstancia().insertaLineasComandaEnCurso(Carta_bar.this,lineasComanda);
 
                 startActivity(intent);
             }
@@ -84,7 +101,8 @@ public class Carta_bar extends ActionBarActivity {
                 intent.putExtra("id_bar",id_Bar);
 
                 guardaComanda();
-                //MANDAR A PERSISTENCIA
+                LogicaNegocio.getInstancia().borraLineasComandaEnCurso(Carta_bar.this);
+                LogicaNegocio.getInstancia().insertaLineasComandaEnCurso(Carta_bar.this,lineasComanda);
 
                 startActivity(intent);
             }
@@ -97,7 +115,8 @@ public class Carta_bar extends ActionBarActivity {
                 intent.putExtra("id_bar",id_Bar);
 
                 guardaComanda();
-                //MANDAR A PERSISTENCIA
+                LogicaNegocio.getInstancia().borraLineasComandaEnCurso(Carta_bar.this);
+                LogicaNegocio.getInstancia().insertaLineasComandaEnCurso(Carta_bar.this,lineasComanda);
 
                 startActivity(intent);
             }
@@ -113,7 +132,7 @@ public class Carta_bar extends ActionBarActivity {
             if(a instanceof RelativeLayout)
             {
                 TextView tvCant = (TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).findViewById(R.id.tvCantidad);
-                LineaComanda lc = lineasComanda.get(i);
+                LineaComandaEnCurso lc = lineasComanda.get(i);
                 lc.setCantidad(Integer.parseInt(tvCant.getText().toString()));
                 lineasComanda.remove(i);
                 lineasComanda.add(i, lc);
