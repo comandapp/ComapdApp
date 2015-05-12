@@ -291,6 +291,33 @@ public class Persistencia {
         return carta;
     }
 
+    public LineaCarta getLineaCarta(Context con, int id_Bar, int id_Producto) {
+        LineaCarta lineaCarta;
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbr = sql.getReadableDatabase();
+
+        Cursor c = dbr.rawQuery("SELECT lineaCarta.Id_Producto," +
+                "lineaCarta.Precio," +
+                "lineaCarta.Descripcion," +
+                "producto.Nombre," +
+                "producto.Categoria," +
+                "producto.Foto FROM " +
+                "lineaCarta INNER JOIN producto ON lineaCarta.Id_Producto = producto.Id_Producto " +
+                "WHERE lineaCarta.Id_Bar = " + id_Bar + " AND lineaCarta.Id_Producto = " + id_Producto + ";", null);
+
+        lineaCarta = new LineaCarta(
+                new Producto(
+                        c.getInt(0),
+                        c.getString(3),
+                        c.getString(4),
+                        ImgCodec.base64ToBitmap(c.getString(5))
+                ),
+                c.getDouble(1),
+                c.getString(2));
+
+        return lineaCarta;
+    }
+
     public void insertarCarta(Context con, int id_Bar, LineaCarta e) {
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbw = sql.getWritableDatabase();
@@ -419,7 +446,7 @@ public class Persistencia {
         return comandas;
     }
 
-    private void insertaComanda(Context con, Comanda comanda, int idBar) {
+    public void insertaComanda(Context con, Comanda comanda, int idBar) {
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
@@ -430,62 +457,6 @@ public class Persistencia {
         dbw.close();
         sql.close();
     }
-
-    /*public void insertarCarta(Context con, int id_Bar, LineaCarta e) {
-        SQLiteOpenHelper sql = getSQL(con);
-        SQLiteDatabase dbw = sql.getWritableDatabase();
-
-        dbw.execSQL("INSERT INTO lineaCarta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES( " +
-                e.getProducto().getId() + ", " +
-                id_Bar + ", " +
-                e.getPrecio() + ", " +
-                "'" + e.getDescripcion() + "');");
-        dbw.close();
-        sql.close();
-    }*/
-
-    /*String sqlCreateComanda = "CREATE TABLE comanda ("+
-            "Nombre_comanda VARCHAR,"+
-            "Bar INTEGER,"+
-            "Fecha datetime default current_timestamp,"+
-            "CONSTRAINT pk_Comanda PRIMARY KEY(Nombre_comanda)," +
-            "CONSTRAINT fk_LineaBar FOREIGN KEY(Bar) REFERENCES bar(Id_Bar));";
-
-    String sqlCreateLineaComanda = "CREATE TABLE lineaComanda ("+
-            "Nombre_comanda VARCHAR,"+
-            "Id_Producto INTEGER,"+
-            "Cantidad INTEGER,"+
-            "CONSTRAINT pk_LineaComanda PRIMARY KEY(Nombre_comanda,Id_Producto),"+
-            "CONSTRAINT fk_Comanda FOREIGN KEY(Nombre_comanda) REFERENCES comanda(Nombre_comanda),"+
-            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto));";
-            */
-
-    /*public ArrayList<LineaCarta> getCarta(Context con, int id_Bar) {
-        ArrayList<LineaCarta> carta = new ArrayList<LineaCarta>();
-        SQLiteOpenHelper sql = getSQL(con);
-        SQLiteDatabase dbr = sql.getReadableDatabase();
-
-        Cursor c = dbr.rawQuery("SELECT carta.Id_Producto," +
-                "lineaCarta.Precio," +
-                "lineaCarta.Descripcion," +
-                "producto.Nombre," +
-                "producto.Categoria," +
-                "producto.Foto FROM " +
-                "lineaCarta INNER JOIN producto ON lineaCarta.Id_Producto = producto.Id_Producto " +
-                "WHERE lineaCarta.Id_Bar = ?;", new String[]{Integer.toString(id_Bar)});
-
-        while (c.moveToNext()) {
-            carta.add(new LineaCarta(
-                    new Producto(c.getInt(0),c.getString(3),c.getString(4),ImgCodec.base64ToBitmap(c.getString(5))),
-                    c.getDouble(1),
-                    c.getString(2)));
-        }
-
-        return carta;
-    }*/
-
-
-
 
     //OFERTAS---------------------------------------------------------------------------------------
     public ArrayList<Oferta> getOfertas(Context con, int id_Bar) {
@@ -540,7 +511,7 @@ public class Persistencia {
         Producto p = null;
 
         SQLiteDatabase dbr = sql.getReadableDatabase();
-        Cursor c = dbr.rawQuery("SELECT * FROM producto WHERE Id_Producto = ?;", new String[]{ ""+id });
+        Cursor c = dbr.rawQuery("SELECT * FROM producto WHERE Id_Producto = ?;", new String[]{"" + id});
 
         if(c.moveToFirst()) {
             p = new Producto(c.getInt(0), c.getString(1), c.getString(2), ImgCodec.base64ToBitmap(c.getString(3)));
@@ -574,6 +545,24 @@ public class Persistencia {
         return null;
     }
 
+    private boolean existeProducto(SQLHelper sql, Producto p) {
+        SQLiteDatabase dbr = sql.getReadableDatabase();
+        Cursor c = dbr.rawQuery("SELECT Id_Producto FROM producto WHERE Id_Producto = ?;", new String[]{Integer.toString(p.getId())});
+
+        if(c.moveToFirst()) {
+            dbr.close();
+            return true;
+        }
+        dbr.close();
+        return false;
+    }
+
+    public void insertaProducto(Producto p, SQLiteDatabase dbw) {
+        dbw.execSQL("INSERT INTO producto (Id_Producto, Nombre, Categoria) VALUES (" + p.getId() + ", " + p.getNombre() + ", " + p.getCategoria() + ");");
+    }
+    //-------------------------------------------------------------------------------------
+
+    //LineaComandaEnCurso-------------------------------------------------------------------------------------
     public ArrayList<LineaComandaEnCurso> getLineasComandaEnCurso(Context con) {
         ArrayList<LineaComandaEnCurso> lineas = new ArrayList<LineaComandaEnCurso>();
 
@@ -591,34 +580,19 @@ public class Persistencia {
         return lineas;
     }
 
-    private void insertaLineasComandaEnCurso(Context con, ArrayList<LineaComandaEnCurso> lineas) {
+    public void insertaLineasComandaEnCurso(Context con, ArrayList<LineaComandaEnCurso> lineas) {
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
         for(LineaComandaEnCurso linea : lineas)
         {
             dbw.execSQL("INSERT INTO lineaComandaEnCurso (Id_Producto, Cantidad) VALUES(" +
-            linea.getIdProducto() + ", " +
-            linea.getCantidad() + ");");
+                    linea.getIdProducto() + ", " +
+                    linea.getCantidad() + ");");
         }
 
         dbw.close();
         sql.close();
     }
-
-    private boolean existeProducto(SQLHelper sql, Producto p) {
-        SQLiteDatabase dbr = sql.getReadableDatabase();
-        Cursor c = dbr.rawQuery("SELECT Id_Producto FROM producto WHERE Id_Producto = ?;", new String[]{Integer.toString(p.getId())});
-
-        if(c.moveToFirst()) {
-            dbr.close();
-            return true;
-        }
-        dbr.close();
-        return false;
-    }
-
-    public void insertaProducto(Producto p, SQLiteDatabase dbw) {
-        dbw.execSQL("INSERT INTO producto (Id_Producto, Nombre, Categoria) VALUES (" + p.getId() + ", " + p.getNombre() + ", " + p.getCategoria() + ");");
-    }
+    //-------------------------------------------------------------------------------------
 }

@@ -86,6 +86,11 @@ public class LogicaNegocio {
         else return null;
     }
 
+    public void insertaComanda(Context con, Comanda comanda, int idBar)
+    {
+        persistencia.insertaComanda(con, comanda, idBar);
+    }
+
     public void setBarFavorito(Context con, Bar b, boolean fav) {
         b.setFavorito(fav);
         persistencia.actualizaFavoritoBar(con, b);
@@ -105,7 +110,7 @@ public class LogicaNegocio {
     }
 
     public ArrayList<Oferta> getOfertas(Context con, int id_Bar) {
-        return persistencia.getOfertas(con,id_Bar);
+        return persistencia.getOfertas(con, id_Bar);
     }
 
     public double getPrecioFinalLineaCarta(Context con, LineaCarta lc, ArrayList<Oferta> ofertas) {
@@ -115,5 +120,33 @@ public class LogicaNegocio {
             }
         }
         return -1;
+    }
+
+    public void insertaLineasComandaEnCurso(Context con, ArrayList<LineaComandaEnCurso> lineas)
+    {
+        persistencia.insertaLineasComandaEnCurso(con, lineas);
+    }
+
+    public ArrayList<LineaComandaEnCurso> getLineasComandaEnCurso(Context con) {
+        ArrayList<LineaComandaEnCurso> c = persistencia.getLineasComandaEnCurso(con);
+        if(c.size()>0) return c;
+        else return null;
+    }
+
+    public Comanda lineasComandaEnCursoToLineasComanda(Context con, int idBar)
+    {
+        ArrayList<LineaComandaEnCurso> lineasComandaEnCurso = persistencia.getLineasComandaEnCurso(con);
+
+        if(lineasComandaEnCurso.size() > 0)
+        {
+            ArrayList<LineaComanda> lineasComanda = new ArrayList<LineaComanda>();
+
+            for(LineaComandaEnCurso lineaCurso : lineasComandaEnCurso)
+            {
+                lineasComanda.add(new LineaComanda(persistencia.getLineaCarta(con, idBar, lineaCurso.getIdProducto()), lineaCurso.getCantidad()));
+            }
+        }
+
+        return null;
     }
 }
