@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="comandapp.comandappcliente" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <permission
+        android:name="comandapp.comandappcliente.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="comandapp.comandappcliente.permission.MAPS_RECEIVE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".presentacion.actividades.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentacion.actividades.BusquedaBar"
+            android:label="@string/title_activity_busqueda_bar" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".presentacion.actividades.BaresFavoritos"
+            android:label="Bares Favoritos" />
+        <activity
+            android:name=".presentacion.actividades.InicioBar"
+            android:label="Inicio"
+            android:noHistory="true" />
+        <activity
+            android:name=".presentacion.actividades.Carta_bar"
+            android:label="Carta"
+            android:noHistory="true" />
+        <activity
+            android:name=".presentacion.actividades.ComandaDetallada"
+            android:noHistory="true"
+            android:label="Comanda Detalles" />
+        <activity
+            android:name=".presentacion.actividades.ComandaQR"
+            android:label="Comanda QR" />
+        <activity
+            android:name=".presentacion.actividades.MapsActivityBar"
+            android:label="Localizacion Bar" />
+        <activity
+            android:name=".presentacion.actividades.Ofertas_bar"
+            android:label="Ofertas"
+            android:noHistory="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".presentacion.actividades.MapaYLocalizacion"
+            android:label="@string/title_activity_mapa_ylocalizacion" >
+        </activity>
+        <activity
+            android:name=".presentacion.actividades.HistorialComandas"
+            android:label="@string/title_activity_historial_comandas" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:focusable="false">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:focusable="false"
+        android:gravity="center_vertical">
+
+        <TextView android:id="@+id/lblNombreProducto"
+        android:text="Entrepuentes"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        style="@style/estandar1"/>
+
+        <TextView android:id="@+id/lblPrecioIndividual"
+            android:text="2.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:gravity="right"
+            style="@style/estandar1_clarito"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:focusable="false">
+
+        <TextView android:id="@+id/lblCantidadProd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="15dp"
+            android:text="x 3"
+            android:focusable="false"
+            style="@style/estandar1"/>
+
+        <TextView android:id="@+id/lblPrecioTotal"
+            android:text="2.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:gravity="right"
+            style="@style/estandar1"/>
+
+    </LinearLayout>
+</LinearLayout><!-- From: file:/C:/Users/yoMismo/Documents/GitHub/ComapdApp/ComandApp/app/src/debug/res/layout/listitem_comanda.xml -->
