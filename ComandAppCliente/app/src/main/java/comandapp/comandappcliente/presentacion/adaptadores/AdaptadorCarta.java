@@ -62,7 +62,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             LinearLayout hl=(LinearLayout)v.findViewById(R.id.layoutPrecios);
             final TextView tv=new TextView(context);
             tv.setText("0");
-            tv.setId(R.id.but);
+            tv.setId(R.id.tvCantidad);
             hl.addView(tv);
 
             ((RelativeLayout)item.findViewById(R.id.layoutCartaGlobal)).setOnClickListener(new View.OnClickListener() {

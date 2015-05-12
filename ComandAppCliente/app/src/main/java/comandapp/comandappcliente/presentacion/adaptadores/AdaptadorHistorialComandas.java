@@ -1,6 +1,7 @@
 package comandapp.comandappcliente.presentacion.adaptadores;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +21,13 @@ import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
 /**
  * Created by Jesús on 24/03/2015.
  */
-public class AdaptadorListadoComandas extends ArrayAdapter<Comanda>
+public class AdaptadorHistorialComandas extends ArrayAdapter<Comanda>
 {
     Activity context;
     ArrayList<Comanda> listadoComandas;
     ArrayList<Comanda> listadoComandasAux;
 
-    public AdaptadorListadoComandas(Activity context, ArrayList<Comanda> datos) {
+    public AdaptadorHistorialComandas(Activity context, ArrayList<Comanda> datos) {
         super(context, R.layout.listitem_historial, datos);
         this.context = context;
         listadoComandas = datos;
@@ -45,8 +46,8 @@ public class AdaptadorListadoComandas extends ArrayAdapter<Comanda>
             item = inflater.inflate(R.layout.listitem_historial, null);
 
             holder = new ViewHolderListadoComandas();
-            holder.imgBar = (ImageView)item.findViewById(R.id.LVIBarImg);
-            holder.nombre = (TextView)item.findViewById(R.id.LVIBarNombre);
+            holder.imgBar = (ImageView)item.findViewById(R.id.imgBar);
+            holder.nombre = (TextView)item.findViewById(R.id.lblNombreComanda);
             holder.fecha = (TextView)item.findViewById(R.id.lblFecha);
             holder.precio = (TextView)item.findViewById(R.id.lblPrecioComanda);
 
@@ -57,17 +58,18 @@ public class AdaptadorListadoComandas extends ArrayAdapter<Comanda>
             holder = (ViewHolderListadoComandas)item.getTag();
         }
 
-        holder.imgBar.setImageBitmap(comanda.getBar().getFoto());
+        //Log.w("----------------->", comanda.getNombre() + "");
+        holder.imgBar.setImageBitmap(comanda.getFotoBar());
         holder.nombre.setText(comanda.getNombre());
         holder.fecha.setText(comanda.getFecha().toString());
 
-        /*int precioFinal = 0;
+        int precioFinal = 0;
         for(LineaComanda lin : comanda.getLineasComanda())
         {
-            precioFinal += lin.get
-        }*/
+            precioFinal += lin.getProductoCarta().getPrecio() * lin.getCantidad();
+        }
 
-        holder.precio.setText("0");
+        holder.precio.setText("" + precioFinal);
 
         return(item);
     }

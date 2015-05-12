@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,16 +18,14 @@ import java.util.ArrayList;
 
 import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
-import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 import comandapp.comandappcliente.logicanegocio.objetos.Comanda;
-import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorListadoBares;
-import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorListadoComandas;
+import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorHistorialComandas;
 
 
 public class HistorialComandas extends ActionBarActivity {
 
     private ListView lstComandas;
-    private AdaptadorListadoComandas adaptador;
+    private AdaptadorHistorialComandas adaptador;
     private EditText editFilter;
 
     @Override
@@ -35,7 +34,8 @@ public class HistorialComandas extends ActionBarActivity {
         setContentView(R.layout.activity_historial_comandas);
 
         ArrayList<Comanda> comandas = LogicaNegocio.getInstancia().getAllComandas(this);
-        adaptador = new AdaptadorListadoComandas(this, comandas);
+
+        adaptador = new AdaptadorHistorialComandas(this, comandas);
 
         ListView lstComandas = (ListView)findViewById(R.id.ListaComandas);
 

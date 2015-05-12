@@ -17,10 +17,8 @@ import java.util.ArrayList;
 import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
-import comandapp.comandappcliente.logicanegocio.objetos.Comanda;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
-import comandapp.comandappcliente.logicanegocio.objetos.Producto;
 import comandapp.comandappcliente.presentacion.adaptadores.AdaptadorCarta;
 
 
@@ -97,6 +95,7 @@ public class Carta_bar extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Carta_bar.this, ComandaDetallada.class);
                 intent.putExtra("id_bar",id_Bar);
+
                 guardaComanda();
                 //MANDAR A PERSISTENCIA
 
@@ -113,9 +112,9 @@ public class Carta_bar extends ActionBarActivity {
 
             if(a instanceof RelativeLayout)
             {
-                TextView tv = (TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).findViewById(R.id.but);
+                TextView tvCant = (TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).findViewById(R.id.tvCantidad);
                 LineaComanda lc = lineasComanda.get(i);
-                lc.setCantidad(Integer.parseInt(tv.getText().toString()));
+                lc.setCantidad(Integer.parseInt(tvCant.getText().toString()));
                 lineasComanda.remove(i);
                 lineasComanda.add(i, lc);
             }

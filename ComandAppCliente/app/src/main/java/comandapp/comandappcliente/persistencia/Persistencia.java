@@ -4,8 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -270,14 +272,14 @@ public class Persistencia {
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbr = sql.getReadableDatabase();
 
-        Cursor c = dbr.rawQuery("SELECT carta.Id_Producto," +
-                "carta.Precio," +
-                "carta.Descripcion," +
+        Cursor c = dbr.rawQuery("SELECT lineaCarta.Id_Producto," +
+                "lineaCarta.Precio," +
+                "lineaCarta.Descripcion," +
                 "producto.Nombre," +
                 "producto.Categoria," +
                 "producto.Foto FROM " +
-                "carta INNER JOIN producto ON carta.Id_Producto = producto.Id_Producto " +
-                "WHERE carta.Id_Bar = ?;", new String[]{Integer.toString(id_Bar)});
+                "lineaCarta INNER JOIN producto ON lineaCarta.Id_Producto = producto.Id_Producto " +
+                "WHERE lineaCarta.Id_Bar = ?;", new String[]{Integer.toString(id_Bar)});
 
         while (c.moveToNext()) {
             carta.add(new LineaCarta(
@@ -293,7 +295,7 @@ public class Persistencia {
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
-        dbw.execSQL("INSERT INTO carta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES( " +
+        dbw.execSQL("INSERT INTO lineaCarta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES( " +
                 e.getProducto().getId() + ", " +
                 id_Bar + ", " +
                 e.getPrecio() + ", " +
@@ -304,7 +306,7 @@ public class Persistencia {
 
     private boolean existeLineaEnCarta(SQLHelper sql, int id_Bar, LineaCarta e) {
         SQLiteDatabase dbr = sql.getReadableDatabase();
-        Cursor c = dbr.rawQuery("SELECT Id_Bar FROM carta WHERE Id_Bar=" + id_Bar + " AND Id_Producto=" + e.getProducto().getId() + ";", null);
+        Cursor c = dbr.rawQuery("SELECT Id_Bar FROM lineaCarta WHERE Id_Bar=" + id_Bar + " AND Id_Producto=" + e.getProducto().getId() + ";", null);
 
         if(c.moveToFirst()) {
             dbr.close();
@@ -326,7 +328,7 @@ public class Persistencia {
                     insertaProducto(linea.getProducto(), dbw);
                 }
 
-                dbw.execSQL("UPDATE carta SET " +
+                dbw.execSQL("UPDATE lineaCarta SET " +
                         "Precio=" + linea.getPrecio() + ", " +
                         "Descripcion='" + linea.getDescripcion() + "', " +
                         "WHERE Id_Producto=" + linea.getProducto().getId() + " AND " +
@@ -347,36 +349,140 @@ public class Persistencia {
     // - opcion
     // false = Devuelve los bares sin cartas ni ofertas
     // true = Devuelve los bares con sus cartas y ofertas
-    public ArrayList<Comanda> getComandas(Context con, int[] idArray) {
-        ArrayList<Comanda> ret = new ArrayList<Comanda>();
+    public ArrayList<Comanda> getComandas(Context con) {
+        ArrayList<Comanda> comandas = new ArrayList<Comanda>();
 
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbr = sql.getReadableDatabase();
 
-        Cursor c;
-        String idArrayString = null;
-        if(idArray != null && idArray.length > 0) {
-            idArrayString = idArrayToSqlSelect(idArray);
-            c = dbr.rawQuery("SELECT * FROM comanda WHERE Nombre_comanda in "+idArrayString+";", null);
-        } else {
-            c = dbr.rawQuery("SELECT * FROM comanda;", null);
-        }
+        /*Cursor c1 = dbr.rawQuery("SELECT comanda.Nombre_comanda," +
+                "bar.Foto," +
+                "comanda.fecha," +
+                "comanda LEFT JOIN bar ON comanda.Bar = bar.Id_Bar ;", null);*/
 
-        Comanda com;
-        while(c.moveToNext()) {
-            com = new Comanda(
-                    c.getString(0)
+        Cursor c1 = dbr.rawQuery("SELECT comanda.Nombre_comanda," +
+                "bar.Foto," +
+                "comanda.Fecha," +
+                "lineaComanda.Cantidad," +
+                "lineaCarta.Precio," +
+                "lineaCarta.Descripcion," +
+                "producto.Id_Producto," +
+                "producto.Nombre," +
+                "producto.Categoria," +
+                "producto.Foto " +
+                "FROM lineaComanda " +
+                "INNER JOIN comanda ON lineaComanda.Nombre_comanda = comanda.Nombre_comanda " +
+                "INNER JOIN producto ON lineaComanda.Id_Producto = producto.Id_Producto " +
+                "INNER JOIN bar ON comanda.Bar = bar.Id_Bar " +
+                "INNER JOIN lineaCarta ON lineaCarta.Id_Producto = lineaComanda.Id_Producto " +
+                "WHERE lineaCarta.Id_Bar = bar.Id_Bar " +
+                "ORDER BY comanda.Nombre_comanda;", null);
+
+        Comanda com = null;
+        String nombreComanda = "";
+
+        while(c1.moveToNext())
+        {
+            if(!nombreComanda.equals(c1.getString(0)))
+            {
+                com = new Comanda(
+                        c1.getString(0),
+                        ImgCodec.base64ToBitmap(c1.getString(1)),
+                        new Date(c1.getLong(2))
+                );
+
+                nombreComanda = c1.getString(0);
+                comandas.add(com);
+            }
+
+            com.aniadeLinea(
+                    new LineaComanda(
+                            new LineaCarta(
+                                    new Producto(
+                                            c1.getInt(6),
+                                            c1.getString(7),
+                                            c1.getString(8),
+                                            ImgCodec.base64ToBitmap(c1.getString(9))
+                                    ),
+                                    c1.getDouble(4),
+                                    c1.getString(5)
+                            ),
+                            c1.getInt(3)
+                    )
             );
-
-            ret.add(com);
         }
 
+        c1.close();
         dbr.close();
         sql.close();
 
-        return ret;
+        return comandas;
     }
 
+    private void insertaComanda(Context con, Comanda comanda, int idBar) {
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbw = sql.getWritableDatabase();
+
+            dbw.execSQL("INSERT INTO comanda (Nombre_comanda, Bar) VALUES(" +
+                    "'" + comanda.getNombre() + "'," +
+                    idBar + ");");
+
+        dbw.close();
+        sql.close();
+    }
+
+    /*public void insertarCarta(Context con, int id_Bar, LineaCarta e) {
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbw = sql.getWritableDatabase();
+
+        dbw.execSQL("INSERT INTO lineaCarta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES( " +
+                e.getProducto().getId() + ", " +
+                id_Bar + ", " +
+                e.getPrecio() + ", " +
+                "'" + e.getDescripcion() + "');");
+        dbw.close();
+        sql.close();
+    }*/
+
+    /*String sqlCreateComanda = "CREATE TABLE comanda ("+
+            "Nombre_comanda VARCHAR,"+
+            "Bar INTEGER,"+
+            "Fecha datetime default current_timestamp,"+
+            "CONSTRAINT pk_Comanda PRIMARY KEY(Nombre_comanda)," +
+            "CONSTRAINT fk_LineaBar FOREIGN KEY(Bar) REFERENCES bar(Id_Bar));";
+
+    String sqlCreateLineaComanda = "CREATE TABLE lineaComanda ("+
+            "Nombre_comanda VARCHAR,"+
+            "Id_Producto INTEGER,"+
+            "Cantidad INTEGER,"+
+            "CONSTRAINT pk_LineaComanda PRIMARY KEY(Nombre_comanda,Id_Producto),"+
+            "CONSTRAINT fk_Comanda FOREIGN KEY(Nombre_comanda) REFERENCES comanda(Nombre_comanda),"+
+            "CONSTRAINT fk_LineaProducto FOREIGN KEY(Id_Producto) REFERENCES bar(Id_Producto));";
+            */
+
+    /*public ArrayList<LineaCarta> getCarta(Context con, int id_Bar) {
+        ArrayList<LineaCarta> carta = new ArrayList<LineaCarta>();
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbr = sql.getReadableDatabase();
+
+        Cursor c = dbr.rawQuery("SELECT carta.Id_Producto," +
+                "lineaCarta.Precio," +
+                "lineaCarta.Descripcion," +
+                "producto.Nombre," +
+                "producto.Categoria," +
+                "producto.Foto FROM " +
+                "lineaCarta INNER JOIN producto ON lineaCarta.Id_Producto = producto.Id_Producto " +
+                "WHERE lineaCarta.Id_Bar = ?;", new String[]{Integer.toString(id_Bar)});
+
+        while (c.moveToNext()) {
+            carta.add(new LineaCarta(
+                    new Producto(c.getInt(0),c.getString(3),c.getString(4),ImgCodec.base64ToBitmap(c.getString(5))),
+                    c.getDouble(1),
+                    c.getString(2)));
+        }
+
+        return carta;
+    }*/
 
 
 
@@ -466,6 +572,38 @@ public class Persistencia {
         dbr.close();
         sql.close();
         return null;
+    }
+
+    public ArrayList<LineaComandaEnCurso> getLineasComandaEnCurso(Context con) {
+        ArrayList<LineaComandaEnCurso> lineas = new ArrayList<LineaComandaEnCurso>();
+
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbr = sql.getReadableDatabase();
+
+        Cursor c = dbr.rawQuery("SELECT Id_Producto, Cantidad FROM lineaComandaEnCurso", null);
+
+        while(c.moveToNext()) {
+            lineas.add(new LineaComandaEnCurso(c.getInt(0), c.getInt(1)));
+        }
+
+        dbr.close();
+        sql.close();
+        return lineas;
+    }
+
+    private void insertaLineasComandaEnCurso(Context con, ArrayList<LineaComandaEnCurso> lineas) {
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbw = sql.getWritableDatabase();
+
+        for(LineaComandaEnCurso linea : lineas)
+        {
+            dbw.execSQL("INSERT INTO lineaComandaEnCurso (Id_Producto, Cantidad) VALUES(" +
+            linea.getIdProducto() + ", " +
+            linea.getCantidad() + ");");
+        }
+
+        dbw.close();
+        sql.close();
     }
 
     private boolean existeProducto(SQLHelper sql, Producto p) {

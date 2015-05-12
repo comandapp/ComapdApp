@@ -19,15 +19,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <LinearLayout
+    <LinearLayout android:id="@+id/llNombreDesc"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/LVIBarImg"
-        android:layout_marginLeft="6dp"
-        android:layout_toLeftOf="@+id/imageViewFavorito"
-        android:layout_toStartOf="@+id/imageViewFavorito">
+        android:layout_toRightOf="@+id/imgBar"
+        android:layout_marginLeft="6dp">
 
         <TextView android:id="@+id/lblNombreComanda"
             android:layout_weight="6"
@@ -54,6 +52,7 @@
         style="@style/nombreBaresLista"
         android:layout_marginRight="4dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

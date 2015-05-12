@@ -3,6 +3,7 @@ package comandapp.comandappcliente.presentacion.actividades;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -116,6 +117,16 @@ public class ComandaDetallada extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+
+        Button btnHistorial = (Button)findViewById(R.id.btnHistorial);
+
+        btnHistorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ComandaDetallada.this, HistorialComandas.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -139,5 +150,10 @@ public class ComandaDetallada extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onStop (){
+        super.onStop();
+        Log.w("---------------->", "Cerrando ComandaDetallada");
     }
 }

@@ -1,5 +1,7 @@
 package comandapp.comandappcliente.logicanegocio.objetos;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,31 +12,31 @@ import java.util.Date;
 public class Comanda
 {
     private String nombreComanda;
-    private Bar bar;
+    private Bitmap fotoBar;
     private Date fecha;
     private ArrayList<LineaComanda> lineasComanda;
 
     public Comanda(String nombre)
     {
         this.nombreComanda = nombre;
-        this.bar = null;
+        this.fotoBar = null;
         this.setFecha(Calendar.getInstance().getTime());
         setLineasComanda(new ArrayList<LineaComanda>());
     }
 
-    public Comanda(String nombre, Bar bar)
+    public Comanda(String nombre, Bitmap fotoBar, Date fecha)
     {
         this.nombreComanda = nombre;
-        this.setBar(bar);
-        this.setFecha(Calendar.getInstance().getTime());
+        this.setFotoBar(fotoBar);
+        this.setFecha(fecha);
         setLineasComanda(new ArrayList<LineaComanda>());
     }
 
-    public Comanda(String nombre, Bar bar, ArrayList<LineaComanda> lineas)
+    public Comanda(String nombre, Bitmap fotoBar, Date fecha, ArrayList<LineaComanda> lineas)
     {
         this.nombreComanda = nombre;
-        this.setBar(bar);
-        this.setFecha(Calendar.getInstance().getTime());
+        this.setFotoBar(fotoBar);
+        this.setFecha(fecha);
         setLineasComanda(lineas);
     }
 
@@ -46,12 +48,12 @@ public class Comanda
         this.nombreComanda = nombre;
     }
 
-    public Bar getBar() {
-        return bar;
+    public Bitmap getFotoBar() {
+        return fotoBar;
     }
 
-    public void setBar(Bar bar) {
-        this.bar = bar;
+    public void setFotoBar(Bitmap fotoBar) {
+        this.fotoBar = fotoBar;
     }
 
     public Date getFecha() {
