@@ -133,7 +133,7 @@ public class LogicaNegocio {
         else return null;
     }
 
-    public Comanda lineasComandaEnCursoToLineasComanda(Context con, int idBar)
+    public ArrayList<LineaComanda> lineasComandaEnCursoToLineasComanda(Context con, int idBar)
     {
         ArrayList<LineaComandaEnCurso> lineasComandaEnCurso = persistencia.getLineasComandaEnCurso(con);
 
@@ -145,6 +145,8 @@ public class LogicaNegocio {
             {
                 lineasComanda.add(new LineaComanda(persistencia.getLineaCarta(con, idBar, lineaCurso.getIdProducto()), lineaCurso.getCantidad()));
             }
+
+            return(lineasComanda);
         }
 
         return null;
