@@ -207,7 +207,7 @@ public class Persistencia {
                         b.getVersion().getVersionOfertas() + ");");
 
                 for (LineaCarta e : b.getCarta()) {
-                    if (!existeProducto((SQLHelper) sql, e.getProducto()))
+                    if (!existeProducto((SQLHelper) sql, e.getProducto().getId()))
                         insertaProducto(e.getProducto(), dbw);
                     dbw.execSQL("INSERT INTO carta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES (" +
                             e.getProducto().getId() + ", " +
@@ -305,17 +305,22 @@ public class Persistencia {
                 "lineaCarta INNER JOIN producto ON lineaCarta.Id_Producto = producto.Id_Producto " +
                 "WHERE lineaCarta.Id_Bar = " + id_Bar + " AND lineaCarta.Id_Producto = " + id_Producto + ";", null);
 
-        lineaCarta = new LineaCarta(
-                new Producto(
-                        c.getInt(0),
-                        c.getString(3),
-                        c.getString(4),
-                        ImgCodec.base64ToBitmap(c.getString(5))
-                ),
-                c.getDouble(1),
-                c.getString(2));
+        if(c.moveToFirst())
+        {
+            lineaCarta = new LineaCarta(
+                    new Producto(
+                            c.getInt(0),
+                            c.getString(3),
+                            c.getString(4),
+                            ImgCodec.base64ToBitmap(c.getString(5))
+                    ),
+                    c.getDouble(1),
+                    c.getString(2));
 
-        return lineaCarta;
+            return lineaCarta;
+        }
+
+        return null;
     }
 
     public void insertarCarta(Context con, int id_Bar, LineaCarta e) {
@@ -351,7 +356,7 @@ public class Persistencia {
             //Se recorren las entradas de cada carta comprobando si existe el producto
             for(LineaCarta linea : tupla.getValue()) {
                 //Si no existe el producto se inserta
-                if (!existeProducto((SQLHelper) sql, linea.getProducto())) {
+                if (!existeProducto((SQLHelper) sql, linea.getProducto().getId())) {
                     insertaProducto(linea.getProducto(), dbw);
                 }
 
@@ -489,7 +494,7 @@ public class Persistencia {
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
-        if (!existeProducto((SQLHelper) sql, o.getProducto())) {
+        if (!existeProducto((SQLHelper) sql, o.getProducto().getId())) {
             insertaProducto(o.getProducto(), dbw);
         }
 
@@ -545,15 +550,13 @@ public class Persistencia {
         return null;
     }
 
-    private boolean existeProducto(SQLHelper sql, Producto p) {
+    private boolean existeProducto(SQLHelper sql, int idProd) {
         SQLiteDatabase dbr = sql.getReadableDatabase();
-        Cursor c = dbr.rawQuery("SELECT Id_Producto FROM producto WHERE Id_Producto = ?;", new String[]{Integer.toString(p.getId())});
+        Cursor c = dbr.rawQuery("SELECT Id_Producto FROM producto WHERE Id_Producto = ?;", new String[]{Integer.toString(idProd)});
 
         if(c.moveToFirst()) {
-            dbr.close();
             return true;
         }
-        dbr.close();
         return false;
     }
 
@@ -586,9 +589,12 @@ public class Persistencia {
 
         for(LineaComandaEnCurso linea : lineas)
         {
-            dbw.execSQL("INSERT INTO lineaComandaEnCurso (Id_Producto, Cantidad) VALUES(" +
-                    linea.getIdProducto() + ", " +
-                    linea.getCantidad() + ");");
+            if(linea.getCantidad() > 0 && existeProducto((SQLHelper) sql, linea.getIdProducto()))
+            {
+                dbw.execSQL("INSERT INTO lineaComandaEnCurso (Id_Producto, Cantidad) VALUES(" +
+                        linea.getIdProducto() + ", " +
+                        linea.getCantidad() + ");");
+            }
         }
 
         dbw.close();

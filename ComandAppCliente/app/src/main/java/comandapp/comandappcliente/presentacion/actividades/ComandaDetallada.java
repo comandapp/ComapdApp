@@ -1,5 +1,6 @@
 package comandapp.comandappcliente.presentacion.actividades;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,9 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
 import comandapp.comandappcliente.logicanegocio.objetos.Comanda;
 import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
@@ -26,6 +29,7 @@ public class ComandaDetallada extends ActionBarActivity {
 
     ListView lstLineasComanda;
     AdaptadorComandaDetallada adaptador;
+    ArrayList<LineaComanda> listadoLineasComanda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,56 +38,64 @@ public class ComandaDetallada extends ActionBarActivity {
 
         final int id_Bar = this.getIntent().getExtras().getInt("id_bar");
 
-        /*
-        ArrayList<LineaComanda> listadoLineasComanda = new ArrayList<LineaComanda>();
-        listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(1, "Coca Cola"), 2.5), 3));
-        listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(2, "7 UP"), 2.8), 1));
-        listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(3, "Cerveza Franciscaner"), 4), 2));
-        listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(4, "Combinado Barceló - Coca Cola"), 6), 1));
-        listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(5, "Batido chocolate"), 2), 1));
-        listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(6, "Fanta naranja"), 2.5), 3));
-        listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(7, "Combinado Absolut - Tónica"), 6), 1));
-        listadoLineasComanda.add(new LineaComanda(new LineaCarta(new Producto(8, "Bolsa de patatas"), 1.2), 2));
-
-        Comanda comanda = new Comanda(new Bar(1, "Café Madrid"), listadoLineasComanda);
-
-
         ListView lv = (ListView)findViewById(R.id.listaDetalles);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) lv.getLayoutParams();
 
-        if(comanda.getNumeroLineas() > 6)
+        listadoLineasComanda = new ArrayList<LineaComanda>();
+        listadoLineasComanda = LogicaNegocio.getInstancia().lineasComandaEnCursoToLineasComanda(this, id_Bar);
+
+        if(listadoLineasComanda != null)
         {
-            params.weight = 1.0f;
+            if(listadoLineasComanda.size() <= 6)
+            {
+                params.weight = 0f;
+            }
+            else
+            {
+                params.weight = 1.0f;
+            }
+
+            lv.setLayoutParams(params);
+
+            adaptador = new AdaptadorComandaDetallada(this, listadoLineasComanda);
+
+            lstLineasComanda = (ListView)findViewById(R.id.listaDetalles);
+
+            //View header = getLayoutInflater().inflate(R.layout.listitem_comanda_header, null);
+            //lstLineasComanda.addHeaderView(header);
+
+            lstLineasComanda.setAdapter(adaptador);
+
+            TextView lblPrecioFinal = (TextView) findViewById(R.id.lblPrecioFinal);
+            double precioFinal = 0;
+            for(LineaComanda lin : listadoLineasComanda)
+            {
+                precioFinal += lin.getProductoCarta().getPrecio() * lin.getCantidad();
+            }
+            lblPrecioFinal.setText(new DecimalFormat("#.##").format(precioFinal) + "€");
         }
-        else
-        {
-            params.weight = 0f;
-        }
-
-        lv.setLayoutParams(params);
-
-        adaptador = new AdaptadorComandaDetallada(this, comanda.getLineasComanda());
-
-        lstLineasComanda = (ListView)findViewById(R.id.listaDetalles);
-
-        //View header = getLayoutInflater().inflate(R.layout.listitem_comanda_header, null);
-        //lstLineasComanda.addHeaderView(header);
-
-        lstLineasComanda.setAdapter(adaptador);
-
-        TextView lblPrecioFinal = (TextView) findViewById(R.id.lblPrecioFinal);
-        lblPrecioFinal.setText("€" + String.format("%.2f", comanda.getPrecioTotal()));
 
         Button btnPedidoQR = (Button)findViewById(R.id.btnQR);
 
         btnPedidoQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ComandaDetallada.this, ComandaQR.class);
-                startActivity(intent);
+                if(listadoLineasComanda != null)
+                {
+                    Intent intent = new Intent(ComandaDetallada.this, ComandaQR.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    new AlertDialog.Builder(ComandaDetallada.this)
+                            .setTitle("Aviso")
+                            .setMessage("No hay ningún producto para generar la comanda.")
+                            .setCancelable(true).create().show();
+                }
             }
         });
-        ----------------------------------------------------------------------------------------------------------*/
+
+        //----------------------------------------------------------------------------------------------------------
 
         Button btnMenuCarta = (Button)findViewById(R.id.btnMenuCarta);
         Button btnMenuInicio = (Button)findViewById(R.id.btnMenuInicio);
@@ -154,6 +166,6 @@ public class ComandaDetallada extends ActionBarActivity {
 
     protected void onStop (){
         super.onStop();
-        Log.w("---------------->", "Cerrando ComandaDetallada");
+        //Log.w("---------------->", "Cerrando ComandaDetallada");
     }
 }

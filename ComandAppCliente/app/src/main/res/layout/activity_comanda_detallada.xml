@@ -131,7 +131,7 @@
             style="@style/estandar2_negrita"/>
 
         <TextView android:id="@+id/lblPrecioFinal"
-            android:text="€2.5"
+            android:text="0€"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:focusable="false"
