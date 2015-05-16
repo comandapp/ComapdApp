@@ -108,19 +108,10 @@ public class BusquedaBar extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        else if(id == R.id.action_settings2)
+        else if(id == R.id.menuHistorial)
         {
-            //Date fecha = Calendar.getInstance().getTime();
-            //Log.w("Fecha actual---------->", new SimpleDateFormat("dd/MM/yyyy").format(fecha) + "");
-            Intent intent = new Intent(this, ComandaDetallada.class);
+            Intent intent = new Intent(this, HistorialComandas.class);
             startActivity(intent);
-            return true;
-        }
-        else if(id == R.id.action_favoritos)
-        {
-            Intent intent = new Intent(this, BaresFavoritos.class);
-            startActivity(intent);
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -156,4 +156,12 @@ public class LogicaNegocio {
     public void borraLineasComandaEnCurso(Context con){
         persistencia.borraLineaComandaEnCurso(con);
     }
+
+    public void insertaLineasComanda(Context con, String nombreComanda, ArrayList<LineaComanda> lineas)
+    {
+        if(lineas.size() > 0)
+        {
+            persistencia.insertaLineasComanda(con, nombreComanda, lineas);
+        }
+    }
 }

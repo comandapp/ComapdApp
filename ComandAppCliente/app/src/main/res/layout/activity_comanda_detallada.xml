@@ -64,12 +64,12 @@
             android:layout_marginRight="4dp"
             style="@style/botonCustomSubMenu"/>
 
-        <Button android:id="@+id/btnHistorial"
+        <Button android:id="@+id/btnBorrar"
             android:layout_width="0dp"
             android:layout_height="38dp"
-            android:text="Historial"
+            android:text="BORRAR"
             android:layout_weight="0.5"
-            android:drawableLeft="@drawable/historial_icon"
+            android:drawableLeft="@drawable/borrar_icon"
             style="@style/botonCustomSubMenu"/>
 
     </LinearLayout>

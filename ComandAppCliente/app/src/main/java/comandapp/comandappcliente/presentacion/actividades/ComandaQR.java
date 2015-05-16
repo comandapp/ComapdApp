@@ -1,6 +1,7 @@
 package comandapp.comandappcliente.presentacion.actividades;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -82,6 +83,11 @@ public class ComandaQR extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        else if(id == R.id.menuHistorial)
+        {
+            Intent intent = new Intent(this, HistorialComandas.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

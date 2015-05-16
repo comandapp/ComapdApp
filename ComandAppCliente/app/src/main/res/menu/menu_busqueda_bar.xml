@@ -17,16 +17,13 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
+    <item android:id="@+id/menuHistorial"
+        android:title="Historial Comandas"
+        android:icon="@drawable/historial_icon"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
-
-    <item android:id="@+id/action_settings2"
-        android:title="Generar comanda"
-        app:showAsAction="never"/>
-
-    <item android:id="@+id/action_favoritos"
-        android:title="Locales favoritos"
         app:showAsAction="never"/>
 
 </menu>

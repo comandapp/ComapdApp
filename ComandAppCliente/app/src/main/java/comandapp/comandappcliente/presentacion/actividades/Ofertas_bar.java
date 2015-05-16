@@ -90,6 +90,11 @@ public class Ofertas_bar extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if(id == R.id.menuHistorial)
+        {
+            Intent intent = new Intent(this, HistorialComandas.class);
+            startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }

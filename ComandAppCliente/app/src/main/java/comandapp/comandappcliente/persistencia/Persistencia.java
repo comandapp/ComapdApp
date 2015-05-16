@@ -463,6 +463,25 @@ public class Persistencia {
         sql.close();
     }
 
+    public void insertaLineasComanda(Context con, String nombreComanda, ArrayList<LineaComanda> lineas) {
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbw = sql.getWritableDatabase();
+
+        for(LineaComanda linea : lineas)
+        {
+            if(linea.getCantidad() > 0 && existeProducto((SQLHelper) sql, linea.getProductoCarta().getProducto().getId()))
+            {
+                dbw.execSQL("INSERT INTO lineaComanda (Nombre_comanda, Id_Producto, Cantidad) VALUES(" +
+                        "'" + nombreComanda + "'," +
+                        linea.getProductoCarta().getProducto().getId() + ", " +
+                        linea.getCantidad() + ");");
+            }
+        }
+
+        dbw.close();
+        sql.close();
+    }
+
     //OFERTAS---------------------------------------------------------------------------------------
     public ArrayList<Oferta> getOfertas(Context con, int id_Bar) {
         ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
