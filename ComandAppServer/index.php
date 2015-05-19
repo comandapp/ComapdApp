@@ -31,6 +31,15 @@
     Salida : Documento XML con los datos de las ofertas actuales. Si hay más de uno se concatenan.
  */
 
+include("functions.php");
+
+echo "HOLA";
+
+sendResponse("");
+
+
+/*
+
 if (isset($_POST["COM"])) {
     include("functions.php");
     header('Content-type: application/xml');
@@ -43,3 +52,4 @@ if (isset($_POST["COM"])) {
 } else if(isset($_GET["COM"]) && !isset($_GET["MAIN"])) {
 
 } else exit;
+*/

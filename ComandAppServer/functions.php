@@ -2,10 +2,10 @@
 
 //ConexiÃ³n a la BD
 function getConnection() {
-    $mysql_host = "mysql4.000webhost.com";
-    $mysql_database = "a2210078_comand";
-    $mysql_user = "a2210078_comand";
-    $mysql_password = "ComandApp7";
+    $mysql_host = "193.146.250.82";
+    $mysql_database = "appcomanda";
+    $mysql_user = "alexUser";
+    $mysql_password = "comandapp";
     $dbStr1 = 'mysql:host=' . $mysql_host . ';dbname=' . $mysql_database . ';charset=utf8';
     $dbParams = array(PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
     return new PDO($dbStr1, $mysql_user, $mysql_password, $dbParams);
@@ -169,9 +169,8 @@ function addCarta($id, $db) {
     $stmt = $db->prepare("SELECT producto.Id_Producto AS idProducto," .
             "producto.Nombre AS nomProducto," .
             "carta.Descripcion AS desProducto," .
-            "producto.Categoria AS catProducto," .
             "carta.Precio AS precio," .
-            "carta.Foto AS foto," .
+            "carta.Foto2 AS foto," .
             "bar.VersionCarta AS vCarta " .
             "FROM carta INNER JOIN producto ON carta.Id_Producto = producto.Id_Producto " .
             "INNER JOIN bar ON carta.Id_Bar = bar.Id_Bar " .
@@ -192,7 +191,6 @@ function addCarta($id, $db) {
             $xml .= "<idProducto xmlns=\"\">" . $row['idProducto'] . "</idProducto>";
             $xml .= "<nomProducto xmlns=\"\">" . $row['nomProducto'] . "</nomProducto>";
             $xml .= "<desProducto xmlns=\"\">" . $row['desProducto'] . "</desProducto>";
-            $xml .= "<catProducto xmlns=\"\">" . $row['catProducto'] . "</catProducto>";
             $xml .= "<precio xmlns=\"\">" . $row['precio'] . "</precio>";
             $xml .= "<foto xmlns=\"\">" . $row['foto'] . "</foto>";
             $xml .= "</linea_carta>";
@@ -204,11 +202,10 @@ function addCarta($id, $db) {
 }
 
 function addOfertas($id, $db) {
-    $stmt = $db->prepare("SELECT oferta.Id_Oferta AS idOferta,"
-            . "oferta.Precio AS Precio,"
-            . "oferta.Descripcion AS Descripcion,"
-            . "oferta.Productos AS Productos,"
-            . "oferta.Foto AS Foto,"
+    $stmt = $db->prepare("SELECT oferta.Id_Producto AS idProd, "
+            . "oferta.Id_Bar AS idBar, "
+            . "oferta.Precio AS precio, "
+            . "oferta.Descripcion AS desc, "
             . "bar.VersionOfertas AS vOfertas "
             . "FROM oferta INNER JOIN bar ON oferta.Id_Bar=bar.Id_Bar "
             . "WHERE bar.Id_Bar=?");
@@ -226,11 +223,10 @@ function addOfertas($id, $db) {
                         . "version=\"" . $row['vOfertas'] . "\">";
                 $i++;
             }
-            $xml .= "<linea_oferta xmlns=\"comandappOFERTAS.xsd\" id_Oferta=\"" . $row['idOferta'] . "\">";
-            $xml .= "<descripcion xmlns=\"\">" . $row['Descripcion'] . "</descripcion>";
-            $xml .= "<productos xmlns=\"\">" . $row['Productos'] . "</productos>";
-            $xml .= "<precio xmlns=\"\">" . $row['Precio'] . "</precio>";
-            $xml .= "<foto xmlns=\"\">" . $row['Foto'] . "</foto>";
+            $xml .= "<linea_oferta xmlns=\"comandappOFERTAS.xsd\">";
+            $xml .= "<idProducto xmlns=\"\">" . $row['idProd'] . "</descripcion>";
+            $xml .= "<precio xmlns=\"\">" . $row['precio'] . "</descripcion>";
+            $xml .= "<descripcion xmlns=\"\">" . $row['desc'] . "</productos>";
             $xml .= "</linea_oferta>";
         }
         $xml .= "</ofertas>";
