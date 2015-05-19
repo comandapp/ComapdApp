@@ -87,9 +87,14 @@ public class LogicaNegocio {
         else return null;
     }
 
-    public void insertaComanda(Context con, Comanda comanda, int idBar)
+    public void insertaComanda(Context con, String nombreComanda, int idBar)
     {
-        persistencia.insertaComanda(con, comanda, idBar);
+        persistencia.insertaComanda(con, nombreComanda, idBar);
+    }
+
+    public Comanda getComanda(Context con, String nombreComanda)
+    {
+        return persistencia.getComanda(con, nombreComanda);
     }
 
     public void setBarFavorito(Context con, Bar b, boolean fav) {

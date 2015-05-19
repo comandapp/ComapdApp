@@ -40,13 +40,26 @@ public class ComandaDetallada extends ActionBarActivity {
         setContentView(R.layout.activity_comanda_detallada);
 
         final int id_Bar = this.getIntent().getExtras().getInt("id_bar");
+        final String nombreComanda = this.getIntent().getExtras().getString("nombre_comanda");
 
         //ListView lv = (ListView)findViewById(R.id.listaDetalles);
         lstLineasComanda = (ListView)findViewById(R.id.listaDetalles);
+
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) lstLineasComanda.getLayoutParams();
 
         listadoLineasComanda = new ArrayList<LineaComanda>();
-        listadoLineasComanda = LogicaNegocio.getInstancia().lineasComandaEnCursoToLineasComanda(this, id_Bar);
+        if(nombreComanda == null || nombreComanda.isEmpty())
+        {
+            listadoLineasComanda = LogicaNegocio.getInstancia().lineasComandaEnCursoToLineasComanda(this, id_Bar);
+        }
+        else
+        {
+            LinearLayout laySubMenu = (LinearLayout) findViewById(R.id.LytSubMenu);
+            LinearLayout layMenu = (LinearLayout) findViewById(R.id.LytMenu);
+            laySubMenu.removeAllViews();
+            layMenu.removeAllViews();
+            listadoLineasComanda = LogicaNegocio.getInstancia().getComanda(this, nombreComanda).getLineasComanda();
+        }
 
         if(listadoLineasComanda != null)
         {
@@ -90,95 +103,95 @@ public class ComandaDetallada extends ActionBarActivity {
         });*/
         //----------------------------------------------------------------------------------------------------------
 
-        //--------------------------- BOTONES MENÚ ------------------------------------------------
-        Button btnMenuCarta = (Button)findViewById(R.id.btnMenuCarta);
-        Button btnMenuInicio = (Button)findViewById(R.id.btnMenuInicio);
-        Button btnMenuOferta = (Button)findViewById(R.id.btnMenuOfertas);
+        if(nombreComanda == null || nombreComanda.isEmpty()) {
+            //--------------------------- BOTONES MENÚ ------------------------------------------------
+            Button btnMenuCarta = (Button) findViewById(R.id.btnMenuCarta);
+            Button btnMenuInicio = (Button) findViewById(R.id.btnMenuInicio);
+            Button btnMenuOferta = (Button) findViewById(R.id.btnMenuOfertas);
 
-        btnMenuCarta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ComandaDetallada.this, Carta_bar.class);
-                intent.putExtra("id_bar",id_Bar);
-                startActivity(intent);
-            }
-        });
+            btnMenuCarta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ComandaDetallada.this, Carta_bar.class);
+                    intent.putExtra("id_bar", id_Bar);
+                    startActivity(intent);
+                }
+            });
 
-        btnMenuInicio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ComandaDetallada.this, InicioBar.class);
-                intent.putExtra("id_bar",id_Bar);
-                startActivity(intent);
-            }
-        });
+            btnMenuInicio.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ComandaDetallada.this, InicioBar.class);
+                    intent.putExtra("id_bar", id_Bar);
+                    startActivity(intent);
+                }
+            });
 
-        btnMenuOferta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ComandaDetallada.this, Ofertas_bar.class);
+            btnMenuOferta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ComandaDetallada.this, Ofertas_bar.class);
 
-                intent.putExtra("id_bar",id_Bar);
+                    intent.putExtra("id_bar", id_Bar);
 
-                startActivity(intent);
-            }
-        });
-        //----------------------------------------------------------------------------------------------------------
+                    startActivity(intent);
+                }
+            });
+            //----------------------------------------------------------------------------------------------------------
 
-        Button btnGuardar = (Button)findViewById(R.id.btnGuardarComanda);
+            Button btnGuardar = (Button) findViewById(R.id.btnGuardarComanda);
 
-        btnGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            btnGuardar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                if(listadoLineasComanda != null)
-                {
-                    final EditText txtNombreComanda = new EditText(ComandaDetallada.this);
+                    if (listadoLineasComanda != null) {
+                        final EditText txtNombreComanda = new EditText(ComandaDetallada.this);
 
+                        new AlertDialog.Builder(ComandaDetallada.this)
+                                .setTitle("Guardar comanda")
+                                .setMessage("Introduce el nombre de la comanda a guardar:")
+                                .setView(txtNombreComanda)
+                                .setNegativeButton("Cancelar", null)
+                                .setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        LogicaNegocio.getInstancia().insertaComanda(ComandaDetallada.this, txtNombreComanda.getText().toString(), id_Bar);
+                                        LogicaNegocio.getInstancia().insertaLineasComanda(ComandaDetallada.this, txtNombreComanda.getText().toString(), listadoLineasComanda);
+                                    }
+                                })
+                                .setCancelable(true).create().show();
+                    } else {
+                        new AlertDialog.Builder(ComandaDetallada.this)
+                                .setTitle("Aviso")
+                                .setMessage("No puedes almacenar una comanda en blanco.")
+                                .setCancelable(true).create().show();
+                    }
+                }
+            });
+
+            Button btnBorrar = (Button) findViewById(R.id.btnBorrar);
+
+            btnBorrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     new AlertDialog.Builder(ComandaDetallada.this)
-                            .setTitle("Guardar comanda")
-                            .setMessage("Introduce el nombre de la comanda a guardar:")
-                            .setView(txtNombreComanda)
-                            .setNegativeButton("Cancelar", null)
-                            .setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                            .setTitle("Borrar comanda en curso")
+                            .setMessage("¿Está seguro de que desea borrar la comanda en curso?")
+                            .setNegativeButton("No", null)
+                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    LogicaNegocio.getInstancia().insertaLineasComanda(ComandaDetallada.this, txtNombreComanda.getText().toString(), listadoLineasComanda);
+                                    LogicaNegocio.getInstancia().borraLineasComandaEnCurso(ComandaDetallada.this);
+                                    listadoLineasComanda.clear();
+                                    adaptador.notifyDataSetChanged();
+                                    lblPrecioFinal.setText("0€");
                                 }
                             })
                             .setCancelable(true).create().show();
                 }
-                else
-                {
-                    new AlertDialog.Builder(ComandaDetallada.this)
-                            .setTitle("Aviso")
-                            .setMessage("No puedes almacenar una comanda en blanco.")
-                            .setCancelable(true).create().show();
-                }
-            }
-        });
-
-        Button btnBorrar = (Button)findViewById(R.id.btnBorrar);
-
-        btnBorrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(ComandaDetallada.this)
-                        .setTitle("Borrar comanda en curso")
-                        .setMessage("¿Está seguro de que desea borrar la comanda en curso?")
-                        .setNegativeButton("No", null)
-                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                LogicaNegocio.getInstancia().borraLineasComandaEnCurso(ComandaDetallada.this);
-                                listadoLineasComanda.clear();
-                                adaptador.notifyDataSetChanged();
-                                lblPrecioFinal.setText("0€");
-                            }
-                        })
-                        .setCancelable(true).create().show();
-            }
-        });
+            });
+        }
 
         Button btnPedidoQR = (Button)findViewById(R.id.btnQR);
 

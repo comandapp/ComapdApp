@@ -451,12 +451,12 @@ public class Persistencia {
         return comandas;
     }
 
-    public void insertaComanda(Context con, Comanda comanda, int idBar) {
+    public void insertaComanda(Context con, String nombreComanda, int idBar) {
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
             dbw.execSQL("INSERT INTO comanda (Nombre_comanda, Bar) VALUES(" +
-                    "'" + comanda.getNombre() + "'," +
+                    "'" + nombreComanda + "'," +
                     idBar + ");");
 
         dbw.close();
@@ -480,6 +480,70 @@ public class Persistencia {
 
         dbw.close();
         sql.close();
+    }
+
+    public Comanda getComanda(Context con, String nomCom) {
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbr = sql.getReadableDatabase();
+
+        /*Cursor c1 = dbr.rawQuery("SELECT comanda.Nombre_comanda," +
+                "bar.Foto," +
+                "comanda.fecha," +
+                "comanda LEFT JOIN bar ON comanda.Bar = bar.Id_Bar ;", null);*/
+
+        Cursor c1 = dbr.rawQuery("SELECT comanda.Nombre_comanda," +
+                "bar.Foto," +
+                "comanda.Fecha," +
+                "lineaComanda.Cantidad," +
+                "lineaCarta.Precio," +
+                "lineaCarta.Descripcion," +
+                "producto.Id_Producto," +
+                "producto.Nombre," +
+                "producto.Categoria," +
+                "producto.Foto " +
+                "FROM lineaComanda " +
+                "INNER JOIN comanda ON lineaComanda.Nombre_comanda = comanda.Nombre_comanda " +
+                "INNER JOIN producto ON lineaComanda.Id_Producto = producto.Id_Producto " +
+                "INNER JOIN bar ON comanda.Bar = bar.Id_Bar " +
+                "INNER JOIN lineaCarta ON lineaCarta.Id_Producto = lineaComanda.Id_Producto " +
+                "WHERE lineaCarta.Id_Bar = bar.Id_Bar AND comanda.Nombre_comanda = '" + nomCom + "'" +
+                "ORDER BY comanda.Nombre_comanda;", null);
+
+        Comanda com = null;
+
+        while(c1.moveToNext())
+        {
+            if(com == null)
+            {
+                com = new Comanda(
+                        c1.getString(0),
+                        ImgCodec.base64ToBitmap(c1.getString(1)),
+                        new Date(c1.getLong(2))
+                );
+            }
+
+            com.aniadeLinea(
+                    new LineaComanda(
+                            new LineaCarta(
+                                    new Producto(
+                                            c1.getInt(6),
+                                            c1.getString(7),
+                                            c1.getString(8),
+                                            ImgCodec.base64ToBitmap(c1.getString(9))
+                                    ),
+                                    c1.getDouble(4),
+                                    c1.getString(5)
+                            ),
+                            c1.getInt(3)
+                    )
+            );
+        }
+
+        c1.close();
+        dbr.close();
+        sql.close();
+
+        return com;
     }
 
     //OFERTAS---------------------------------------------------------------------------------------
