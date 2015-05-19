@@ -61,7 +61,7 @@ public class Carta_bar extends ActionBarActivity {
                         }
                     }
                     if(!enc){
-                        lineasComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
+                        lineasComanda.add(lC.getProducto().getId()-1,new LineaComandaEnCurso(lC.getProducto().getId(), 0));
                     }
                 }
 

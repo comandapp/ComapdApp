@@ -46,7 +46,7 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         View item = convertView;
         ViewHolderListadoEntradas holder;
         final LineaCarta e = listadoEntrada.get(position);
-        final TextView tv=new TextView(context);
+
         if(item == null)
         {
             LayoutInflater inflater = context.getLayoutInflater();
@@ -62,9 +62,32 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             final ViewHolderListadoEntradas vhlo=holder;
             LinearLayout hl=(LinearLayout)v.findViewById(R.id.layoutPrecios);
 
-
+            final TextView tv=new TextView(context);
             tv.setId(R.id.tvCantidad);
             hl.addView(tv);
+
+            for(int i=0;i<((ListView)context.findViewById(R.id.listaCarta)).getChildCount();i++) {
+                View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
+                if(a instanceof RelativeLayout) {
+                    for(int intaux=0;intaux<lComanda.size();intaux++){
+                        ((TextView)((LinearLayout)((RelativeLayout) a).getChildAt(2)).getChildAt(2)).setText(lComanda.get(i).getCantidad()+"");
+                    }
+                   /* for(LineaComandaEnCurso lcc:lComanda) {
+                        String aux = lcc.getIdProducto() + "";
+                        System.out.println(aux+"               "+((TextView) item.findViewById(R.id.LVIIdProd)).getText());
+                        if (aux.equals(((TextView) item.findViewById(R.id.LVIIdProd)).getText())) {
+                            ((TextView)((LinearLayout)((RelativeLayout) a).getChildAt(2)).getChildAt(2)).setText(aux);
+                            System.out.println("si");
+                        }
+                        else {
+                            ((TextView)((LinearLayout)((RelativeLayout) a).getChildAt(2)).getChildAt(2)).setText("0");
+                            System.out.println("no");
+                        }
+                    }*/
+                }
+            }
+
+
 
             ((RelativeLayout)item.findViewById(R.id.layoutCartaGlobal)).setOnClickListener(new View.OnClickListener() {
 
@@ -159,16 +182,9 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         holder.precio.setText(e.getPrecio()+"€");
         holder.descripcion.setText(e.getDescripcion());
         holder.idProd.setText(e.getProducto().getId()+"");
-        for(LineaComandaEnCurso lcc:lComanda) {
-            String aux = lcc.getIdProducto() + "";
-            System.out.println(((TextView) item.findViewById(R.id.LVIIdProd)).getText()+"        "+aux+"         "+lcc.getCantidad());
-            if (aux.equals(((TextView) item.findViewById(R.id.LVIIdProd)).getText())) {
-                tv.setText("a" + lcc.getCantidad());
-                System.out.println("Si");
-            }
-            else
-                tv.setText("0");
-        }
+
+
+
         double precioOf = LogicaNegocio.getInstancia().getPrecioFinalLineaCarta(context, e, ofertas);
         if(precioOf > 0) {
             holder.precio.setPaintFlags(holder.precio.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -177,6 +193,8 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             holder.precio.setPaintFlags(holder.precio.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.precioOferta.setVisibility(View.GONE);
         }
+
+
         return(item);
     }
 
