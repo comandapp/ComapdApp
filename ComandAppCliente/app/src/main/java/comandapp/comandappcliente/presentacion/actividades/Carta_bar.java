@@ -45,31 +45,33 @@ public class Carta_bar extends ActionBarActivity {
         }
         else
         {
-            adaptador = new AdaptadorCarta(this, carta, LogicaNegocio.getInstancia().getOfertas(this,id_Bar));
+            lineasComanda=new ArrayList<LineaComandaEnCurso>();
+
+            if(LogicaNegocio.getInstancia().getLineasComandaEnCurso(this)==null) {
+                for (LineaCarta lC : carta) {
+                    lineasComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
+                }
+            }else{
+                lineasComanda=LogicaNegocio.getInstancia().getLineasComandaEnCurso(this);
+                for (LineaCarta lC : carta) {
+                    boolean enc=false;
+                    for(LineaComandaEnCurso lcc:lineasComanda) {
+                        if (lC.getProducto().getId() == lcc.getIdProducto()) {
+                            enc = true;
+                        }
+                    }
+                    if(!enc){
+                        lineasComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
+                    }
+                }
+
+            }
+            adaptador = new AdaptadorCarta(this, carta, LogicaNegocio.getInstancia().getOfertas(this,id_Bar),lineasComanda);
             lstEntradas = (ListView)findViewById(R.id.listaCarta);
             lstEntradas.setAdapter(adaptador);
         }
 
-        lineasComanda=new ArrayList<LineaComandaEnCurso>();
 
-        if(LogicaNegocio.getInstancia().getLineasComandaEnCurso(this)==null) {
-            for (LineaCarta lC : carta) {
-                lineasComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
-            }
-        }else{
-            lineasComanda=LogicaNegocio.getInstancia().getLineasComandaEnCurso(this);
-            for (LineaCarta lC : carta) {
-                boolean enc=false;
-                for(LineaComandaEnCurso lcc:lineasComanda) {
-                    if (lC.getProducto().getId() == lcc.getIdProducto()) {
-                        enc = true;
-                    }
-                }
-                if(!enc){
-                    lineasComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
-                }
-            }
-        }
 
         //else Si la comanda no es null
         /*
@@ -132,17 +134,23 @@ public class Carta_bar extends ActionBarActivity {
             if(a instanceof RelativeLayout)
             {
                 TextView tvCant = (TextView)((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).findViewById(R.id.tvCantidad);
-                LineaComandaEnCurso lc = lineasComanda.get(i);
-                lc.setCantidad(Integer.parseInt(tvCant.getText().toString()));
-                lineasComanda.remove(i);
-                lineasComanda.add(i, lc);
+                int numaux=0;
+                boolean enc=false;
+                while(numaux<lineasComanda.size() && !enc){
+                    String aux=lineasComanda.get(numaux).getIdProducto()+"";
+                    if(aux.equals(((TextView) a.findViewById(R.id.LVIIdProd)).getText())) {
+                        enc=true;
+                    }else {
+                        numaux++;
+                    }
+                }
+                LineaComandaEnCurso lCC = lineasComanda.get(numaux);
+                lCC.setCantidad(Integer.parseInt(tvCant.getText().toString()));
+                lineasComanda.add(numaux, lCC);
+                lineasComanda.remove(numaux + 1);
             }
         }
-        for(int i=0; i < lineasComanda.size(); i++)
-        {
-            if(lineasComanda.get(i).getCantidad()==0)
-                lineasComanda.remove(i);
-        }
+
     }
 
     @Override

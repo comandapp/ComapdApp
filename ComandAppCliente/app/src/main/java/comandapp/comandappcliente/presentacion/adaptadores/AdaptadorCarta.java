@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -32,37 +34,19 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
     private ArrayList<LineaCarta> listadoEntrada;
     private ArrayList<Oferta> ofertas;
     ArrayList<LineaComandaEnCurso> lComanda;
-    public AdaptadorCarta(Activity context, ArrayList<LineaCarta> datos, ArrayList<Oferta> ofertas) {
+    public AdaptadorCarta(Activity context, ArrayList<LineaCarta> datos, ArrayList<Oferta> ofertas,ArrayList<LineaComandaEnCurso> lComanda) {
         super(context, R.layout.listitem_carta, datos);
         this.context = context;
         listadoEntrada = datos;
         this.ofertas=ofertas;
-        lComanda=new ArrayList<LineaComandaEnCurso>();
-        if(LogicaNegocio.getInstancia().getLineasComandaEnCurso(context)==null) {
-            for (LineaCarta lC : listadoEntrada) {
-                lComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
-            }
-        }else{
-            lComanda=LogicaNegocio.getInstancia().getLineasComandaEnCurso(context);
-            for (LineaCarta lC : listadoEntrada) {
-                boolean enc=false;
-                for(LineaComandaEnCurso lcc:lComanda) {
-                    if (lC.getProducto().getId() == lcc.getIdProducto()) {
-                        enc = true;
-                    }
-                }
-                if(!enc){
-                    lComanda.add(new LineaComandaEnCurso(lC.getProducto().getId(), 0));
-                }
-            }
-        }
+        this.lComanda=lComanda;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         View item = convertView;
         ViewHolderListadoEntradas holder;
         final LineaCarta e = listadoEntrada.get(position);
-
+        final TextView tv=new TextView(context);
         if(item == null)
         {
             LayoutInflater inflater = context.getLayoutInflater();
@@ -74,15 +58,11 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             holder.descripcion=(TextView)item.findViewById(R.id.LVICartaInfo);
             holder.precio=(TextView)item.findViewById(R.id.LVICartaPrecio);
             holder.precioOferta = (TextView)item.findViewById(R.id.LVICartaPrecioOferta);
+            holder.idProd=(TextView)item.findViewById(R.id.LVIIdProd);
             final ViewHolderListadoEntradas vhlo=holder;
             LinearLayout hl=(LinearLayout)v.findViewById(R.id.layoutPrecios);
-            final TextView tv=new TextView(context);
-            for(LineaComandaEnCurso lcc:lComanda) {
-                if(lcc.getIdProducto()==listadoEntrada.get(position).getProducto().getId())
-                    tv.setText(""+lcc.getCantidad());
-                else
-                    tv.setText("0");
-            }
+
+
             tv.setId(R.id.tvCantidad);
             hl.addView(tv);
 
@@ -178,6 +158,17 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         holder.nombre.setText(e.getProducto().getNombre());
         holder.precio.setText(e.getPrecio()+"€");
         holder.descripcion.setText(e.getDescripcion());
+        holder.idProd.setText(e.getProducto().getId()+"");
+        for(LineaComandaEnCurso lcc:lComanda) {
+            String aux = lcc.getIdProducto() + "";
+            System.out.println(((TextView) item.findViewById(R.id.LVIIdProd)).getText()+"        "+aux+"         "+lcc.getCantidad());
+            if (aux.equals(((TextView) item.findViewById(R.id.LVIIdProd)).getText())) {
+                tv.setText("a" + lcc.getCantidad());
+                System.out.println("Si");
+            }
+            else
+                tv.setText("0");
+        }
         double precioOf = LogicaNegocio.getInstancia().getPrecioFinalLineaCarta(context, e, ofertas);
         if(precioOf > 0) {
             holder.precio.setPaintFlags(holder.precio.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -215,5 +206,6 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         TextView descripcion;
         TextView precio;
         TextView precioOferta;
+        TextView idProd;
     }
 }
