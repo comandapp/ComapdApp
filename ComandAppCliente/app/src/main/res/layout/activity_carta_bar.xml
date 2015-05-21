@@ -37,8 +37,9 @@
     </LinearLayout>
 
     <ListView android:id="@+id/listaCarta"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:divider="#FFBD2E"
-        android:dividerHeight="2dp"/>
+        android:dividerHeight="2dp"
+        android:layout_weight="1"/>
 </LinearLayout>

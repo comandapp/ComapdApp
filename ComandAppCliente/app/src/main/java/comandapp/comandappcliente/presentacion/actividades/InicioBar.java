@@ -74,7 +74,7 @@ public class InicioBar extends ActionBarActivity {
             }
         });
 
-        
+
 
         btnMenuComanda.setOnClickListener(new View.OnClickListener() {
             @Override
