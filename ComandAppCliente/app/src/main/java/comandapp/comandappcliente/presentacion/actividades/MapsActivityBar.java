@@ -53,7 +53,7 @@ public class MapsActivityBar extends ActionBarActivity {
         myPosition = new LatLng(bar.getLatitud(),bar.getLongitud());
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(myPosition)      // Sets the center of the map to LatLng (refer to previous snippet)
-                .zoom(12)                   // Sets the zoom
+                .zoom(15)                   // Sets the zoom
                 .tilt(30)                   // Sets the tilt of the camera to 30 degrees
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
