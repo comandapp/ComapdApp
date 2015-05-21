@@ -13,20 +13,20 @@
     <string name="nombre">Escribe tu nombre:</string>
     <string name="aceptar">Aceptar</string>
     <string name="title_activity_saludo">SaludoActivity</string>
-    <string name="title_activity_busqueda_bar">BusquedaBar</string>
-    <string name="title_activity_inicio_bar">InicioBar</string>
+    <string name="title_activity_busqueda_bar">Locales disponibles</string>
+    <string name="title_activity_inicio_bar">Informacion del local</string>
     <string name="search_title">Buscar</string>
     <string name="search_hint">Nombre bar</string>
 
-    <string name="title_activity_genera_comanda">GeneraComanda</string>
+    <string name="title_activity_genera_comanda">Comanda generada</string>
 
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps_bar">maps_bar</string>
-    <string name="title_activity_bares_favoritos">BaresFavoritos</string>
-    <string name="title_activity_carta_bar">carta_bar</string>
-    <string name="title_activity_ofertas">Ofertas</string>
+    <string name="title_activity_bares_favoritos">Locales favoritos</string>
+    <string name="title_activity_carta_bar">Carta del localr</string>
+    <string name="title_activity_ofertas">Ofertas del local</string>
 	
-	<string name="title_activity_comanda_detallada">ComandaDetallada</string>
+	<string name="title_activity_comanda_detallada">Detalles de la comanda</string>
     <string name="title_activity_mapa_ylocalizacion">Mapa</string>
-    <string name="title_activity_historial_comandas">HistorialComandas</string>
+    <string name="title_activity_historial_comandas">Historial de comandas</string>
 </resources>

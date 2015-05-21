@@ -74,14 +74,7 @@ public class InicioBar extends ActionBarActivity {
             }
         });
 
-        btnMenuOfertas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(InicioBar.this, Ofertas_bar.class);
-                intent.putExtra("id_bar",id_Bar);
-                startActivity(intent);
-            }
-        });
+        
 
         btnMenuComanda.setOnClickListener(new View.OnClickListener() {
             @Override

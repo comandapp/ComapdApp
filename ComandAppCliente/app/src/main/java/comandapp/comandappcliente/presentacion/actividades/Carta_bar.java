@@ -96,19 +96,7 @@ public class Carta_bar extends ActionBarActivity {
             }
         });
 
-        btnMenuOfertas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Carta_bar.this, Ofertas_bar.class);
-                intent.putExtra("id_bar",id_Bar);
 
-                guardaComanda();
-                LogicaNegocio.getInstancia().borraLineasComandaEnCurso(Carta_bar.this);
-                LogicaNegocio.getInstancia().insertaLineasComandaEnCurso(Carta_bar.this,lineasComanda);
-
-                startActivity(intent);
-            }
-        });
 
         btnMenuComanda.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -44,25 +44,25 @@
             android:label="Bares Favoritos" />
         <activity
             android:name=".presentacion.actividades.InicioBar"
-            android:label="Inicio"
+            android:label="Información del local"
             android:noHistory="true" />
         <activity
             android:name=".presentacion.actividades.Carta_bar"
-            android:label="Carta"
+            android:label="Carta del local"
             android:noHistory="true" />
         <activity
             android:name=".presentacion.actividades.ComandaDetallada"
             android:noHistory="true"
-            android:label="Comanda Detalles" />
+            android:label="Detalles de la comanda" />
         <activity
             android:name=".presentacion.actividades.ComandaQR"
-            android:label="Comanda QR" />
+            android:label="QR de la comanda" />
         <activity
             android:name=".presentacion.actividades.MapsActivityBar"
-            android:label="Localizacion Bar" />
+            android:label="Localizacion del local" />
         <activity
             android:name=".presentacion.actividades.Ofertas_bar"
-            android:label="Ofertas"
+            android:label="Ofertas del local"
             android:noHistory="true" />
 
         <meta-data

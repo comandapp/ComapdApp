@@ -127,16 +127,7 @@ public class ComandaDetallada extends ActionBarActivity {
                 }
             });
 
-            btnMenuOferta.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(ComandaDetallada.this, Ofertas_bar.class);
 
-                    intent.putExtra("id_bar", id_Bar);
-
-                    startActivity(intent);
-                }
-            });
             //----------------------------------------------------------------------------------------------------------
 
             Button btnGuardar = (Button) findViewById(R.id.btnGuardarComanda);
