@@ -39,7 +39,7 @@ public class LogicaNegocio {
 
     //Función sin acabar
     public void rellenaLViewBares(Context context, ArrayList<Bar> bares) {
-        Future<Document> response = pool.submit(new HTTPServerRequest(context,"GLOC",persistencia.getMain(context)));
+        Future<Document> response = pool.submit(new HTTPServerRequest(context, "GLOC", persistencia.getMain(context)));
         pool.execute(new DOMParser(context, response, bares));
     }
 
@@ -95,6 +95,16 @@ public class LogicaNegocio {
     public Comanda getComanda(Context con, String nombreComanda)
     {
         return persistencia.getComanda(con, nombreComanda);
+    }
+
+    public Boolean existeComanda(Context con, String nombreComanda)
+    {
+        if(!nombreComanda.isEmpty())
+        {
+            return persistencia.existeComanda(con, nombreComanda);
+        }
+
+        return false;
     }
 
     public void setBarFavorito(Context con, Bar b, boolean fav) {
@@ -153,6 +163,24 @@ public class LogicaNegocio {
             }
 
             return(lineasComanda);
+        }
+
+        return null;
+    }
+
+    public ArrayList<LineaComandaEnCurso> lineasComandaToLineasComandaEnCurso(Context con, ArrayList<LineaComanda> lineasComanda)
+    {
+
+        if(lineasComanda.size() > 0)
+        {
+            ArrayList<LineaComandaEnCurso> lineasComandaEnCurso = new ArrayList<LineaComandaEnCurso>();
+
+            for(LineaComanda linea : lineasComanda)
+            {
+                lineasComandaEnCurso.add(new LineaComandaEnCurso(linea.getProductoCarta().getProducto().getId(), linea.getCantidad()));
+            }
+
+            return(lineasComandaEnCurso);
         }
 
         return null;

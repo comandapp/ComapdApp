@@ -42,10 +42,9 @@ public class ComandaDetallada extends ActionBarActivity {
         final int id_Bar = this.getIntent().getExtras().getInt("id_bar");
         final String nombreComanda = this.getIntent().getExtras().getString("nombre_comanda");
 
-        //ListView lv = (ListView)findViewById(R.id.listaDetalles);
         lstLineasComanda = (ListView)findViewById(R.id.listaDetalles);
 
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) lstLineasComanda.getLayoutParams();
+        //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) lstLineasComanda.getLayoutParams();
 
         listadoLineasComanda = new ArrayList<LineaComanda>();
         if(nombreComanda == null || nombreComanda.isEmpty())
@@ -63,7 +62,7 @@ public class ComandaDetallada extends ActionBarActivity {
 
         if(listadoLineasComanda != null)
         {
-            if(listadoLineasComanda.size() <= 6)
+            /*if(listadoLineasComanda.size() <= 6)
             {
                 params.weight = 0f;
             }
@@ -72,7 +71,7 @@ public class ComandaDetallada extends ActionBarActivity {
                 params.weight = 1.0f;
             }
 
-            lstLineasComanda.setLayoutParams(params);
+            lstLineasComanda.setLayoutParams(params);*/
 
             adaptador = new AdaptadorComandaDetallada(this, listadoLineasComanda);
 
@@ -92,22 +91,10 @@ public class ComandaDetallada extends ActionBarActivity {
             lblPrecioFinal.setText(new DecimalFormat("#.##").format(precioFinal) + "€");
         }
 
-        //--------------------------- BOTONES ACTIONBAR ------------------------------------------------
-        /*Button btnHistorial = (Button)findViewById(R.id.menuHistorial);
-        btnHistorial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ComandaDetallada.this, HistorialComandas.class);
-                startActivity(intent);
-            }
-        });*/
-        //----------------------------------------------------------------------------------------------------------
-
         if(nombreComanda == null || nombreComanda.isEmpty()) {
             //--------------------------- BOTONES MENÚ ------------------------------------------------
             Button btnMenuCarta = (Button) findViewById(R.id.btnMenuCarta);
             Button btnMenuInicio = (Button) findViewById(R.id.btnMenuInicio);
-            Button btnMenuOferta = (Button) findViewById(R.id.btnMenuOfertas);
 
             btnMenuCarta.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -147,8 +134,13 @@ public class ComandaDetallada extends ActionBarActivity {
                                 .setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        LogicaNegocio.getInstancia().insertaComanda(ComandaDetallada.this, txtNombreComanda.getText().toString(), id_Bar);
-                                        LogicaNegocio.getInstancia().insertaLineasComanda(ComandaDetallada.this, txtNombreComanda.getText().toString(), listadoLineasComanda);
+                                        String nomCom = txtNombreComanda.getText().toString();
+
+                                        if(!nomCom.isEmpty() && !LogicaNegocio.getInstancia().existeComanda(ComandaDetallada.this, nomCom))
+                                        {
+                                            LogicaNegocio.getInstancia().insertaComanda(ComandaDetallada.this, nomCom, id_Bar);
+                                            LogicaNegocio.getInstancia().insertaLineasComanda(ComandaDetallada.this, nomCom, listadoLineasComanda);
+                                        }
                                     }
                                 })
                                 .setCancelable(true).create().show();
@@ -192,6 +184,7 @@ public class ComandaDetallada extends ActionBarActivity {
                 if(listadoLineasComanda != null)
                 {
                     Intent intent = new Intent(ComandaDetallada.this, ComandaQR.class);
+                    intent.putExtra("id_bar", id_Bar);
                     startActivity(intent);
                 }
                 else

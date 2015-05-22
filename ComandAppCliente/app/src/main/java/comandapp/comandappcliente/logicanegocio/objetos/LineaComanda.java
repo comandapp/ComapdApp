@@ -8,8 +8,6 @@ public class LineaComanda
     private LineaCarta productoCarta;
     private int cantidad;
 
-    private LineaCarta lineaCarta;
-
     public LineaComanda(LineaCarta productoCarta)
 
     {

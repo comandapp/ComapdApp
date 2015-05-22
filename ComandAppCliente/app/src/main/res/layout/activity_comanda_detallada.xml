@@ -39,47 +39,49 @@
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/LytSubMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:weightSum="1">
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
 
-        <Button android:id="@+id/btnGuardarComanda"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:text="GUARDAR"
-            android:layout_weight="0.5"
-            android:drawableLeft="@drawable/guardar_icon"
-            android:layout_marginRight="4dp"
-            style="@style/botonCustomSubMenu"/>
+        <TextView android:id="@+id/tituloResumen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Resumen pedido"
+            android:layout_gravity="left"
+            style="@style/titulo1"/>
 
-        <Button android:id="@+id/btnBorrar"
+        <Space
             android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:text="BORRAR"
-            android:layout_weight="0.5"
-            android:drawableLeft="@drawable/borrar_icon"
-            style="@style/botonCustomSubMenu"/>
+            android:layout_weight="1"
+            android:layout_height="20dp" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/LytSubMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/btnGuardarComanda"
+                android:layout_width="42dp"
+                android:layout_height="35dp"
+                android:drawableLeft="@drawable/guardar_icon"
+                android:layout_marginRight="4dp"
+                style="@style/botonCustomTransparente"/>
+
+            <Button android:id="@+id/btnBorrar"
+                android:layout_width="42dp"
+                android:layout_height="35dp"
+                android:layout_marginBottom="6px"
+                android:layout_marginRight="12dp"
+                android:drawableLeft="@drawable/borrar_icon"
+                style="@style/botonCustomTransparente"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-    <Button android:id="@+id/btnQR"
-        android:layout_width="250dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="18dp"
-        android:text="Realizar Pedido"
-        style="@style/botonCustom"/>
-
-    <TextView android:id="@+id/tituloResumen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="Resumen pedido"
-        android:layout_gravity="left"
-        style="@style/titulo1"/>
 
     <View
         android:layout_width="match_parent"
@@ -130,5 +132,13 @@
             style="@style/estandar2_negrita"/>
 
     </LinearLayout>
+
+    <Button android:id="@+id/btnQR"
+        android:layout_width="250dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="18dp"
+        android:text="Realizar Pedido"
+        style="@style/botonCustom"/>
 
 </LinearLayout>

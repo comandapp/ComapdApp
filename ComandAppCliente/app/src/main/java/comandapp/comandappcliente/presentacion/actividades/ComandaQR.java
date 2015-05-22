@@ -6,44 +6,106 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.util.ArrayList;
+
 import comandapp.comandappcliente.R;
+import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaComanda;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaComandaEnCurso;
+import comandapp.comandappcliente.logicanegocio.utilidades.LineaComandaEnCursoCodec;
 
 
 public class ComandaQR extends ActionBarActivity {
 
     ImageView imgQR;
+    ArrayList<LineaComandaEnCurso> lineasComandaEnCurso;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comanda_qr);
 
-        imgQR = (ImageView)findViewById(R.id.imgQR);
+        final int id_Bar = this.getIntent().getExtras().getInt("id_bar");
+        final String nombreComanda = this.getIntent().getExtras().getString("nombre_comanda");
 
-        generarQRCode(imgQR, "Hola hola! no vengas sola!");
+        //--------------------------- BOTONES MENU ------------------------------------------------
+        Button btnMenuCarta = (Button) findViewById(R.id.btnMenuCarta);
+        Button btnMenuInicio = (Button) findViewById(R.id.btnMenuInicio);
 
-        Button btnPrueba = (Button)findViewById(R.id.btnPrueba);
-
-        btnPrueba.setOnClickListener(new View.OnClickListener() {
+        btnMenuCarta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(ComandaQR.this)
-                        .setTitle("Hola")
-                        .setMessage("Hola Jesusito")
-                        .setCancelable(true).create().show();
+                Intent intent = new Intent(ComandaQR.this, Carta_bar.class);
+                intent.putExtra("id_bar", id_Bar);
+                startActivity(intent);
             }
         });
-                //http://androideity.com/2011/11/23/trabajar-con-codigos-qr-en-tus-aplicaciones-android/
+
+        btnMenuInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ComandaQR.this, InicioBar.class);
+                intent.putExtra("id_bar", id_Bar);
+                startActivity(intent);
+            }
+        });
+
+
+        //----------------------------------------------------------------------------------------------------------
+
+        lineasComandaEnCurso = new ArrayList<LineaComandaEnCurso>();
+        if(nombreComanda == null || nombreComanda.isEmpty())
+        {
+            lineasComandaEnCurso = LogicaNegocio.getInstancia().getLineasComandaEnCurso(this);
+        }
+        else
+        {
+            LinearLayout laySubMenu = (LinearLayout) findViewById(R.id.LytSubMenu);
+            LinearLayout layMenu = (LinearLayout) findViewById(R.id.LytMenu);
+            laySubMenu.removeAllViews();
+            layMenu.removeAllViews();
+            lineasComandaEnCurso = LogicaNegocio.getInstancia().lineasComandaToLineasComandaEnCurso(this, LogicaNegocio.getInstancia().getComanda(this, nombreComanda).getLineasComanda());
+        }
+
+        /*Gson gson = new Gson();
+        String json = gson.toJson(lineasComandaEnCurso);
+        Log.w("------->", json);
+        ArrayList<LineaComandaEnCurso> obj2 = gson.fromJson(json, new TypeToken<ArrayList<LineaComandaEnCurso>>(){}.getType());
+        Log.w(lineasComandaEnCurso.size() + "------->", obj2.size() + "");*/
+
+        String lineasCodificadas = LineaComandaEnCursoCodec.lineasComandaEnCursoToString(lineasComandaEnCurso);
+        //Log.w("------->", lineasCodificadas);
+        //ArrayList<LineaComandaEnCurso> lineasDecodificadas = LineaComandaEnCursoCodec.stringToLineasComandaEnCurso(lineasCodificadas);
+        //Log.w(lineasComandaEnCurso.size() + "------->", lineasDecodificadas.size() + "");
+
+        imgQR = (ImageView)findViewById(R.id.imgQR);
+        generarQRCode(imgQR, lineasCodificadas);
+
+        Button btnDetalles = (Button)findViewById(R.id.btnDetalles);
+
+        btnDetalles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ComandaQR.this, ComandaDetallada.class);
+                intent.putExtra("id_bar", id_Bar);
+                startActivity(intent);
+            }
+        });
+        //http://androideity.com/2011/11/23/trabajar-con-codigos-qr-en-tus-aplicaciones-android/
     }
 
     private void generarQRCode(ImageView imgQR, String texto)

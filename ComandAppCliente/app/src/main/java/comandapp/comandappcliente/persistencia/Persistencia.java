@@ -451,6 +451,20 @@ public class Persistencia {
         return comandas;
     }
 
+    public boolean existeComanda(Context con, String nombreComanda) {
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbr = sql.getReadableDatabase();
+
+        Cursor c = dbr.rawQuery("SELECT Bar FROM comanda WHERE Nombre_comanda='" + nombreComanda + "';", null);
+
+        if(c.moveToFirst()) {
+            dbr.close();
+            return true;
+        }
+        dbr.close();
+        return false;
+    }
+
     public void insertaComanda(Context con, String nombreComanda, int idBar) {
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbw = sql.getWritableDatabase();
