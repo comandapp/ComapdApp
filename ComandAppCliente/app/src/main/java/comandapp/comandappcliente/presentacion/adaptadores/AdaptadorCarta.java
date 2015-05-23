@@ -65,28 +65,12 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             final TextView tv=new TextView(context);
             tv.setId(R.id.tvCantidad);
             hl.addView(tv);
-
             for(int i=0;i<((ListView)context.findViewById(R.id.listaCarta)).getChildCount();i++) {
                 View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
                 if(a instanceof RelativeLayout) {
-                    for(int intaux=0;intaux<lComanda.size();intaux++){
-                        ((TextView)((LinearLayout)((RelativeLayout) a).getChildAt(2)).getChildAt(2)).setText(lComanda.get(i).getCantidad()+"");
-                    }
-                   /* for(LineaComandaEnCurso lcc:lComanda) {
-                        String aux = lcc.getIdProducto() + "";
-                        System.out.println(aux+"               "+((TextView) item.findViewById(R.id.LVIIdProd)).getText());
-                        if (aux.equals(((TextView) item.findViewById(R.id.LVIIdProd)).getText())) {
-                            ((TextView)((LinearLayout)((RelativeLayout) a).getChildAt(2)).getChildAt(2)).setText(aux);
-                            System.out.println("si");
-                        }
-                        else {
-                            ((TextView)((LinearLayout)((RelativeLayout) a).getChildAt(2)).getChildAt(2)).setText("0");
-                            System.out.println("no");
-                        }
-                    }*/
-                }
+                            ((TextView)((LinearLayout)((RelativeLayout) a).getChildAt(2)).getChildAt(2)).setText(lComanda.get(i).getCantidad()+"");
+                 }
             }
-
 
 
             ((RelativeLayout)item.findViewById(R.id.layoutCartaGlobal)).setOnClickListener(new View.OnClickListener() {
