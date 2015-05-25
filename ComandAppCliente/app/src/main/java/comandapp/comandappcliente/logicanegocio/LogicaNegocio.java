@@ -1,5 +1,6 @@
 package comandapp.comandappcliente.logicanegocio;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,7 @@ import android.util.Log;
 import org.w3c.dom.Document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,7 +29,7 @@ public class LogicaNegocio {
 
     private static LogicaNegocio instancia = null;
     private static Persistencia persistencia = Persistencia.getInstancia();
-    private static ExecutorService pool = Executors.newFixedThreadPool(2);
+
 
     private LogicaNegocio() {
     }
@@ -38,9 +40,8 @@ public class LogicaNegocio {
     }
 
     //Función sin acabar
-    public void rellenaLViewBares(Context context, ArrayList<Bar> bares) {
-        Future<Document> response = pool.submit(new HTTPServerRequest(context, "GLOC", persistencia.getMain(context)));
-        pool.execute(new DOMParser(context, response, bares));
+    public HashMap<Integer, Version> getMain(Activity act) {
+        return persistencia.getMain(act.getBaseContext());
     }
 
     //Devuelve un objeto bar sin carta ni ofertas

@@ -7,7 +7,7 @@ public class Oferta {
     private String descripcion;
     private double precio;
 
-    public Oferta(int id_bar, Producto prod,String descripcion, double precio){
+    public Oferta(int id_bar, Producto prod, String descripcion, double precio){
         this.id_bar=id_bar;
         this.producto = prod;
         this.precio=precio;

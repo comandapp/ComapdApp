@@ -36,8 +36,7 @@ public class HTTPServerRequest implements Callable<Document> {
     //Clase encargada de realizar peticiones al servidor y obtener y validar el documento XML resultante.
     //Se ejecuta en segundo plano y su función run() devuelve un objeto Document (árbol DOM)
 
-    //private static final String HOST_URL = "http://193.146.250.82:80/server.php";
-    private static final String HOST_URL = "http://192.168.0.155:80/index.php";
+    private static final String HOST_URL = "http://193.146.250.82:80/osfm/files/server.php";
 
     private String queryString;
     private Context context;

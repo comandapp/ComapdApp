@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.StringReader;
+import java.net.URL;
 
 import mf.javax.xml.transform.Source;
 import mf.javax.xml.transform.stream.StreamSource;
@@ -21,7 +22,7 @@ public class XSDValidator {
         if(xml == null || xml.length()==0) return false;
         try {
             SchemaFactory  factory = new XMLSchemaFactory();
-            Source schemaFile = new StreamSource(c.getAssets().open("comandappRESPONSE.xsd"));
+            URL schemaFile = new URL("http://193.146.250.82/osfm/files/xml/comandappRESPONSE.xsd");
             Schema schema = factory.newSchema(schemaFile);
             Validator validator = schema.newValidator();
             validator.validate(new StreamSource(new StringReader(xml)));

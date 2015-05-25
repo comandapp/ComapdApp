@@ -1,8 +1,8 @@
 <?php
 
-//ConexiÃ³n a la BD
+//Conexión a la BD
 function getConnection() {
-    $mysql_host = "193.146.250.82";
+    $mysql_host = "localhost";
     $mysql_database = "appcomanda";
     $mysql_user = "alexUser";
     $mysql_password = "comandapp";
@@ -14,16 +14,14 @@ function getConnection() {
 function sendResponse($response) {
 
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
-            "<root xmlns=\"comandappRESPONSE.xsd\" " .
+            "<root xmlns=\"comandappCOMUNES.xsd\" " .
             "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " .
-            "xsi:schemaLocation=\"xml/comandappRESPONSE.xsd\">";
+            "xsi:schemaLocation=\"comandappCOMUNES.xsd http://193.146.250.82/osfm/files/xml/comandappRESPONSE.xsd\">";
 
 
     try {
         $serverMain = getServerMain();
         $db = getConnection();
-
-        $actualizados = array();
         $eliminados = array();
 
         if ((!(isset($response))) || (strlen($response) == 0)) {
@@ -31,7 +29,7 @@ function sendResponse($response) {
             $mainCliente = array();
         } else {
             //Se valida el Main contra el XSD
-            //Si da error serÃ¡ igual que en el caso anterior (se envÃ­an todos los datos).
+            //Si da error será igual que en el caso anterior.
             $mainCliente = parseXMLMAIN(utf8_decode(urldecode($response)));
         }
 
@@ -42,61 +40,34 @@ function sendResponse($response) {
                 $cmpInfo = strcmp($versionServer["vLocal"], $versionCliente["vLocal"]);
                 $cmpCarta = strcmp($versionServer["vCarta"], $versionCliente["vCarta"]);
                 $cmpOfertas = strcmp($versionServer["vOfertas"], $versionCliente["vOfertas"]);
-
-                if ($cmpInfo == 0 && $cmpCarta == 0 && $cmpOfertas == 0) {
-                    array_push($actualizados, $id_BarServer);
-                } else {
-                    if ($cmpInfo > 0) {
-                        //Hay que actualizar la Info del bar.
-                        //Aprovechamos para meter la carta y las ofertas tambiÃ©n (si hay que actualizarlas) en el objeto bar.
-                        $xml .= addInfoLocal($id_BarServer, $db);
-                        if ($cmpCarta > 0) {
-                            $xml .= addCarta($id_BarServer, $db);
-                        } else {
-                            $xml .= "<carta xmlns=\"\" id_Bar=\"" . $id_BarServer . "\" version=\"0\"></carta>";
-                        }
-                        if ($cmpOfertas > 0) {
-                            $xml .= addOfertas($id_BarServer, $db);
-                        } else {
-                            $xml .= "<ofertas xmlns=\"\" id_Bar=\"" . $id_BarServer . "\" version=\"0\"></ofertas>";
-                        }
-                        $xml .= "</bar>";
-                    } else {
-                        //No hay que actualizar la info del bar.
-                        //Si hay que actualizar carta u ofertas se mandarÃ¡n por separado (fuera de un objeto bar).
-                        if ($cmpCarta > 0) {
-                            $xml .= addCarta($id_BarServer, $db);
-                        }
-                        if ($cmpOfertas > 0) {
-                            $xml .= addOfertas($id_BarServer, $db);
-                        }
-                    }
-                }
+                
+                if ($cmpInfo > 0) $xml .= addInfoLocal($id_BarServer, $db);
+                if ($cmpCarta > 0) $xml .= addCarta($id_BarServer, $db);
+                if ($cmpOfertas > 0) $xml .= addOfertas($id_BarServer, $db);
+                
             } else {
-                //No existe en el cliente. Se envÃ­a todo el bar.
+                //No existe en el cliente. Se envia todo el bar.
                 $xml .= addInfoLocal($id_BarServer, $db);
                 $xml .= addCarta($id_BarServer, $db);
                 $xml .= addOfertas($id_BarServer, $db);
-                $xml .= "</bar>";
             }
         }
 
-        $xml .= "<actualizados xmlns=\"\">";
-        foreach ($actualizados as $i) {
-            $xml .= $i . ",";
-        }
-        $xml .= "</actualizados>";
-        $xml .= "<eliminados xmlns=\"\">";
-        foreach ($eliminados as $i) {
-            $xml .= $i . ",";
+        $xml .= "<eliminados xmlns=\"comandappCOMUNES.xsd\">";
+        //Se recorren los bares del cliente
+        if(count($mainCliente) > 0) {
+            foreach ($mainCliente as $id_Bar => $version) {
+                if(!(array_key_exists($id_Bar, $serverMain))) $xml .= $id_Bar . ",";
+            }
+            $xml = substr($xml, 0, -1);//Eliminamos la coma sobrante.
         }
         $xml .= "</eliminados>";
     } catch (PDOException $ex) {
-        $xml .= "error: " . $ex->getMessage();
+        
     }
 
     $xml .= "</root>";
-    echo $xml;
+    echo utf8_encode($xml);
 }
 
 //ValidaciÃ³n de XML y construcciÃ³n del Ã¡rbol DOM para mains recibidos
@@ -133,9 +104,9 @@ function getServerMain() {
     if ($stmt->rowCount() > 0) {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $main["" . $row["ID"]] = array(
-                "vLocal" => "" . $row["VersionInfoBar"],
-                "vCarta" => "" . $row["VersionCarta"],
-                "vOfertas" => "" . $row["VersionOfertas"]);
+                "vLocal" => "" . $row["VIB"],
+                "vCarta" => "" . $row["VC"],
+                "vOfertas" => "" . $row["VO"]);
         }
     }
     return $main;
@@ -150,7 +121,7 @@ function addInfoLocal($id, $db) {
 
     if ($stmt->rowCount() > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $xml .= "<bar xmlns=\"comandappLOCAL.xsd\" id_Bar=\"" . $id . "\" version=\"" . $row['VersionInfoBar'] . "\">";
+        $xml .= "<bar xmlns=\"comandappRESPONSE.xsd\" id_Bar=\"" . $id . "\" version=\"" . $row['VersionInfoBar'] . "\">";
         $xml .= "<nombre xmlns=\"\">" . $row['Nombre'] . "</nombre>";
         $xml .= "<direccion xmlns=\"\">" . $row['Direccion'] . "</direccion>";
         $xml .= "<telefono xmlns=\"\">" . $row['Telefono'] . "</telefono>";
@@ -160,6 +131,7 @@ function addInfoLocal($id, $db) {
         $xml .= "<provincia xmlns=\"\">" . $row['Provincia'] . "</provincia>";
         $xml .= "<municipio xmlns=\"\">" . $row['Municipio'] . "</municipio>";
         $xml .= "<foto xmlns=\"\">" . $row['Foto'] . "</foto>";
+        $xml .= "</bar>";
     }
 
     return $xml;
@@ -170,7 +142,7 @@ function addCarta($id, $db) {
             "producto.Nombre AS nomProducto," .
             "carta.Descripcion AS desProducto," .
             "carta.Precio AS precio," .
-            "carta.Foto2 AS foto," .
+            "producto.Foto AS foto," .
             "bar.VersionCarta AS vCarta " .
             "FROM carta INNER JOIN producto ON carta.Id_Producto = producto.Id_Producto " .
             "INNER JOIN bar ON carta.Id_Bar = bar.Id_Bar " .
@@ -184,16 +156,16 @@ function addCarta($id, $db) {
         $i = 0;
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             if ($i == 0) {
-                $xml .= "<carta xmlns=\"comandappCARTA.xsd\" id_Bar=\"" . $id . "\" version=\"" . $row['vCarta'] . "\">";
+                $xml .= "<carta xmlns=\"comandappRESPONSE.xsd\" id_Bar=\"" . $id . "\" version=\"" . $row['vCarta'] . "\">";
                 $i++;
             }
-            $xml .= "<linea_carta xmlns=\"comandappCARTA.xsd\">";
+            $xml .= "<lineaCarta xmlns=\"comandappRESPONSE.xsd\">";
             $xml .= "<idProducto xmlns=\"\">" . $row['idProducto'] . "</idProducto>";
             $xml .= "<nomProducto xmlns=\"\">" . $row['nomProducto'] . "</nomProducto>";
             $xml .= "<desProducto xmlns=\"\">" . $row['desProducto'] . "</desProducto>";
             $xml .= "<precio xmlns=\"\">" . $row['precio'] . "</precio>";
             $xml .= "<foto xmlns=\"\">" . $row['foto'] . "</foto>";
-            $xml .= "</linea_carta>";
+            $xml .= "</lineaCarta>";
         }
         $xml .= "</carta>";
     }
@@ -205,7 +177,7 @@ function addOfertas($id, $db) {
     $stmt = $db->prepare("SELECT oferta.Id_Producto AS idProd, "
             . "oferta.Id_Bar AS idBar, "
             . "oferta.Precio AS precio, "
-            . "oferta.Descripcion AS desc, "
+            . "oferta.Descripcion AS descr, "
             . "bar.VersionOfertas AS vOfertas "
             . "FROM oferta INNER JOIN bar ON oferta.Id_Bar=bar.Id_Bar "
             . "WHERE bar.Id_Bar=?");
@@ -218,16 +190,16 @@ function addOfertas($id, $db) {
         $i = 0;
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             if ($i == 0) {
-                $xml .= "<ofertas xmlns=\"comandappOFERTAS.xsd\" "
+                $xml .= "<ofertas xmlns=\"comandappRESPONSE.xsd\" "
                         . "id_Bar=\"" . $id . "\" "
                         . "version=\"" . $row['vOfertas'] . "\">";
                 $i++;
             }
-            $xml .= "<linea_oferta xmlns=\"comandappOFERTAS.xsd\">";
-            $xml .= "<idProducto xmlns=\"\">" . $row['idProd'] . "</descripcion>";
-            $xml .= "<precio xmlns=\"\">" . $row['precio'] . "</descripcion>";
-            $xml .= "<descripcion xmlns=\"\">" . $row['desc'] . "</productos>";
-            $xml .= "</linea_oferta>";
+            $xml .= "<lineaOferta xmlns=\"comandappRESPONSE.xsd\">";
+            $xml .= "<idProducto xmlns=\"\">" . $row['idProd'] . "</idProducto>";
+            $xml .= "<precio xmlns=\"\">" . $row['precio'] . "</precio>";
+            $xml .= "<descripcion xmlns=\"\">" . $row['descr'] . "</descripcion>";
+            $xml .= "</lineaOferta>";
         }
         $xml .= "</ofertas>";
     }

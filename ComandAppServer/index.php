@@ -7,9 +7,6 @@
   1. Cada comunicación deberá tener al menos un parámetro "COM".
   Éste toma el valor de alguna de las siguientes opciones:
 
-    MAIN - Devuelve el estado actual de la base de datos del servidor.
-    No tiene parámetros.
-
     GBAR - Todos los datos sobre un bar o bares.
     Parámetros:
     ID - Identificador/Identificadores(seguidos de una coma).
@@ -31,25 +28,13 @@
     Salida : Documento XML con los datos de las ofertas actuales. Si hay más de uno se concatenan.
  */
 
-include("functions.php");
-
-echo "HOLA";
-
-sendResponse("");
-
-
-/*
-
 if (isset($_POST["COM"])) {
+echo "1";
     include("functions.php");
-    header('Content-type: application/xml');
-    $com = substr($_POST["COM"], 0, 4);
-    
+echo "Cargado";
+    $com = substr($_POST["COM"], 0, 4); 
+
     if(strcmp($com,"GLOC") == 0) {
         sendResponse($_POST["MAIN"]);
     }
- 
-} else if(isset($_GET["COM"]) && !isset($_GET["MAIN"])) {
-
-} else exit;
-*/
+}

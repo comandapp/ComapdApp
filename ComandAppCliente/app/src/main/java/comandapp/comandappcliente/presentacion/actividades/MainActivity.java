@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import comandapp.comandappcliente.R;
 import comandapp.comandappcliente.logicanegocio.LogicaNegocio;
 import comandapp.comandappcliente.logicanegocio.objetos.Bar;
+import comandapp.comandappcliente.logicanegocio.objetos.LineaCarta;
+import comandapp.comandappcliente.persistencia.Persistencia;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -40,6 +42,9 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+
+        ArrayList<Bar> bares = Persistencia.getInstancia().getBares(this, new int[]{}, false);
+
 
         btnLocalizame = (Button)findViewById(R.id.btnLocalizame);
         btnLocalizame.setOnClickListener(new View.OnClickListener() {
