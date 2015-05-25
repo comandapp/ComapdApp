@@ -162,21 +162,22 @@ public class Persistencia {
             SQLiteDatabase dbw = sql.getWritableDatabase();
 
             try {
-                dbw.execSQL("INSERT INTO bar (Id_Bar, Nombre, Direccion, Telefono, Latitud, Longitud, Provincia, Municipio, Foto, Favorito, Correo, VersionInfoBar, VersionCarta, VersionOfertas) VALUES (" +
-                        b.getIdBar() + ", " +
-                        b.getNombre() + ", " +
-                        b.getDireccion() + ", " +
-                        b.getTelefono() + ", " +
+                String sq = "INSERT INTO bar (Id_Bar, Nombre, Direccion, Telefono, Latitud, Longitud, Provincia, Municipio, Foto, Favorito, Correo, VersionInfoBar, VersionCarta, VersionOfertas) VALUES (" +
+                        "'" + b.getIdBar() + "', " +
+                        "'" + b.getNombre() + "', " +
+                        "'" + b.getDireccion() + "', " +
+                        "'" + b.getTelefono() + "', " +
                         b.getLatitud() + ", " +
                         b.getLongitud() + ", " +
-                        b.getProvincia() + ", " +
-                        b.getMunicipio() + ", " +
-                        ImgCodec.bitmapToBase64(b.getFoto()) + ", " +
+                        "'" + b.getProvincia() + "', " +
+                        "'" + b.getMunicipio() + "', " +
+                        "'" + ImgCodec.bitmapToBase64(b.getFoto()) + "', " +
                         ((b.getFavorito()) ? 1 : 0) + ", " +
-                        b.getCorreo() + ", " +
+                        "'" + b.getCorreo() + "', " +
                         b.getVersion().getVersionInfoLocal() + ", " +
                         b.getVersion().getVersionCarta() + ", " +
-                        b.getVersion().getVersionOfertas() + ");");
+                        b.getVersion().getVersionOfertas() + ");";
+                dbw.execSQL(sq);
 
                 for (LineaCarta e : b.getCarta()) {
                     if (!existeProducto((SQLHelper) sql, e.getProducto().getId()))
@@ -185,7 +186,7 @@ public class Persistencia {
                             e.getProducto().getId() + ", " +
                             b.getIdBar() + ", " +
                             e.getPrecio() + ", " +
-                            e.getDescripcion() + ");");
+                            "'" + e.getDescripcion() + "');");
                 }
 
                 Oferta o;
@@ -194,13 +195,13 @@ public class Persistencia {
                     insertarOferta(con, o);
                 }
 
-
-                return true;
-            } catch (Exception e) {
-                return false;
-            } finally {
                 dbw.close();
                 sql.close();
+                return true;
+            } catch (Exception e) {
+                Log.i("MYAPP:", e.getMessage());
+                System.out.println(e.getMessage());
+                return false;
             }
         }
     }
@@ -293,11 +294,13 @@ public class Persistencia {
         SQLiteOpenHelper sql = getSQL(con);
         SQLiteDatabase dbw = sql.getWritableDatabase();
 
-        dbw.execSQL("INSERT INTO lineaCarta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES( " +
+        String sq = "INSERT INTO lineaCarta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES( " +
                 e.getProducto().getId() + ", " +
                 id_Bar + ", " +
                 e.getPrecio() + ", " +
-                "'" + e.getDescripcion() + "');");
+                "'" + e.getDescripcion() + "');";
+        Log.w("mYAPP",sq);
+        dbw.execSQL(sq);
         dbw.close();
         sql.close();
     }
@@ -519,11 +522,13 @@ public class Persistencia {
             insertaProducto(o.getProducto(), dbw);
         }
 
-        dbw.execSQL("INSERT INTO oferta (Id_Bar, Id_Producto, Precio, Descripcion) VALUES (" +
+        String sq = "INSERT INTO oferta (Id_Bar, Id_Producto, Precio, Descripcion) VALUES (" +
                 o.getIdBar() + ", " +
                 o.getProducto().getId() + ", " +
                 o.getPrecio() + ", " +
-                o.getDescripcion() + ");");
+                "'" + o.getDescripcion() + "');";
+        Log.w("mYAPP",sq);
+        dbw.execSQL(sq);
 
         dbw.close();
         sql.close();
@@ -599,7 +604,8 @@ public class Persistencia {
 
 
     public void insertaProducto(Producto p, SQLiteDatabase dbw) {
-        dbw.execSQL("INSERT INTO producto (Id_Producto, Nombre, Categoria, Foto) VALUES (" + p.getId() + ", '" + p.getNombre() + "', '" + p.getCategoria() + "', '" + ImgCodec.bitmapToBase64(p.getFoto()) + "');");
+        String sq = "INSERT INTO producto (Id_Producto, Nombre, Categoria, Foto) VALUES (" + p.getId() + ", '" + p.getNombre() + "', '" + p.getCategoria() + "', '" + ImgCodec.bitmapToBase64(p.getFoto()) + "');";
+        dbw.execSQL(sq);
     }
 
     public void insertaProducto(Context con, Producto p) {

@@ -75,13 +75,13 @@ public class Splash extends ActionBarActivity {
                                     DOMParser.parseOfertas(con, e),
                                     Integer.parseInt(e.getAttribute("version")));
                         }
-        //
-        //                int[] eliminados = getIdBaresEliminados(doc);
-        //                if(eliminados != null) {
-        //                    for (int i : eliminados) {
-        //                        persistencia.eliminarBar(this.context, i);
-        //                    }
-        //                }
+
+//                int[] eliminados = getIdBaresEliminados(doc);
+//                if(eliminados != null) {
+//                    for (int i : eliminados) {
+//                        persistencia.eliminarBar(this.context, i);
+//                    }
+//                }
 
 
                         dbw.close();

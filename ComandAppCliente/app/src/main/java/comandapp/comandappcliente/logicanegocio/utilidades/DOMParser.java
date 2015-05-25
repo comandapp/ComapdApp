@@ -49,7 +49,7 @@ public class DOMParser {
 
     public static Bar parseInfoBar(Element element) {
         NodeList content = element.getChildNodes();
-        return new Bar(Integer.parseInt(element.getAttribute("id_Bar")),
+        Bar b = new Bar(Integer.parseInt(element.getAttribute("id_Bar")),
                 content.item(0).getFirstChild().getNodeValue(),//Nombre
                 content.item(1).getFirstChild().getNodeValue(),//Dirección
                 content.item(2).getFirstChild().getNodeValue(),//Tlf
@@ -61,6 +61,7 @@ public class DOMParser {
                 ImgCodec.base64ToBitmap(content.item(8).getFirstChild().getNodeValue()),//Foto
                 false, //favorito
                 Integer.parseInt(element.getAttribute("version")));//VersionInfoBar
+        return b;
     }
 
     public static ArrayList<LineaCarta> parseCarta(Context con, Element element) {
