@@ -560,6 +560,48 @@ public class Persistencia {
         return com;
     }
 
+    private void borraLineasComanda(Context con, String nombreComanda){
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbw = sql.getWritableDatabase();
+        dbw.execSQL("DELETE FROM lineaComanda WHERE Nombre_comanda = '" + nombreComanda + "';");
+        dbw.close();
+        sql.close();
+    }
+
+    public void borraComanda(Context con, String nombreComanda){
+        borraLineasComanda(con, nombreComanda);
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbw = sql.getWritableDatabase();
+        dbw.execSQL("DELETE FROM lineaComanda WHERE Nombre_comanda = '" + nombreComanda + "';");
+        dbw.close();
+        sql.close();
+    }
+
+    private void modificaNombreLineasComanda(Context con, String nombreViejo, String nombreNuevo) {
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbw = sql.getWritableDatabase();
+
+        dbw.execSQL("UPDATE lineaComanda SET " +
+                "Nombre_comanda='" + nombreNuevo + "' "+
+                "WHERE Nombre_comanda='" + nombreViejo +"';");
+
+        dbw.close();
+        sql.close();
+    }
+
+    public void modificaNombreComanda(Context con, String nombreViejo, String nombreNuevo) {
+        modificaNombreLineasComanda(con, nombreViejo, nombreNuevo);
+        SQLiteOpenHelper sql = getSQL(con);
+        SQLiteDatabase dbw = sql.getWritableDatabase();
+
+        dbw.execSQL("UPDATE comanda SET " +
+                "Nombre_comanda='" + nombreNuevo + "' "+
+                "WHERE Nombre_comanda='" + nombreViejo +"';");
+
+        dbw.close();
+        sql.close();
+    }
+
     //OFERTAS---------------------------------------------------------------------------------------
     public ArrayList<Oferta> getOfertas(Context con, int id_Bar) {
         ArrayList<Oferta> ofertas = new ArrayList<Oferta>();

@@ -1,18 +1,24 @@
 package comandapp.comandappcliente.presentacion.actividades;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,6 +33,7 @@ public class HistorialComandas extends ActionBarActivity {
     private ListView lstComandas;
     private AdaptadorHistorialComandas adaptador;
     private EditText editFilter;
+    private String nombreComandaSeleccionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +57,7 @@ public class HistorialComandas extends ActionBarActivity {
             }
         });
 
-
+        registerForContextMenu(lstComandas);
     }
 
 
@@ -107,5 +114,69 @@ public class HistorialComandas extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    AdapterView.AdapterContextMenuInfo info;
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        nombreComandaSeleccionada = ((TextView) info.targetView.findViewById(R.id.lblNombreComanda)).getText().toString();
+        menu.setHeaderTitle(nombreComandaSeleccionada);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_historial_seleccion, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.OpcEditar:
+                final EditText txtNombreComanda = new EditText(HistorialComandas.this);
+
+                new AlertDialog.Builder(HistorialComandas.this)
+                        .setTitle("Modificar nombre")
+                        .setMessage("Introduce el nombre de la comanda a modificar:")
+                        .setView(txtNombreComanda)
+                        .setNegativeButton("Cancelar", null)
+                        .setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String nomCom = txtNombreComanda.getText().toString();
+
+                                if(!nomCom.isEmpty())
+                                {
+                                    if(!LogicaNegocio.getInstancia().existeComanda(HistorialComandas.this, nomCom))
+                                    {
+                                        LogicaNegocio.getInstancia().modificaNombreComanda(HistorialComandas.this, nombreComandaSeleccionada, nomCom);
+                                        //((TextView) info.targetView.findViewById(R.id.lblNombreComanda)).setText(nomCom);
+                                        finish();
+                                        startActivity(getIntent());
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(getApplicationContext(), "Ya existe una comanda con ese nombre", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(), "Una comanda no puede tener el nombre en blanco", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .setCancelable(true).create().show();
+                return true;
+            case R.id.OpcBorrar:
+                LogicaNegocio.getInstancia().borraComanda(this, nombreComandaSeleccionada);
+                finish();
+                startActivity(getIntent());
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 }

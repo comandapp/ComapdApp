@@ -197,4 +197,12 @@ public class LogicaNegocio {
             persistencia.insertaLineasComanda(con, nombreComanda, lineas);
         }
     }
+
+    public void borraComanda(Context con, String nombreComanda){
+        persistencia.borraComanda(con, nombreComanda);
+    }
+
+    public void modificaNombreComanda(Context con, String nombreViejo, String nombreNuevo) {
+        persistencia.modificaNombreComanda(con, nombreViejo, nombreNuevo);
+    }
 }

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class ComandaDetallada extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-                    if (listadoLineasComanda != null) {
+                    if (listadoLineasComanda != null && listadoLineasComanda.size() > 0) {
                         final EditText txtNombreComanda = new EditText(ComandaDetallada.this);
 
                         new AlertDialog.Builder(ComandaDetallada.this)
@@ -136,19 +137,32 @@ public class ComandaDetallada extends ActionBarActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         String nomCom = txtNombreComanda.getText().toString();
 
-                                        if(!nomCom.isEmpty() && !LogicaNegocio.getInstancia().existeComanda(ComandaDetallada.this, nomCom))
+                                        if(!nomCom.isEmpty())
                                         {
-                                            LogicaNegocio.getInstancia().insertaComanda(ComandaDetallada.this, nomCom, id_Bar);
-                                            LogicaNegocio.getInstancia().insertaLineasComanda(ComandaDetallada.this, nomCom, listadoLineasComanda);
+                                            if(!LogicaNegocio.getInstancia().existeComanda(ComandaDetallada.this, nomCom))
+                                            {
+                                                LogicaNegocio.getInstancia().insertaComanda(ComandaDetallada.this, nomCom, id_Bar);
+                                                LogicaNegocio.getInstancia().insertaLineasComanda(ComandaDetallada.this, nomCom, listadoLineasComanda);
+                                                Toast.makeText(getApplicationContext(), "Comanda guardada", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Ya existe una comanda con ese nombre", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(getApplicationContext(), "No puedes almacenar una comanda con el nombre en blanco", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 })
                                 .setCancelable(true).create().show();
                     } else {
-                        new AlertDialog.Builder(ComandaDetallada.this)
+                        Toast.makeText(getApplicationContext(), "No puedes almacenar una comanda en blanco", Toast.LENGTH_SHORT).show();
+                        /*new AlertDialog.Builder(ComandaDetallada.this)
                                 .setTitle("Aviso")
                                 .setMessage("No puedes almacenar una comanda en blanco.")
-                                .setCancelable(true).create().show();
+                                .setCancelable(true).create().show();*/
                     }
                 }
             });
@@ -181,7 +195,7 @@ public class ComandaDetallada extends ActionBarActivity {
         btnPedidoQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(listadoLineasComanda != null)
+                if(listadoLineasComanda != null && listadoLineasComanda.size() > 0)
                 {
                     Intent intent = new Intent(ComandaDetallada.this, ComandaQR.class);
                     intent.putExtra("id_bar", id_Bar);
