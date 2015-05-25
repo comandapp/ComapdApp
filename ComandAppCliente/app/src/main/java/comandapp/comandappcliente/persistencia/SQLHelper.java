@@ -70,6 +70,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             "Cantidad INTEGER,"+
             "CONSTRAINT pk_ComandaEnCurso PRIMARY KEY(Id_Producto));";
 
+    /*
     String sqlInsertBar = "INSERT INTO bar (Id_Bar, Nombre, Direccion, Telefono, Latitud, Longitud, Provincia, Municipio, Foto, Favorito, Correo, VersionInfoBar, VersionCarta, VersionOfertas) VALUES" +
             "(1," +
             "'Ángel Fernandez Lasanta'," +
@@ -93,7 +94,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             "0," +
             "'uno@dos.com', 2, 2, 2);";
 
-    /*String sqlInsertCarta = "INSERT INTO lineaCarta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES" +
+    String sqlInsertCarta = "INSERT INTO lineaCarta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES" +
             "(1, 1, 4.75, 'Huevos Fritos'), " +
             "(2, 1, 1.5, 'CocaCola Lata 33 cl'), " +
             "(3, 1, 2, 'CocaCola 1 L'),"+
@@ -101,7 +102,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             "(5, 1, 1.5, 'Fanta limón Lata 33 cl'), " +
             "(6, 1, 1.5, '7up Lata 33 cl'), " +
             "(7, 1, 6.5, 'Coctel Ron Brugal'), " +
-            "(8, 1, 6.5, 'Coctel Seagram´s');";*/
+            "(8, 1, 6.5, 'Coctel Seagram´s');";
 
     String sqlInsertOferta = "INSERT INTO oferta (Id_Producto, Id_Bar, Precio, Descripcion) VALUES" +
             "(3, 1, 1.5, 'Cocacola con descuento');";
@@ -144,7 +145,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             "(6, 2, 1.5, 'Cerveza'), " +
             "(7, 2, 6.5, 'Coctel Ron Brugal'), " +
             "(8, 2, 6.5, 'Coctel Seagram´s'); ";
-            ;
+    */
 
     String sqlInsertComanda = "INSERT INTO comanda (Nombre_comanda, Bar) VALUES" +
             "('Comanda prueba1', 1), " +
@@ -184,10 +185,10 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.execSQL(sqlCreateLineaComanda);
         db.execSQL(sqlCreateLineaComandaEnCurso);
 
-        db.execSQL(sqlInsertBar);
-        db.execSQL(sqlInsertLineaCarta);
-        db.execSQL(sqlInsertOferta);
-        db.execSQL(sqlInsertaProducto);
+        //db.execSQL(sqlInsertBar);
+        //db.execSQL(sqlInsertLineaCarta);
+        //db.execSQL(sqlInsertOferta);
+        //db.execSQL(sqlInsertaProducto);
         db.execSQL(sqlInsertComanda);
         db.execSQL(sqlInsertLineaComanda);
 }
@@ -211,10 +212,10 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.execSQL(sqlCreateLineaComanda);
         db.execSQL(sqlCreateLineaComandaEnCurso);
 
-        db.execSQL(sqlInsertBar);
-        db.execSQL(sqlInsertLineaCarta);
-        db.execSQL(sqlInsertOferta);
-        db.execSQL(sqlInsertaProducto);
+        //db.execSQL(sqlInsertBar);
+        //db.execSQL(sqlInsertLineaCarta);
+        //db.execSQL(sqlInsertOferta);
+        //db.execSQL(sqlInsertaProducto);
         db.execSQL(sqlInsertComanda);
         db.execSQL(sqlInsertLineaComanda);
     }

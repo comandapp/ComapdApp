@@ -16,6 +16,13 @@ public class Producto {
         this.categoria=categoria;
         this.foto = foto;
     }
+
+    public Producto(int id, String nombre, Bitmap foto){
+        this.id=id;
+        this.nombre=nombre;
+        this.categoria = "";
+        this.foto = foto;
+    }
     
     public int getId() {
         return id;
