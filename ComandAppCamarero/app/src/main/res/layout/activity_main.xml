@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LytContenedor"
+    android:background="#ffffc741"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/imvLogo"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/logo_comandapp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:textColor="#452F00"
+        android:text="¿Que tomamos hoy?"
+        android:id="@+id/txtQuetomamos"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/imvLogo"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1.0"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <EditText android:id="@+id/txtUsuario"
+            android:layout_height="38dp"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_marginTop="30dp"
+            android:hint="Usuario"
+            android:textColorHint="#CFCFCF"
+            android:inputType="text"
+            android:background="#ffffffff"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1.0"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <EditText android:id="@+id/txtPass"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="0.8"
+            android:layout_marginTop="15dp"
+            android:hint="Contraseña"
+            android:textColorHint="#CFCFCF"
+            android:inputType="textPassword"
+            android:background="#ffffffff"/>
+
+    </LinearLayout>
+
+    <Button android:id="@+id/btnLoguear"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Loguear"
+        android:layout_marginTop="20dp"
+        style="@style/botonCustom"/>
+
+</LinearLayout>

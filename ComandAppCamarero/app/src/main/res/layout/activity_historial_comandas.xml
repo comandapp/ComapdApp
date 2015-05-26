@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LytContenedor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ListView android:id="@+id/ListaComandas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="#FFBD2E"
+        android:dividerHeight="2dp"/>
+
+</LinearLayout>

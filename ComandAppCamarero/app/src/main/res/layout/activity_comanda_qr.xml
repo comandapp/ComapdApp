@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LytContenedor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <LinearLayout android:id="@+id/LytMenu"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inicio"
+            android:id="@+id/btnMenuInicio"
+            android:background="#ffff9615"
+            android:layout_weight=".25"
+            android:textSize="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carta"
+            android:id="@+id/btnMenuCarta"
+            android:background="#ffff9615"
+            android:layout_weight=".25"
+            android:textSize="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comanda"
+            android:id="@+id/btnMenuComanda"
+            android:background="@drawable/boton_selec"
+            android:layout_weight=".25"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <ImageView android:id="@+id/imgQR"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ffc4c4c4"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="18dp"/>
+
+    <Button android:id="@+id/btnDetalles"
+        android:layout_width="250dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="18dp"
+        android:text="Detalles comanda"
+        style="@style/botonCustom"/>
+
+</LinearLayout>

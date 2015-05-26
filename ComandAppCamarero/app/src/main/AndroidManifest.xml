@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="comandapp.comandappcliente" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <permission
+        android:name="comandapp.comandappcliente.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="comandapp.comandappcliente.permission.MAPS_RECEIVE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".presentacion.actividades.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".presentacion.actividades.InicioBar"
+            android:label="Información del local"
+            android:noHistory="true" />
+        <activity
+            android:name=".presentacion.actividades.Carta_bar"
+            android:label="Carta del local"
+            android:noHistory="false" />
+        <activity
+            android:name=".presentacion.actividades.ComandaDetallada"
+            android:label="Detalles de la comanda"
+            android:noHistory="false" />
+        <activity
+            android:name=".presentacion.actividades.ComandaQR"
+            android:label="QR de la comanda" />
+        <activity
+            android:name=".presentacion.actividades.MapsActivityBar"
+            android:label="Localizacion del local" />
+        <activity
+            android:name=".presentacion.actividades.Ofertas_bar"
+            android:label="Ofertas del local"
+            android:noHistory="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".presentacion.actividades.MapaYLocalizacion"
+            android:label="@string/title_activity_mapa_ylocalizacion" >
+        </activity>
+        <activity
+            android:name=".presentacion.actividades.HistorialComandas"
+            android:label="@string/title_activity_historial_comandas" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".presentacion.actividades.Splash"
+            android:label="@string/title_activity_splash" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        - See more at: http://techiedreams.com/android-zxing-barcode-scanner-integration/#sthash.IJ8nO1We.dpuf
+    </application>
+
+</manifest>
