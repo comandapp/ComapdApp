@@ -43,6 +43,37 @@
             android:layout_height="wrap_content"
             android:focusable="false"/>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/HLCant">
+
+            <Button
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"
+                android:text="▲"
+                android:id="@+id/btnCantMas"
+                android:layout_gravity="right"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:id="@+id/tvCantidad"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"
+                android:text="▼"
+                android:id="@+id/btnCantMenos"
+                android:layout_gravity="right"
+                android:textSize="20dp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

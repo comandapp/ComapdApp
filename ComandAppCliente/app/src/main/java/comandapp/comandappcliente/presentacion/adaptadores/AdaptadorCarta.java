@@ -44,14 +44,13 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         View item = convertView;
-        ViewHolderListadoEntradas holder;
+        final ViewHolderListadoEntradas holder;
         final LineaCarta e = listadoEntrada.get(position);
-
+        final View vv=item;
         if(item == null)
         {
             LayoutInflater inflater = context.getLayoutInflater();
             item = inflater.inflate(R.layout.listitem_carta, null);
-            final View v=item;
             holder = new ViewHolderListadoEntradas();
             holder.img = (ImageView)item.findViewById(R.id.LVICartaImg);
             holder.nombre = (TextView)item.findViewById(R.id.LVICartaNombre);
@@ -59,101 +58,8 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
             holder.precio=(TextView)item.findViewById(R.id.LVICartaPrecio);
             holder.precioOferta = (TextView)item.findViewById(R.id.LVICartaPrecioOferta);
             holder.idProd=(TextView)item.findViewById(R.id.LVIIdProd);
-            final ViewHolderListadoEntradas vhlo=holder;
-            LinearLayout hl=(LinearLayout)v.findViewById(R.id.layoutPrecios);
+            holder.cantidad=(TextView)item.findViewById(R.id.tvCantidad);
 
-            final TextView tv=new TextView(context);
-            tv.setId(R.id.tvCantidad);
-            hl.addView(tv);
-            for(int i=0;i<((ListView)context.findViewById(R.id.listaCarta)).getChildCount();i++) {
-                View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
-                if(a instanceof RelativeLayout) {
-                            ((TextView)((LinearLayout)((RelativeLayout) a).getChildAt(2)).getChildAt(2)).setText(lComanda.get(i).getCantidad()+"");
-                 }
-            }
-
-
-            ((RelativeLayout)item.findViewById(R.id.layoutCartaGlobal)).setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v)
-                {
-
-                    for(int i=0;i<((ListView)context.findViewById(R.id.listaCarta)).getChildCount();i++) {
-                        View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
-                        if(a instanceof RelativeLayout) {
-                            if(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildCount()>3) {
-                                //LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                //llp.setMargins(10, 0, 100, 0); // llp.setMargins(left, top, right, bottom);
-                                ((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).removeView(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildAt(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildCount()-3));
-                                ((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).removeView(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildAt(((LinearLayout)((RelativeLayout)a).findViewById(R.id.layoutPrecios)).getChildCount()-1));
-                            }
-                        }
-                    }
-                    // ((ViewGroup)v.getParent().getParent()).getId();
-                    // hl.removeView(aux);
-
-                    LinearLayout hl=(LinearLayout)v.findViewById(R.id.layoutPrecios);
-                    final TextView aux=(TextView)hl.findViewById(R.id.lblCantidadProd);
-                    final TextView textView=(TextView)hl.findViewById(R.id.LVICartaPrecio);
-                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    llp.setMargins(10, 0, 20, 0); // llp.setMargins(left, top, right, bottom);
-                    textView.setLayoutParams(llp);
-
-                    Button but=new Button(context);
-                    but.setText("▲");
-                    but.setTextSize(20);
-                    but.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            int auxInt = Integer.parseInt(tv.getText().toString()) + 1;
-                            for(int i=0;i<((ListView)context.findViewById(R.id.listaCarta)).getChildCount();i++) {
-                                View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
-                                if(a instanceof RelativeLayout) {
-                                    if(((RelativeLayout)a).getChildCount()!=3) {
-                                        LineaComandaEnCurso lc=lComanda.get(i);
-                                        lc.setCantidad(auxInt);
-                                        lComanda.remove(i);
-                                        lComanda.add(i,lc);
-                                    }
-                                }
-                            }
-
-                            tv.setText(auxInt + "");
-                        }
-                    });
-                    hl.addView(but, 2);
-                    but=new Button(context);
-                    but.setText("▼");
-                    but.setTextSize(20);
-                    but.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v)
-                        {
-                            int auxInt=Integer.parseInt(tv.getText().toString());
-                            if(auxInt>0) {
-                                auxInt--;
-                                for(int i=0;i<((ListView)context.findViewById(R.id.listaCarta)).getChildCount();i++) {
-                                    View a=(RelativeLayout)((ListView)context.findViewById(R.id.listaCarta)).getChildAt(i).findViewById(R.id.layoutCartaGlobal);
-                                    if(a instanceof RelativeLayout) {
-                                        if(((RelativeLayout)a).getChildCount()!=3) {
-                                            LineaComandaEnCurso lc=lComanda.get(i);
-                                            lc.setCantidad(auxInt);
-                                            lComanda.remove(i);
-                                            lComanda.add(i,lc);
-                                        }
-                                    }
-                                }
-                                tv.setText(auxInt + "");
-                            }
-                        }
-                    });
-                    hl.addView(but,4);
-                    notifyDataSetChanged();
-                }
-            });
             item.setTag(holder);
         }
         else
@@ -166,9 +72,64 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         holder.precio.setText(e.getPrecio()+"€");
         holder.descripcion.setText(e.getDescripcion());
         holder.idProd.setText(e.getProducto().getId()+"");
+        int i=0;
+        boolean enc=false;
+        while(i<lComanda.size()&&!enc){
+            if(lComanda.get(i).getIdProducto()==e.getProducto().getId()){
+                enc=true;
+            }else
+                i++;
+        }
+        holder.cantidad.setText(lComanda.get(i).getCantidad()+"");
 
+        ((Button)item.findViewById(R.id.btnCantMas)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i=0;
+                boolean enc=false;
+                while(i<lComanda.size()&&!enc){
+                    if(lComanda.get(i).getIdProducto()==e.getProducto().getId()){
+                        enc=true;
+                    }else
+                        i++;
+                }
+                int numaux=Integer.parseInt(holder.cantidad.getText()+"");
+                numaux++;
+                int st=Integer.parseInt(holder.idProd.getText()+"");
+                lComanda.add(i,new LineaComandaEnCurso(st,numaux));
+                lComanda.remove(i+1);
+                holder.cantidad.setText(numaux+"");
+                for(int a=0;a<lComanda.size();a++)
+                    System.out.println(lComanda.get(a).getIdProducto()+"   "+lComanda.get(a).getCantidad());
+                LogicaNegocio.getInstancia().borraLineasComandaEnCurso(context);
+                LogicaNegocio.getInstancia().insertaLineasComandaEnCurso(context,lComanda);
+            }
+            });
 
-
+        ((Button)item.findViewById(R.id.btnCantMenos)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i=0;
+                boolean enc=false;
+                while(i<lComanda.size()&&!enc){
+                    if(lComanda.get(i).getIdProducto()==e.getProducto().getId()){
+                        enc=true;
+                    }else
+                        i++;
+                }
+                int numaux=Integer.parseInt(holder.cantidad.getText()+"");
+                if(numaux>0)
+                numaux--;
+                int st=Integer.parseInt(holder.idProd.getText()+"");
+                lComanda.add(i,new LineaComandaEnCurso(st,numaux));
+                lComanda.remove(i+1);
+                holder.cantidad.setText(numaux+"");
+                for(int a=0;a<lComanda.size();a++)
+                    System.out.println(lComanda.get(a).getIdProducto()+"   "+lComanda.get(a).getCantidad());
+                LogicaNegocio.getInstancia().borraLineasComandaEnCurso(context);
+                LogicaNegocio.getInstancia().insertaLineasComandaEnCurso(context,lComanda);
+            }
+        });
         double precioOf = LogicaNegocio.getInstancia().getPrecioFinalLineaCarta(context, e, ofertas);
         if(precioOf > 0) {
             holder.precio.setPaintFlags(holder.precio.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -209,5 +170,6 @@ public class AdaptadorCarta extends ArrayAdapter<LineaCarta> {
         TextView precio;
         TextView precioOferta;
         TextView idProd;
+        TextView cantidad;
     }
 }
