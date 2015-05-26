@@ -29,9 +29,12 @@ public class AdaptadorHistorialComandas extends ArrayAdapter<Comanda>
 
     public AdaptadorHistorialComandas(Activity context, ArrayList<Comanda> datos) {
         super(context, R.layout.listitem_historial, datos);
-        this.context = context;
-        listadoComandas = datos;
+        listadoComandas = new ArrayList<Comanda>();
         listadoComandasAux = new ArrayList<Comanda>();
+
+        this.context = context;
+
+        listadoComandas = datos;
         listadoComandasAux.addAll(listadoComandas);
     }
 

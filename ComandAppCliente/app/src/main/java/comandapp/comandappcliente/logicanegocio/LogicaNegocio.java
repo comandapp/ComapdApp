@@ -85,8 +85,9 @@ public class LogicaNegocio {
 
     public ArrayList<Comanda> getAllComandas(Context con) {
         ArrayList<Comanda> c = persistencia.getComandas(con);
-        if(c.size()>0) return c;
-        else return null;
+        /*if(c.size()>0) return c;
+        else return null;*/
+        return c;
     }
 
     public void insertaComanda(Context con, String nombreComanda, int idBar)

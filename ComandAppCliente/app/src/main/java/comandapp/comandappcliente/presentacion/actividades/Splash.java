@@ -41,6 +41,7 @@ public class Splash extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
 
         final Future<Document> response = pool.submit(new HTTPServerRequest(this.getBaseContext(), "GLOC", LogicaNegocio.getInstancia().getMain(this)));

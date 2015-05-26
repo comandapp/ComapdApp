@@ -102,11 +102,15 @@ public class Carta_bar extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Carta_bar.this, ComandaDetallada.class);
-                intent.putExtra("id_bar",id_Bar);
+                intent.putExtra("id_bar", id_Bar);
 
                 guardaComanda();
                 LogicaNegocio.getInstancia().borraLineasComandaEnCurso(Carta_bar.this);
-                LogicaNegocio.getInstancia().insertaLineasComandaEnCurso(Carta_bar.this,lineasComanda);
+
+                if(lineasComanda != null && lineasComanda.size() > 0)
+                {
+                    LogicaNegocio.getInstancia().insertaLineasComandaEnCurso(Carta_bar.this,lineasComanda);
+                }
 
                 startActivity(intent);
             }
