@@ -27,6 +27,11 @@ import comandapp.comandappcliente.logicanegocio.webclient.HTTPServerRequest;
 import comandapp.comandappcliente.persistencia.Persistencia;
 import comandapp.comandappcliente.persistencia.SQLHelper;
 
+//Actividad principal o pantalla de carga.
+//Lanza los dos threads:
+    //HTTPServerRequest para recibir el DOM Document
+    //Thread anónimo para el parseo
+//Inicia la MainActivity cuando termina el segundo.
 public class Splash extends ActionBarActivity {
 
     private static ExecutorService pool = Executors.newFixedThreadPool(2);
@@ -76,18 +81,17 @@ public class Splash extends ActionBarActivity {
                                     Integer.parseInt(e.getAttribute("version")));
                         }
 
-//                int[] eliminados = getIdBaresEliminados(doc);
-//                if(eliminados != null) {
-//                    for (int i : eliminados) {
-//                        persistencia.eliminarBar(this.context, i);
-//                    }
-//                }
-
+                        int[] eliminados = DOMParser.getIdBaresEliminados(doc);
+                        if(eliminados != null) {
+                            for (int i : eliminados) {
+                                persistencia.eliminarBar(con, i);
+                            }
+                        }
 
                         dbw.close();
                         sql.close();
                     } else {
-
+                        //Error de transmisión
                     }
 
                     Intent i = new Intent(Splash.this,

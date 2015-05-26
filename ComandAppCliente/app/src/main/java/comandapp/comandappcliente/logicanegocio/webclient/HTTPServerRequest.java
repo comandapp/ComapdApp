@@ -33,8 +33,9 @@ import comandapp.comandappcliente.logicanegocio.utilidades.XSDValidator;
  */
 public class HTTPServerRequest implements Callable<Document> {
 
-    //Clase encargada de realizar peticiones al servidor y obtener y validar el documento XML resultante.
-    //Se ejecuta en segundo plano y su función run() devuelve un objeto Document (árbol DOM)
+    //Clase encargada de realizar peticiones al servidor y obtener el documento XML resultante.
+    //No se pueden realizar peticiones HTTP desde la UI Thread, por lo que se implementa como un callable.
+    //El Future resultante de la llamada a call() será el objeto Document ya validado o null en caso de error.
 
     private static final String HOST_URL = "http://193.146.250.82:80/osfm/files/server.php";
 
@@ -42,7 +43,7 @@ public class HTTPServerRequest implements Callable<Document> {
     private Context context;
 
     //- com puede tomar los valores del protocolo de comunicación con el servidor:
-    //      GBAR, GLOC, GCAR, GOFE
+    //      GLOC
     //- mainLocal contiene para cada id_Bar sus versiones almacenadas en la BD local.
     public HTTPServerRequest(Context c, String com, HashMap<Integer, Version> mainLocal) {
         this.context = c;
@@ -66,7 +67,6 @@ public class HTTPServerRequest implements Callable<Document> {
             //Cabeceras HTTP
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
-            //con.setRequestProperty("Content-Length", ""+queryString.length());
 
             //Mandar petición
             con.setDoOutput(true);
@@ -74,34 +74,29 @@ public class HTTPServerRequest implements Callable<Document> {
             write.println(queryString);
             write.flush();
 
-            Log.i("MYAPP", queryString);
-
             //Respuesta del servidor
             int status = con.getResponseCode();
-
             if(status >= HttpStatus.SC_BAD_REQUEST) {
                 read = new BufferedReader(new InputStreamReader(con.getErrorStream()));
             } else {
                 read = new BufferedReader(new InputStreamReader(con.getInputStream()));
             }
 
+            //Cadena XML
             String inputLine;
             xml = "";
             while ((inputLine = read.readLine()) != null) {
                 xml += inputLine;
             }
 
+            //Fin de la comunicación
             write.close();
             read.close();
 
-            Log.i("MYAPP", xml);
-
-            //Se supone que el servidor envía en UTF-8
-            //FIX para eliminar publicidad del hosting gratuito
+            //FIX para eliminar posible contenido no deseado
             xml = xml.substring(xml.indexOf("<?xml"), xml.indexOf("</root>")+7);
 
-            Log.i("MYAPP", xml);
-
+            //Validación
             if (XSDValidator.validateXMLResponse(context,xml)) {
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 dbf.setNamespaceAware(true);
@@ -121,6 +116,7 @@ public class HTTPServerRequest implements Callable<Document> {
         return doc;
     }
 
+    //Parsea el main local a UTF-8 para su posterior envío.
     private static String parseMainUTF8(HashMap<Integer,Version> main) {
         String ret = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         ret += "<root xmlns=\"comandappMAIN.xsd\" " +

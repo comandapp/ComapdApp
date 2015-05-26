@@ -9,6 +9,9 @@ import java.io.ByteArrayOutputStream;
 /**
  * Created by G62 on 14-Mar-15.
  */
+
+//Codec para las imágenes.
+//Convierte de png a cadena en base 64 y viceversa.
 public class ImgCodec {
     public static Bitmap base64ToBitmap(String b64) {
         byte[] decodedString = Base64.decode(b64, Base64.DEFAULT);

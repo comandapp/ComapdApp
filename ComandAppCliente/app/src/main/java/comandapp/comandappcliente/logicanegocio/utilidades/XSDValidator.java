@@ -16,8 +16,11 @@ import mf.org.apache.xerces.jaxp.validation.XMLSchemaFactory;
 /**
  * Created by G62 on 28-Mar-15.
  */
+
+//Validdor XSD para las respuestas XML del servidor.
 public class XSDValidator {
 
+    //Valida una cadena contra comandappResponse.xsd
     public static boolean validateXMLResponse(Context c, String xml) {
         if(xml == null || xml.length()==0) return false;
         try {

@@ -24,6 +24,7 @@ import comandapp.comandappcliente.persistencia.SQLHelper;
 
 /**
  * Created by G62 on 14-Mar-15.
+ * Clase intermedia entre la presentación y la persistencia.
  */
 public class LogicaNegocio {
 
@@ -39,7 +40,7 @@ public class LogicaNegocio {
         return instancia;
     }
 
-    //Función sin acabar
+    //Devuelve el main (id_Bar, Versiones) actual de la base de datos
     public HashMap<Integer, Version> getMain(Activity act) {
         return persistencia.getMain(act.getBaseContext());
     }

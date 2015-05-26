@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
@@ -27,29 +28,33 @@ import comandapp.comandappcliente.persistencia.SQLHelper;
 
 /**
  * Created by G62 on 17-Mar-15.
+ * Métodos de parseo para las distintas partes de los árboles DOM provenientes de HTTPServerRequest.
  */
 public class DOMParser {
 
     private Persistencia persistencia = Persistencia.getInstancia();
 
-    //
+    //Devuelve los identificadores de los bares a eliminar a partir del elemento <eliminados>
     public static int[] getIdBaresEliminados(Document response) {
         NodeList listaEliminados = response.getElementsByTagName("eliminados");
         if(listaEliminados.getLength() == 1) {
-            String raw = listaEliminados.item(0).getFirstChild().getNodeValue();
-            String[] array = raw.split(",");
-            int[] ret = new int[array.length];
-            for(int i=0;i<array.length;i++) {
-                ret[i] = Integer.parseInt(array[i]);
+            Node elim = listaEliminados.item(0);
+            if (elim.getFirstChild() != null && elim.getFirstChild().getNodeValue().length() > 0) {
+                String raw = elim.getFirstChild().getNodeValue();
+                String[] array = raw.split(",");
+                int[] ret = new int[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    ret[i] = Integer.parseInt(array[i]);
+                }
+                return ret;
             }
-            return ret;
         }
         return null;
     }
 
     public static Bar parseInfoBar(Element element) {
         NodeList content = element.getChildNodes();
-        Bar b = new Bar(Integer.parseInt(element.getAttribute("id_Bar")),
+        return new Bar(Integer.parseInt(element.getAttribute("id_Bar")),
                 content.item(0).getFirstChild().getNodeValue(),//Nombre
                 content.item(1).getFirstChild().getNodeValue(),//Dirección
                 content.item(2).getFirstChild().getNodeValue(),//Tlf
@@ -60,8 +65,7 @@ public class DOMParser {
                 content.item(7).getFirstChild().getNodeValue(),//Municipio
                 ImgCodec.base64ToBitmap(content.item(8).getFirstChild().getNodeValue()),//Foto
                 false, //favorito
-                Integer.parseInt(element.getAttribute("version")));//VersionInfoBar
-        return b;
+                Integer.parseInt(element.getAttribute("version")));//VersionInfoBar;
     }
 
     public static ArrayList<LineaCarta> parseCarta(Context con, Element element) {
@@ -71,11 +75,10 @@ public class DOMParser {
         if (content.getLength() > 0) {
             for(int j=0;j<content.getLength();j++) {
                 NodeList linea = content.item(j).getChildNodes();
-                Bitmap bm =  ImgCodec.base64ToBitmap(linea.item(4).getFirstChild().getNodeValue());
                 Producto p = new Producto(
                         Integer.parseInt(linea.item(0).getFirstChild().getNodeValue()),//ID producto
                         linea.item(1).getFirstChild().getNodeValue(),//Nombre producto
-                       bm);//Foto producto
+                        ImgCodec.base64ToBitmap(linea.item(4).getFirstChild().getNodeValue()));//Foto producto
                 lineas.add(new LineaCarta(
                         p,
                         Double.parseDouble(linea.item(3).getFirstChild().getNodeValue()),//Precio linea
@@ -94,9 +97,8 @@ public class DOMParser {
         if (content.getLength() > 0) {
             for(int j=0;j<content.getLength();j++) {
                 NodeList linea = content.item(j).getChildNodes();
-                Producto p = Persistencia.getInstancia().getProducto(con, Integer.parseInt(linea.item(0).getFirstChild().getNodeValue()));
                 lineas.add(new Oferta(Integer.parseInt(element.getAttribute("id_Bar")),//ID Bar
-                        p,//Producto ya existente
+                        Persistencia.getInstancia().getProducto(con, Integer.parseInt(linea.item(0).getFirstChild().getNodeValue())),//Producto ya existente
                         "",//Descripción. Vacío siempre, se mantiene por falta de tiempo
                         Double.parseDouble(linea.item(1).getFirstChild().getNodeValue())));//Precio
             }
