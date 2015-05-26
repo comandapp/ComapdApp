@@ -85,6 +85,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentacion.actividades.CaptureActivityAnyOrientation"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
+
+        </activity>
         - See more at: http://techiedreams.com/android-zxing-barcode-scanner-integration/#sthash.IJ8nO1We.dpuf
     </application>
 

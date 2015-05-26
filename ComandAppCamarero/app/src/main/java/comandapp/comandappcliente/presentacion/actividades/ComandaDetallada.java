@@ -207,7 +207,8 @@ public class ComandaDetallada extends ActionBarActivity {
 
                 ////############# MÉTODO 3:
                 IntentIntegrator lectorQr = new IntentIntegrator(ComandaDetallada.this);
-                lectorQr.setOrientationLocked(true);
+                lectorQr.setCaptureActivity(CaptureActivityAnyOrientation.class);
+                lectorQr.setOrientationLocked(false);
                 lectorQr.initiateScan();
 
 
@@ -315,6 +316,7 @@ public class ComandaDetallada extends ActionBarActivity {
                     getIntent().putExtra("nombre_comanda", "");
                     LogicaNegocio.getInstancia().borraLineasComandaEnCurso(ComandaDetallada.this);
                     LogicaNegocio.getInstancia().insertaLineasComandaEnCurso(ComandaDetallada.this,lineasComandaEnCurso);
+                    rellenaVista();
                 }
             }
         }
